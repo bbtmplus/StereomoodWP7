@@ -40,22 +40,8 @@
  
             <!--Второй элемент Panorama-->
             <!--Используйте 'Orientation="Horizontal"', чтобы расположить панель горизонтально-->
-            <controls:PanoramaItem Header="второй элемент">
-                <!--Двухстрочный список с заполнителем изображения и разбивкой текста на строки-->
-                <ListBox Margin="0,0,-12,0" ItemsSource="{Binding Items}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,17">
-                                <!--Замените прямоугольник изображением-->
-                                <Image Source="" Height="100" Width="100" Margin="12,0,9,0"  />
-                                <StackPanel Width="311">                                    
-                                    <TextBlock Text="{Binding LineOne}" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
-                                </StackPanel>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </controls:PanoramaItem>
+            <controls:PanoramaItem Header="второй элемент"></controls:PanoramaItem>
         </controls:Panorama>
+        <phone:WebBrowser HorizontalAlignment="Left" Margin="40,283,0,0" Name="webBrowser1" VerticalAlignment="Top" Height="431" Width="357" />
     </Grid>
 </phone:PhoneApplicationPage>

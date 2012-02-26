@@ -2,34 +2,45 @@
   <RecentFiles>
     <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/d:ViewModels/f:ItemViewModel.cs" caret="333" fromTop="9" />
     <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/d:ViewModels/f:MainViewModel.cs" caret="0" fromTop="0" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml" caret="1778" fromTop="20" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="476" fromTop="21" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:Constants.cs" caret="313" fromTop="10" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:OauthCommunication.cs" caret="708" fromTop="13" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:Class1.cs" caret="368" fromTop="0" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:Constants.cs" caret="196" fromTop="5" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:OauthCommunication.cs" caret="2010" fromTop="10" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:Settings.xaml" caret="930" fromTop="12" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:App.xaml.cs" caret="5119" fromTop="10" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:Settings.xaml.cs" caret="262" fromTop="11" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="2924" fromTop="12" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml" caret="1" fromTop="0" />
   </RecentFiles>
   <RecentEdits>
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml" caret="1250" fromTop="12" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml" caret="1498" fromTop="6" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml" caret="1791" fromTop="8" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml" caret="2830" fromTop="16" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="21" fromTop="0" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="304" fromTop="14" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="146" fromTop="6" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:Constants.cs" caret="610" fromTop="12" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:Constants.cs" caret="0" fromTop="0" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:Constants.cs" caret="552" fromTop="10" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="484" fromTop="21" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:OauthCommunication.cs" caret="0" fromTop="0" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:Constants.cs" caret="111" fromTop="6" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:OauthCommunication.cs" caret="1257" fromTop="18" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:OauthCommunication.cs" caret="1257" fromTop="13" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:OauthCommunication.cs" caret="239" fromTop="10" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:OauthCommunication.cs" caret="169" fromTop="4" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:OauthCommunication.cs" caret="1257" fromTop="13" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:OauthCommunication.cs" caret="98" fromTop="5" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:OauthCommunication.cs" caret="98" fromTop="5" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:OauthCommunication.cs" caret="821" fromTop="11" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:OauthCommunication.cs" caret="667" fromTop="7" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:OauthCommunication.cs" caret="1191" fromTop="18" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="3108" fromTop="15" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="3108" fromTop="23" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="3108" fromTop="15" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="3108" fromTop="12" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="3108" fromTop="11" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="3108" fromTop="0" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="3108" fromTop="15" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="3108" fromTop="8" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="3108" fromTop="8" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="3108" fromTop="2" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="3108" fromTop="0" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="3108" fromTop="5" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="3108" fromTop="14" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="138" fromTop="0" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="3108" fromTop="23" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="3108" fromTop="6" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="2938" fromTop="21" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="2938" fromTop="0" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="2938" fromTop="11" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="2938" fromTop="10" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="3112" fromTop="14" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="2939" fromTop="16" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="2938" fromTop="3" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="2255" fromTop="11" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:Settings.xaml.cs" caret="166" fromTop="6" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="381" fromTop="13" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="3076" fromTop="23" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="3076" fromTop="21" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="2152" fromTop="4" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="2924" fromTop="12" />
   </RecentEdits>
 </RecentFiles>

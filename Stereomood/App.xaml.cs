@@ -17,23 +17,7 @@ namespace Stereomood
 {
     public partial class App : Application
     {
-        private static MainViewModel viewModel = null;
 
-        /// <summary>
-        /// Статический элемент ViewModel, используемый в представлениях для привязки.
-        /// </summary>
-        /// <returns>Объект MainViewModel.</returns>
-        public static MainViewModel ViewModel
-        {
-            get
-            {
-                // Отложить создание модели представления до необходимости
-                if (viewModel == null)
-                    viewModel = new MainViewModel();
-
-                return viewModel;
-            }
-        }
 
         /// <summary>
         /// Обеспечивает быстрый доступ к корневому кадру приложения телефона.
@@ -87,11 +71,6 @@ namespace Stereomood
         // Этот код не будет выполняться при первом запуске приложения
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
-            // Убедитесь, что состояние приложения восстановлено правильно
-            if (!App.ViewModel.IsDataLoaded)
-            {
-                App.ViewModel.LoadData();
-            }
         }
 
         // Код для выполнения при деактивации приложения (отправляется в фоновый режим)

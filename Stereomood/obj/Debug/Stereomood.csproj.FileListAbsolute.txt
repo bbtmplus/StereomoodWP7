@@ -35,3 +35,4 @@ C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\Bin\
 C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\Bin\Debug\ko\System.Windows.Interactivity.resources.dll
 C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\Bin\Debug\zh-Hans\System.Windows.Interactivity.resources.dll
 C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\Bin\Debug\zh-Hant\System.Windows.Interactivity.resources.dll
+C:\Users\Lonkly\Documents\Visual Studio 2010\Projects\Stereomood\Stereomood\obj\Debug\Settings.g.cs
