@@ -59,6 +59,7 @@
     </Reference>
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Controls" />
+    <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Interop" />
     <Reference Include="Microsoft.Phone.Reactive" />
     <Reference Include="ReactiveOAuth.WP7">
@@ -74,6 +75,7 @@
     <Reference Include="system" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />
+    <Reference Include="System.Windows.Interactivity, Version=3.8.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="mscorlib.extensions" />
     <Reference Include="System.Xml.Linq" />
@@ -84,7 +86,11 @@
     </Compile>
     <Compile Include="Class1.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="Json\Helper.cs" />
+    <Compile Include="Json\SelectedTagsResult.cs" />
+    <Compile Include="Json\Tag.cs" />
+    <Compile Include="Searchbar.xaml.cs">
+      <DependentUpon>Searchbar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Json\JsonObject.cs" />
     <Compile Include="Json\SearchResult.cs" />
     <Compile Include="Json\Song.cs" />
@@ -102,6 +108,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="Searchbar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -123,8 +133,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="PanoramaBackground.png" />
-    <Resource Include="Images\appbar.transport.play.rest.png" />
-    <Resource Include="Images\appbar.transport.pause.rest.png" />
+    <Content Include="Images\appbar.transport.play.rest.png" />
+    <Content Include="Images\appbar.transport.pause.rest.png" />
+    <Content Include="Images\appbar.feature.search.rest.png" />
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />

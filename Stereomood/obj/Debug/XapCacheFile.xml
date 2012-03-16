@@ -1,16 +1,19 @@
-﻿<xapCache source="C:\Users\Lonkly\Documents\Visual Studio 2010\Projects\Stereomood\Stereomood\Bin\Debug\Stereomood.xap" wasSigned="False" certificateThumbprint="" TimeStampUrl="" lastWriteTime="2/27/2012 1:03:41 AM">
-  <file source="C:\Users\Lonkly\Documents\Visual Studio 2010\Projects\Stereomood\Stereomood\Bin\Debug\WMAppManifest.xml" archivePath="WMAppManifest.xml" lastWriteTime="2/18/2012 7:07:35 PM" />
-  <file source="C:\Users\Lonkly\Documents\Visual Studio 2010\Projects\Stereomood\Stereomood\Background.png" archivePath="Background.png" lastWriteTime="2/18/2012 7:07:24 PM" />
-  <file source="C:\Users\Lonkly\Documents\Visual Studio 2010\Projects\Stereomood\Stereomood\ApplicationIcon.png" archivePath="ApplicationIcon.png" lastWriteTime="2/18/2012 7:07:24 PM" />
-  <file source="C:\Users\Lonkly\Documents\Visual Studio 2010\Projects\Stereomood\Stereomood\obj\Debug\Stereomood.dll" archivePath="Stereomood.dll" lastWriteTime="2/27/2012 1:03:40 AM" />
-  <file source="C:\Users\Lonkly\Documents\Visual Studio 2010\Projects\2Gis\2Gis\Bin\Debug\Coding4Fun.Phone.Controls.dll" archivePath="Coding4Fun.Phone.Controls.dll" lastWriteTime="1/1/2012 11:16:52 AM" />
-  <file source="C:\Users\Lonkly\Documents\Visual Studio 2010\Projects\2Gis\2Gis\Bin\Debug\Coding4Fun.Phone.Controls.Toolkit.dll" archivePath="Coding4Fun.Phone.Controls.Toolkit.dll" lastWriteTime="1/1/2012 11:16:52 AM" />
-  <file source="C:\Users\Lonkly\Documents\Visual Studio 2010\Projects\2Gis\2Gis\Bin\Debug\DeepForest.Phone.Assets.dll" archivePath="DeepForest.Phone.Assets.dll" lastWriteTime="1/7/2012 11:25:49 PM" />
+﻿<xapCache source="C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\Bin\Debug\Stereomood.xap" wasSigned="False" certificateThumbprint="" TimeStampUrl="" lastWriteTime="3/16/2012 6:05:14 PM">
+  <file source="C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\Bin\Debug\WMAppManifest.xml" archivePath="WMAppManifest.xml" lastWriteTime="2/18/2012 7:07:35 PM" />
+  <file source="C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\Background.png" archivePath="Background.png" lastWriteTime="2/18/2012 7:07:24 PM" />
+  <file source="C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\ApplicationIcon.png" archivePath="ApplicationIcon.png" lastWriteTime="2/18/2012 7:07:24 PM" />
+  <file source="C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\obj\Debug\Stereomood.dll" archivePath="Stereomood.dll" lastWriteTime="3/16/2012 6:05:13 PM" />
+  <file source="C:\Users\Lonkly\documents\visual studio 2010\Projects\2Gis\2Gis\Bin\Debug\Coding4Fun.Phone.Controls.dll" archivePath="Coding4Fun.Phone.Controls.dll" lastWriteTime="1/1/2012 11:16:52 AM" />
+  <file source="C:\Users\Lonkly\documents\visual studio 2010\Projects\2Gis\2Gis\Bin\Debug\Coding4Fun.Phone.Controls.Toolkit.dll" archivePath="Coding4Fun.Phone.Controls.Toolkit.dll" lastWriteTime="1/1/2012 11:16:52 AM" />
+  <file source="C:\Users\Lonkly\documents\visual studio 2010\Projects\2Gis\2Gis\Bin\Debug\DeepForest.Phone.Assets.dll" archivePath="DeepForest.Phone.Assets.dll" lastWriteTime="1/7/2012 11:25:49 PM" />
   <file source="C:\Program Files (x86)\Microsoft SDKs\Windows Phone\v7.1\Libraries\Silverlight\Microsoft.Phone.Controls.dll" archivePath="Microsoft.Phone.Controls.dll" lastWriteTime="8/29/2011 11:49:08 PM" />
+  <file source="C:\Program Files (x86)\Microsoft SDKs\Windows Phone\v7.1\Toolkit\Aug11\Bin\Microsoft.Phone.Controls.Toolkit.dll" archivePath="Microsoft.Phone.Controls.Toolkit.dll" lastWriteTime="8/12/2011 7:19:16 PM" />
   <file source="C:\Users\Lonkly\Desktop\WP7\ReactiveOAuth_0.4.0.0\Binary\ReactiveOAuth.WP7.dll" archivePath="ReactiveOAuth.WP7.dll" lastWriteTime="6/23/2011 3:45:41 PM" />
-  <file source="C:\Users\Lonkly\Documents\Visual Studio 2010\Projects\2Gis\2Gis\Bin\Debug\RestSharp.WindowsPhone.dll" archivePath="RestSharp.WindowsPhone.dll" lastWriteTime="1/4/2012 1:17:33 AM" />
-  <file source="C:\Users\Lonkly\Documents\Visual Studio 2010\Projects\2Gis\2Gis\Bin\Debug\Microsoft.Phone.Controls.Toolkit.dll" archivePath="Microsoft.Phone.Controls.Toolkit.dll" lastWriteTime="8/12/2011 7:19:16 PM" />
-  <file source="C:\Users\Lonkly\Documents\Visual Studio 2010\Projects\2Gis\2Gis\Bin\Debug\System.Windows.Interactivity.dll" archivePath="System.Windows.Interactivity.dll" lastWriteTime="8/17/2011 2:48:22 AM" />
-  <file source="C:\Users\Lonkly\Documents\Visual Studio 2010\Projects\Stereomood\Stereomood\SplashScreenImage.jpg" archivePath="SplashScreenImage.jpg" lastWriteTime="2/18/2012 7:07:24 PM" />
-  <file source="C:\Users\Lonkly\Documents\Visual Studio 2010\Projects\Stereomood\Stereomood\Bin\Debug\AppManifest.xaml" archivePath="AppManifest.xaml" lastWriteTime="2/23/2012 10:58:35 PM" />
+  <file source="C:\Users\Lonkly\documents\visual studio 2010\Projects\2Gis\2Gis\Bin\Debug\RestSharp.WindowsPhone.dll" archivePath="RestSharp.WindowsPhone.dll" lastWriteTime="1/4/2012 1:17:33 AM" />
+  <file source="c:\Program Files (x86)\Microsoft SDKs\Expression\Blend\Windows Phone\v7.1\Libraries\System.Windows.Interactivity.dll" archivePath="System.Windows.Interactivity.dll" lastWriteTime="8/17/2011 2:48:22 AM" />
+  <file source="C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\Images\appbar.transport.play.rest.png" archivePath="Images\appbar.transport.play.rest.png" lastWriteTime="2/19/2012 8:40:03 PM" />
+  <file source="C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\Images\appbar.transport.pause.rest.png" archivePath="Images\appbar.transport.pause.rest.png" lastWriteTime="2/19/2012 8:40:13 PM" />
+  <file source="C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\Images\appbar.feature.search.rest.png" archivePath="Images\appbar.feature.search.rest.png" lastWriteTime="3/15/2012 1:50:43 PM" />
+  <file source="C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\SplashScreenImage.jpg" archivePath="SplashScreenImage.jpg" lastWriteTime="2/18/2012 7:07:24 PM" />
+  <file source="C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\Bin\Debug\AppManifest.xaml" archivePath="AppManifest.xaml" lastWriteTime="2/23/2012 10:58:35 PM" />
 </xapCache>

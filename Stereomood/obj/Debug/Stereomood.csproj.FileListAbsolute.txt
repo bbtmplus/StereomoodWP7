@@ -6,7 +6,6 @@ c:\users\lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\Bin\
 c:\users\lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\Bin\Debug\Stereomood.xap
 c:\users\lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\Bin\Debug\Microsoft.Phone.Controls.dll
 c:\users\lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\Bin\Debug\Microsoft.Phone.Controls.xml
-c:\users\lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\obj\Debug\ResolveAssemblyReference.cache
 c:\users\lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\obj\Debug\App.g.cs
 c:\users\lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\obj\Debug\MainPage.g.cs
 c:\users\lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\obj\Debug\Stereomood.g.resources
@@ -36,3 +35,5 @@ C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\Bin\
 C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\Bin\Debug\zh-Hans\System.Windows.Interactivity.resources.dll
 C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\Bin\Debug\zh-Hant\System.Windows.Interactivity.resources.dll
 C:\Users\Lonkly\Documents\Visual Studio 2010\Projects\Stereomood\Stereomood\obj\Debug\Settings.g.cs
+C:\Users\Lonkly\Documents\Visual Studio 2010\Projects\Stereomood\Stereomood\obj\Debug\Stereomood.csprojResolveAssemblyReference.cache
+C:\Users\Lonkly\Documents\Visual Studio 2010\Projects\Stereomood\Stereomood\obj\Debug\Searchbar.g.cs
