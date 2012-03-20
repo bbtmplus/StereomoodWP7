@@ -37,3 +37,6 @@ C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\Bin\
 C:\Users\Lonkly\Documents\Visual Studio 2010\Projects\Stereomood\Stereomood\obj\Debug\Settings.g.cs
 C:\Users\Lonkly\Documents\Visual Studio 2010\Projects\Stereomood\Stereomood\obj\Debug\Stereomood.csprojResolveAssemblyReference.cache
 C:\Users\Lonkly\Documents\Visual Studio 2010\Projects\Stereomood\Stereomood\obj\Debug\Searchbar.g.cs
+C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\obj\Debug\SongListPage.g.cs
+C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\Bin\Debug\PhonePerformance.dll
+C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\Bin\Debug\PhonePerformance.xml

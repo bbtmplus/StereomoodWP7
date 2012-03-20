@@ -26,7 +26,6 @@ namespace Stereomood
             }
         }
 
-
         public Searchbar()
         {
             InitializeComponent();

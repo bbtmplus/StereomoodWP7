@@ -17,8 +17,6 @@ namespace Stereomood
 {
     public partial class App : Application
     {
-
-
         /// <summary>
         /// Обеспечивает быстрый доступ к корневому кадру приложения телефона.
         /// </summary>

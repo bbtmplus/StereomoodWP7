@@ -26,15 +26,15 @@ namespace Stereomood
 
         #region Delegates & Events
 
-        public delegate void loadFinishedEventHandler(int METHOD, Dictionary<string, string> parameters);
+        public delegate void loadFinishedEventHandler(int METHOD, Dictionary<string, string> parameters, JsonObject jsonObject);
 
         public event loadFinishedEventHandler loadFinished;
 
-        public void onLoadFinished(int METHOD, Dictionary<string, string> parameters)
+        public void onLoadFinished(int METHOD, Dictionary<string, string> parameters, JsonObject jsonObject)
         {
             if (loadFinished != null)
             {
-                loadFinished(METHOD, parameters);
+                loadFinished(METHOD, parameters, jsonObject);
             }
         }
 
@@ -93,7 +93,7 @@ namespace Stereomood
                                    requestToken = token;
                                    var url = authorizer.BuildAuthorizeUrl(Constants.AUTHORIZE, token);
                                    loadFinished(Constants.METHOD_AUTHORIZATION,
-                                                new Dictionary<string, string> { { "URL", url } });
+                                                new Dictionary<string, string> { { "URL", url } }, null);
                                }, ex => MessageBox.Show(ReadWebException(ex)));
         }
 
@@ -107,18 +107,18 @@ namespace Stereomood
                 .Subscribe(res =>
                                {
                                    accessToken = res.Token;
-                                   loadFinished(Constants.METHOD_ACCESS_TOKEN, null);
+                                   loadFinished(Constants.METHOD_ACCESS_TOKEN, null, null);
                                }, ex => MessageBox.Show(ReadWebException(ex)));
         }
 
-        public void searchSong(string searchQuery)
+        public void searchSong(string TYPE, string searchQuery)
         {
             var serializer = new DataContractJsonSerializer(typeof(SearchResult));
 
             var client = new OAuthClient(Constants.CONSUMER_KEY, Constants.CONSUMER_SECRET, accessToken)
                              {
                                  Url = Constants.SEARCH,
-                                 Parameters = { { "type", "site" }, { "q", searchQuery } }
+                                 Parameters = { { "type", TYPE }, { "q", searchQuery } }
                              };
             client.GetResponseLines()
                 .Select(s =>
@@ -130,7 +130,7 @@ namespace Stereomood
                             })
                 .ObserveOnDispatcher()
                 .Subscribe(
-                    t => MessageBox.Show("Ololo:" + t.total),
+                    t => loadFinished(Constants.METHOD_SEARCH, new Dictionary<string, string> { { "TYPE", TYPE } }, t),
                     ex => MessageBox.Show(ReadWebException(ex)));
         }
 
@@ -149,7 +149,15 @@ namespace Stereomood
                             {
                                 using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(s)))
                                 {
-                                    Tag[] selectedTags = (Tag[])serializer.ReadObject(stream);
+                                    Tag[] selectedTags;
+                                    if (stream == null)
+                                    {
+                                        selectedTags = (Tag[])serializer.ReadObject(stream);
+                                    }
+                                    else
+                                    {
+                                        selectedTags = (Tag[])serializer.ReadObject(new MemoryStream(Encoding.UTF8.GetBytes(s)));
+                                    }
                                     return selectedTags;
                                 }
                             })

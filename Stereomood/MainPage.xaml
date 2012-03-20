@@ -15,21 +15,23 @@
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="False">
 
-   
+
 
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        <Image x:Name="background"></Image>
-        <controls:Panorama Title="TuneYourMood" Name="panorama">
+
+        <Image x:Name="background"  ></Image>
+
+        <controls:Panorama Title="TuneYourMood" Name="panorama" FontSize="20">
             <controls:Panorama.Background>
                 <ImageBrush x:Name="panoramaBG"/>
             </controls:Panorama.Background>
 
             <controls:PanoramaItem Header="activity..?">
 
-                <ListBox Margin="0,0,-12,0"  Name="topTagsList">
+                <ListBox Margin="0,0,-12,0"  Name="topTagsList" SelectionChanged="topTagSelectionChanged" SelectionMode="Single">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Margin="0,0,0,0" Width="432" Height="78">
+                            <StackPanel Margin="0,0,0,0" Width="432" Height="Auto">
                                 <TextBlock Text="{Binding Path=value}" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
                             </StackPanel>
                         </DataTemplate>
@@ -41,7 +43,19 @@
 
             <controls:PanoramaItem Header="feeling like..?">
 
-                <ListBox Margin="0,0,-12,0"  Name="selectedTagsList">
+                <ListBox Margin="0,0,-12,0"  Name="selectedTagsList" SelectionChanged="selectedTagsSelectionChanged" SelectionMode="Single">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="0,0,0,0" Width="432" Height="Auto">
+                                <TextBlock  Text="{Binding Path=value}" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </controls:PanoramaItem>
+
+            <controls:PanoramaItem Header="favorites">
+                <ListBox Margin="0,0,-12,0"  Name="favoritesList" SelectionChanged="favoritesSelectionChanged" SelectionMode="Single">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Margin="0,0,0,0" Width="432" Height="78">
@@ -51,17 +65,13 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </controls:PanoramaItem>
-
-            <controls:PanoramaItem Header="...settings">
-                
-            </controls:PanoramaItem>
         </controls:Panorama>
 
         <phone:WebBrowser HorizontalAlignment="Left" Margin="40,283,0,0" Name="webBrowser1" VerticalAlignment="Top" Height="0" Width="0" />
 
-        <Controls:ProgressOverlay Name="progressOverlay" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,489,0,219" Width="480" Height="20" Background="Transparent">
+        <Controls:ProgressOverlay Name="progressOverlay" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="12,263,0,445" Width="456" Height="20" Background="Transparent">
             <Controls:ProgressOverlay.Content >
-                <toolkit:PerformanceProgressBar Background="Transparent" x:Name="performanceProgressBarCustomized" Foreground="{StaticResource PhoneAccentBrush}" IsIndeterminate="True" Width="468" />
+                <toolkit:PerformanceProgressBar Background="Transparent" x:Name="performanceProgressBarCustomized" Foreground="White" IsIndeterminate="True" Width="468" />
             </Controls:ProgressOverlay.Content>
         </Controls:ProgressOverlay>
     </Grid>

@@ -8,10 +8,11 @@
 
     
     <Grid x:Name="LayoutRoot" VerticalAlignment="Top" Height="160" Width="480" Background="{StaticResource PhoneBackgroundBrush}"> 
-    <toolkit:AutoCompleteBox Name="searchBox" InputScope="Search" VerticalAlignment="Bottom" Height="76" Margin="0,0,64,36" />
-    <Image Height="56" HorizontalAlignment="Right" Margin="0,56,12,0" Name="searchButton" Stretch="Fill"
+    <toolkit:AutoCompleteBox Name="searchBox" InputScope="Search" VerticalAlignment="Bottom" Height="76" Margin="0,0,64,0" />
+    <Image Height="56" HorizontalAlignment="Right" Margin="0,92,12,0" Name="searchButton" Stretch="Fill"
            VerticalAlignment="Top" Width="60" Source="Images/appbar.feature.search.rest.png"
            MouseLeftButtonUp="image1_MouseLeftButtonUp" />
-        <TextBlock Height="30" HorizontalAlignment="Left" Margin="12,12,0,0" Name="textBlock1" Text="Search for Music:" VerticalAlignment="Top" Width="456" />
+        <TextBlock Height="30" HorizontalAlignment="Left" Margin="12,56,0,0" Name="textBlock1" Text="Search for Music:" VerticalAlignment="Top" Width="456" FontSize="22" FontWeight="Bold" />
+        <TextBlock Height="38" HorizontalAlignment="Left" Margin="12,12,0,0" Name="textBlock2" Text="Tune Your Mood" VerticalAlignment="Top" Width="456" FontSize="26" FontWeight="Medium" />
     </Grid>
 </UserControl>

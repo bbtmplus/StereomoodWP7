@@ -1,0 +1,53 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="Stereomood.SongListPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:delay="clr-namespace:Delay;assembly=PhonePerformance" FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
+    shell:SystemTray.IsVisible="True">
+
+    <!--LayoutRoot представляет корневую сетку, где размещается все содержимое страницы-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="242*" />
+            <ColumnDefinition Width="238*" />
+        </Grid.ColumnDefinitions>
+        <TextBlock x:Name="ApplicationTitle" Text="Tune Your Mood" Style="{StaticResource PhoneTextNormalStyle}" FontSize="40"  FontWeight="Normal" Grid.ColumnSpan="2" Margin="12,0" />
+
+        <ListBox Name="songList" ItemsSource="songs" Width="480" SelectionChanged="songSelectionChanged" SelectionMode="Single" Grid.ColumnSpan="2" Margin="0,53,0,0" Grid.RowSpan="2">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="0,0,0,0" Width="480" Height="Auto">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="430" />
+                            <ColumnDefinition Width="50" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"  />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <!-- {Binding Path=title} {Binding Path=album} {Binding Path=artist}  -->
+                        <TextBlock Text="{Binding Path=title}" Grid.Row="0" Grid.Column="0" Height="Auto" Width="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  TextWrapping="Wrap" FontSize="28"  FontWeight="Bold" Margin="10 0 0 10" />
+                        <Grid  Grid.Column="0" Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Path=artist}" TextWrapping="NoWrap" Grid.Column="0" Grid.Row="1" Foreground="LightGray" FontSize="22" Width="Auto" Margin="10 0 0 10"/>
+                            <TextBlock Text="{Binding Path=album}" TextWrapping="NoWrap" Grid.Column="1"  Grid.Row="1" Foreground="LightGray" FontSize="22" Width="Auto" Margin="10 0 0 10"/>
+                        </Grid>
+                        <Image Grid.Column="1" Source="Images/appbar.transport.play.rest.png" Height="50" Width="50" Grid.RowSpan="2" ></Image>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+
+</phone:PhoneApplicationPage>

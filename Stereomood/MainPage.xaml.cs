@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using DeepForest.Phone.Assets.Controls;
 using DeepForest.Phone.Assets.Tools;
 using Microsoft.Phone.Controls;
 using Stereomood.Json;
@@ -22,23 +23,29 @@ namespace Stereomood
         private List<Tag> topTags;
         private List<Tag> selectedTags;
 
+        private SearchResult searchResult;
+
+        private bool uiBlocked;
         private bool isUserLoggedIn;
+        private bool isSearchBarVisible;
 
         private readonly Searchbar searchbar = new Searchbar();
-        private bool uiBlocked;
+
 
         public MainPage()
         {
             InitializeComponent();
             InitializeElements();
 
-            Loaded += new RoutedEventHandler(MainPage_Loaded);
+            uiBlocked = true;
+            Loaded += MainPage_Loaded;
         }
 
         private void InitializeElements()
         {
             searchbar.searchPressed += searchbar_searchPressed;
             searchbar.Visibility = Visibility.Collapsed;
+            isSearchBarVisible = false;
             LayoutRoot.Children.Add(searchbar);
         }
 
@@ -60,7 +67,8 @@ namespace Stereomood
                 {
 
                 }
-            }else
+            }
+            else
             {
                 NotificationTool.Show("Offline",
                                       "Sorry, the network is not available at the moment",
@@ -97,24 +105,12 @@ namespace Stereomood
         private void loadAppBackground()
         {
             BitmapImage bitmapImage = new BitmapImage(new Uri(Constants.BACKGROUND_URL));
-
-            background.Source = bitmapImage;
-            panorama.Background = new ImageBrush() { ImageSource = background.Source };
-            background.Visibility = System.Windows.Visibility.Collapsed;
-            background.Stretch = Stretch.Fill;
-            background.Width = panorama.Width;
-            background.Height = panorama.Height;
-        }
-
-        void sb_Completed(object sender, EventArgs e)
-        {
-            BitmapImage bitmapImage = new BitmapImage(new Uri(Constants.BACKGROUND_URL));
-            ImageBrush imageBrush = new ImageBrush { ImageSource = bitmapImage };
-
-            panorama.Background = imageBrush;
-            Storyboard sbFadeOut = new Storyboard();
-
-            FadeInOut(panorama.Background, sbFadeOut, false);
+            ImageBrush brush = new ImageBrush
+                                   {
+                                       Opacity = 0.8d,
+                                       ImageSource = bitmapImage
+                                   };
+            panorama.Background = brush;
         }
 
         void webBrowser_Navigating(object sender, NavigatingEventArgs e)
@@ -124,7 +120,7 @@ namespace Stereomood
 
 
 
-        private void loadFinished(int METHOD, Dictionary<string, string> returnedParams)
+        private void loadFinished(int METHOD, Dictionary<string, string> returnedParams, JsonObject jsonObject)
         {
             switch (METHOD)
             {
@@ -139,16 +135,40 @@ namespace Stereomood
                     }
                 case Constants.METHOD_ACCESS_TOKEN:
                     {
-                        oauthCommunication.getTopTags();
-                        oauthCommunication.getSelectedTags();
+                        Deployment.Current.Dispatcher.BeginInvoke(() =>
+                                                                      {
+                                                                          oauthCommunication.getTopTags();
+                                                                          oauthCommunication.getSelectedTags();
+                                                                      }
+                            );
                         break;
                     }
                 case Constants.METHOD_SEARCH:
                     {
+                        searchResult = ((SearchResult)jsonObject);
+                        if (searchResult.total > 0)
+                        {
+                            Uri songListUri = new Uri("/SongListPage.xaml", UriKind.Relative);
+                            NavigationService.Navigate(songListUri);
+                        }
+                        else
+                        {
+                            NotificationTool.Show("Sorry",
+                                                  "Couldn't find anything. Could you be more prescice?",
+                                                  new NotificationAction("Okay :(", () => { }));
+                        }
 
                         break;
                     }
             }
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            SongListPage songListPage = (e.Content as SongListPage);
+            if (songListPage != null)
+                songListPage.searchResult = searchResult;
+            base.OnNavigatedFrom(e);
         }
 
         private void webbrowser_LoginPageLoaded(object sender, NavigationEventArgs e)
@@ -203,23 +223,116 @@ namespace Stereomood
             OauthCommunication.getInstance().getAccessToken(pin);
         }
 
-        private string ExtractNumbers(string expr)
-        {
-            return string.Join(null, Regex.Split(expr, "[^\\d]"));
-        }
-
-
 
         #region ACTIONS
 
         private void barItemSearchClicked(object sender, EventArgs e)
         {
-            searchbar.Visibility = searchbar.Visibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
+            toggleSearchBar();
+        }
+
+        private void searchBarAnimationComplete(object sender, EventArgs e)
+        {
+            uiBlocked = false;
+        }
+
+        private void toggleSearchBar()
+        {
+            if (!uiBlocked)
+            {
+                uiBlocked = true;
+                Storyboard sbMoveIn = new Storyboard();
+                sbMoveIn.Completed += new EventHandler(searchBarAnimationComplete);
+                if (searchbar.Visibility == Visibility.Collapsed)
+                {
+                    searchbar.Visibility = Visibility.Visible;
+                    MoveIn(searchbar, sbMoveIn, true);
+                }
+                else
+                {
+                    MoveIn(searchbar, sbMoveIn, isSearchBarVisible);
+                    isSearchBarVisible = isSearchBarVisible != true;
+                }
+            }
+
         }
 
         private void searchbar_searchPressed(string textToSearch)
         {
-            oauthCommunication.searchSong(textToSearch);
+            if (stringNotEmpty(textToSearch))
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() => oauthCommunication.searchSong(Constants.TYPE_SITE, textToSearch));
+            }
+        }
+
+        private void topTagSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var itemContainerGenerator = this.topTagsList.ItemContainerGenerator;
+            if (itemContainerGenerator != null)
+            {
+                ListBoxItem selectedItem = itemContainerGenerator.ContainerFromIndex(2) as ListBoxItem;
+                if (selectedItem != null)
+                {
+                    Tag data = selectedItem.DataContext as Tag;
+                    if (data != null)
+                    {
+                        Deployment.Current.Dispatcher.BeginInvoke(() =>
+                                                                  oauthCommunication.searchSong(
+                                                                      data.type,
+                                                                      data.value));
+                    }
+                }
+
+            }
+        }
+
+        private void selectedTagsSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var itemContainerGenerator = this.selectedTagsList.ItemContainerGenerator;
+            if (itemContainerGenerator != null)
+            {
+                ListBoxItem selectedItem = itemContainerGenerator.ContainerFromIndex(2) as ListBoxItem;
+                if (selectedItem != null)
+                {
+                    Tag data = selectedItem.DataContext as Tag;
+                    if (data != null)
+                    {
+                        Deployment.Current.Dispatcher.BeginInvoke(() =>
+                                                                  oauthCommunication.searchSong(data.type, data.value));
+                    }
+                }
+
+            }
+
+        }
+
+        private void favoritesSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var itemContainerGenerator = this.selectedTagsList.ItemContainerGenerator;
+            if (itemContainerGenerator != null)
+            {
+                ListBoxItem selectedItem = itemContainerGenerator.ContainerFromIndex(2) as ListBoxItem;
+                if (selectedItem != null)
+                {
+                    Tag data = selectedItem.DataContext as Tag;
+                    if (data != null)
+                    {
+                        Deployment.Current.Dispatcher.BeginInvoke(
+                            () => oauthCommunication.searchSong(data.type,
+                                                                data.value));
+                    }
+                }
+            }
+        }
+
+        protected override void OnBackKeyPress(CancelEventArgs e)
+        {
+            base.OnBackKeyPress(e);
+            if (!isSearchBarVisible)
+            {
+                toggleSearchBar();
+            }
+            e.Cancel = true;
         }
 
         #endregion
@@ -250,6 +363,32 @@ namespace Stereomood
             sb.Begin();
         }
 
+        private void MoveIn(UIElement source, Storyboard sb, bool moveIn)
+        {
+            int startValue = moveIn == true ? -170 : 0;
+            int endValue = moveIn == true ? 0 : -170;
+            DoubleAnimationUsingKeyFrames animationFirstY = new DoubleAnimationUsingKeyFrames();
+            source.RenderTransform = new CompositeTransform();
+            Storyboard.SetTargetProperty(animationFirstY, new PropertyPath(CompositeTransform.TranslateYProperty));
+            Storyboard.SetTarget(animationFirstY, source.RenderTransform);
+            animationFirstY.KeyFrames.Add(new EasingDoubleKeyFrame() { KeyTime = TimeSpan.Zero, Value = startValue });
+            animationFirstY.KeyFrames.Add(new EasingDoubleKeyFrame() { KeyTime = TimeSpan.FromSeconds(0.2), Value = endValue });
+            sb.Children.Add(animationFirstY);
+            sb.Begin();
+        }
+
+        private string ExtractNumbers(string expr)
+        {
+            return string.Join(null, Regex.Split(expr, "[^\\d]"));
+        }
+
+        private bool stringNotEmpty(string expr)
+        {
+            return Regex.IsMatch(expr, "[^ ]");
+        }
+
         #endregion
+
+
     }
 }

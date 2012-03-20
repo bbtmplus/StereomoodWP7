@@ -22,5 +22,9 @@
         public const int METHOD_SELECTED_TAGS = 4;
         public const int METHOD_TOP_TAGS = 5;
 
+        public const string TYPE_MOOD = "mood";
+        public const string TYPE_ACTIVITY = "activity";
+        public const string TYPE_SITE = "site";
+
     }
 }
