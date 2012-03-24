@@ -1,15 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Net.NetworkInformation;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
+using System.Windows.Navigation;
 using DeepForest.Phone.Assets.Tools;
 using Microsoft.Phone.Controls;
 using Stereomood.Json;
@@ -26,6 +20,7 @@ namespace Stereomood
         public SongListPage()
         {
             InitializeComponent();
+
 
             Loaded += PageLoaded;
         }
@@ -53,7 +48,28 @@ namespace Stereomood
 
         private void songSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            var itemContainerGenerator = this.songList.ItemContainerGenerator;
+            if (itemContainerGenerator != null)
+            {
+                ListBoxItem selectedItem = itemContainerGenerator.ContainerFromIndex(2) as ListBoxItem;
+                if (selectedItem != null)
+                {
+                    Song data = selectedItem.DataContext as Song;
+                    if (data != null)
+                    {
+                        Uri songDetailsUri = new Uri("SongDetailsPage.xaml", UriKind.Relative);
+                        NavigationService.Navigate(songDetailsUri);
+                    }
+                }
+            }
+        }
 
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            SongListPage songListPage = (e.Content as SongListPage);
+            if (songListPage != null)
+                songListPage.searchResult = searchResult;
+            base.OnNavigatedFrom(e);
         }
     }
 }

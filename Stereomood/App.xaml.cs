@@ -41,7 +41,7 @@ namespace Stereomood
             if (System.Diagnostics.Debugger.IsAttached)
             {
                 // Отображение текущих счетчиков частоты смены кадров.
-                Application.Current.Host.Settings.EnableFrameRateCounter = true;
+                // Application.Current.Host.Settings.EnableFrameRateCounter = true;
 
                 // Отображение областей приложения, перерисовываемых в каждом кадре.
                 //Application.Current.Host.Settings.EnableRedrawRegions = true;
@@ -54,7 +54,7 @@ namespace Stereomood
                 // объекта PhoneApplicationService приложения значение Disabled.
                 // Внимание! Используйте только в режиме отладки. Приложение, в котором отключено обнаружение бездействия пользователя, будет продолжать работать
                 // и потреблять энергию батареи, когда телефон не будет использоваться.
-                PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
+                // PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
 
         }

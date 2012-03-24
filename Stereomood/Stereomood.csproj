@@ -105,6 +105,9 @@
     <Compile Include="Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SongDetailsPage.xaml.cs">
+      <DependentUpon>SongDetailsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SongListPage.xaml.cs">
       <DependentUpon>SongListPage.xaml</DependentUpon>
     </Compile>
@@ -126,6 +129,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="SongDetailsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SongListPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -144,6 +151,7 @@
     </Content>
     <Resource Include="PanoramaBackground.png" />
     <Resource Include="Images\appbar.transport.play.rest.png" />
+    <Resource Include="Images\appbar.favs.addto.rest.png" />
     <Content Include="Images\appbar.transport.pause.rest.png" />
     <Content Include="Images\appbar.feature.search.rest.png" />
     <Content Include="SplashScreenImage.jpg" />

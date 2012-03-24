@@ -28,6 +28,7 @@ namespace Stereomood
         private bool uiBlocked;
         private bool isUserLoggedIn;
         private bool isSearchBarVisible;
+        public static ImageBrush backgroundBrush { get; set; }
 
         private readonly Searchbar searchbar = new Searchbar();
 
@@ -76,8 +77,29 @@ namespace Stereomood
             }
         }
 
+        private void loadAppBackground()
+        {
+            BitmapImage bitmapImage = new BitmapImage(new Uri(Constants.BACKGROUND_URL));
+            backgroundBrush = new ImageBrush
+            {
+                Opacity = 0.8d,
+                ImageSource = bitmapImage
+            };
+            panorama.Background = backgroundBrush;
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            SongListPage songListPage = (e.Content as SongListPage);
+            if (songListPage != null)
+                songListPage.searchResult = searchResult;
+            base.OnNavigatedFrom(e);
+        }
+
+        #region LoadFinished
         private void loadFinishedWithArray(int METHOD, Tag[] tags)
         {
+            shellProgress.IsVisible = false;
             switch (METHOD)
             {
                 case Constants.METHOD_SELECTED_TAGS:
@@ -102,33 +124,15 @@ namespace Stereomood
 
         }
 
-        private void loadAppBackground()
-        {
-            BitmapImage bitmapImage = new BitmapImage(new Uri(Constants.BACKGROUND_URL));
-            ImageBrush brush = new ImageBrush
-                                   {
-                                       Opacity = 0.8d,
-                                       ImageSource = bitmapImage
-                                   };
-            panorama.Background = brush;
-        }
-
-        void webBrowser_Navigating(object sender, NavigatingEventArgs e)
-        {
-            oauthCommunication = OauthCommunication.getInstance();
-        }
-
-
-
         private void loadFinished(int METHOD, Dictionary<string, string> returnedParams, JsonObject jsonObject)
         {
+            shellProgress.IsVisible = false;
             switch (METHOD)
             {
                 case Constants.METHOD_AUTHORIZATION:
                     {
                         parameters = returnedParams;
                         webBrowser1.LoadCompleted += webbrowser_LoginPageLoaded;
-                        webBrowser1.Navigating += webBrowser_Navigating;
                         webBrowser1.IsScriptEnabled = true;
                         webBrowser1.Navigate(new Uri(parameters["URL"]));
                         break;
@@ -156,20 +160,16 @@ namespace Stereomood
                             NotificationTool.Show("Sorry",
                                                   "Couldn't find anything. Could you be more prescice?",
                                                   new NotificationAction("Okay :(", () => { }));
+
                         }
 
                         break;
                     }
             }
         }
+        #endregion
 
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
-        {
-            SongListPage songListPage = (e.Content as SongListPage);
-            if (songListPage != null)
-                songListPage.searchResult = searchResult;
-            base.OnNavigatedFrom(e);
-        }
+        #region OauthLogin Methods
 
         private void webbrowser_LoginPageLoaded(object sender, NavigationEventArgs e)
         {
@@ -223,6 +223,7 @@ namespace Stereomood
             OauthCommunication.getInstance().getAccessToken(pin);
         }
 
+        #endregion
 
         #region ACTIONS
 
@@ -254,7 +255,6 @@ namespace Stereomood
                     isSearchBarVisible = isSearchBarVisible != true;
                 }
             }
-
         }
 
         private void searchbar_searchPressed(string textToSearch)
@@ -262,6 +262,7 @@ namespace Stereomood
             if (stringNotEmpty(textToSearch))
             {
                 Deployment.Current.Dispatcher.BeginInvoke(() => oauthCommunication.searchSong(Constants.TYPE_SITE, textToSearch));
+                shellProgress.IsVisible = true;
             }
         }
 
@@ -280,6 +281,7 @@ namespace Stereomood
                                                                   oauthCommunication.searchSong(
                                                                       data.type,
                                                                       data.value));
+                        shellProgress.IsVisible = true;
                     }
                 }
 
@@ -299,6 +301,7 @@ namespace Stereomood
                     {
                         Deployment.Current.Dispatcher.BeginInvoke(() =>
                                                                   oauthCommunication.searchSong(data.type, data.value));
+                        shellProgress.IsVisible = true;
                     }
                 }
 
@@ -320,6 +323,7 @@ namespace Stereomood
                         Deployment.Current.Dispatcher.BeginInvoke(
                             () => oauthCommunication.searchSong(data.type,
                                                                 data.value));
+                        shellProgress.IsVisible = true;
                     }
                 }
             }
