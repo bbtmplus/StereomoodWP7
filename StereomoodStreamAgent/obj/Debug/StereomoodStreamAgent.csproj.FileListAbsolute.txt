@@ -1,0 +1,4 @@
+C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\StereomoodStreamAgent\Bin\Debug\StereomoodStreamAgent.dll
+C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\StereomoodStreamAgent\Bin\Debug\StereomoodStreamAgent.pdb
+C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\StereomoodStreamAgent\obj\Debug\StereomoodStreamAgent.dll
+C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\StereomoodStreamAgent\obj\Debug\StereomoodStreamAgent.pdb

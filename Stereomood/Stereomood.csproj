@@ -62,6 +62,7 @@
     <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Interop" />
     <Reference Include="Microsoft.Phone.Reactive" />
+    <Reference Include="Microsoft.Web.Media.SmoothStreaming, Version=1.1.837.146, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="PhonePerformance">
       <HintPath>..\..\..\..\..\Desktop\WP7\PhonePerformance\PhonePerformance.dll</HintPath>
     </Reference>
@@ -87,8 +88,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Class1.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="CurrentItemCollections.cs" />
     <Compile Include="Json\SelectedTagsResult.cs" />
     <Compile Include="Json\Tag.cs" />
     <Compile Include="Searchbar.xaml.cs">
@@ -96,7 +97,6 @@
     </Compile>
     <Compile Include="Json\JsonObject.cs" />
     <Compile Include="Json\SearchResult.cs" />
-    <Compile Include="Json\Song.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -152,9 +152,17 @@
     <Resource Include="PanoramaBackground.png" />
     <Resource Include="Images\appbar.transport.play.rest.png" />
     <Resource Include="Images\appbar.favs.addto.rest.png" />
+    <Resource Include="Images\appbar.transport.ff.rest.png" />
     <Content Include="Images\appbar.transport.pause.rest.png" />
     <Content Include="Images\appbar.feature.search.rest.png" />
+    <Resource Include="Images\appbar.transport.rew.rest.png" />
     <Content Include="SplashScreenImage.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\StereomoodPlaybackAgent\StereomoodPlaybackAgent.csproj">
+      <Project>{1FC78099-D833-48F8-A610-E85FB231C8A9}</Project>
+      <Name>StereomoodPlaybackAgent</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />

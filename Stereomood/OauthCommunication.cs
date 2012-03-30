@@ -111,7 +111,7 @@ namespace Stereomood
                                }, ex => MessageBox.Show(ReadWebException(ex)));
         }
 
-        public void searchSong(string TYPE, string searchQuery)
+        public void searchSongs(string TYPE, string searchQuery)
         {
             var serializer = new DataContractJsonSerializer(typeof(SearchResult));
 
@@ -134,6 +134,28 @@ namespace Stereomood
                     ex => MessageBox.Show(ReadWebException(ex)));
         }
 
+        public void searchSongs(Tag tag)
+        {
+            var serializer = new DataContractJsonSerializer(typeof(SearchResult));
+
+            var client = new OAuthClient(Constants.CONSUMER_KEY, Constants.CONSUMER_SECRET, accessToken)
+            {
+                Url = Constants.SEARCH,
+                Parameters = { { "type", tag.type }, { "q", tag.value } }
+            };
+            client.GetResponseLines()
+                .Select(s =>
+                            {
+                                var stream = new MemoryStream(Encoding.UTF8.GetBytes(s));
+                                return (SearchResult)serializer.ReadObject(stream);
+
+                            })
+                .ObserveOnDispatcher()
+                .Subscribe(
+                    t => loadFinished(Constants.METHOD_SEARCH, new Dictionary<string, string> { { "TYPE", tag.type }, { "VALUE", tag.value } }, t),
+                    ex => MessageBox.Show(ReadWebException(ex)));
+        }
+
 
         public void getSelectedTags()
         {
@@ -147,19 +169,27 @@ namespace Stereomood
             client.GetResponseLines()
                 .Select(s =>
                             {
-                                using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(s)))
+                                var stream = new MemoryStream(Encoding.UTF8.GetBytes(s));
+
+                                if (stream.Capacity > 0)
                                 {
-                                    Tag[] selectedTags;
-                                    if (stream == null)
+                                    Tag[] selectedTags = null;
+                                    try
                                     {
                                         selectedTags = (Tag[])serializer.ReadObject(stream);
                                     }
-                                    else
+                                    catch (ArgumentNullException ex)
                                     {
-                                        selectedTags = (Tag[])serializer.ReadObject(new MemoryStream(Encoding.UTF8.GetBytes(s)));
+                                        getSelectedTags();
                                     }
                                     return selectedTags;
                                 }
+                                else
+                                {
+                                    getSelectedTags();
+                                }
+                                return null;
+
                             })
                 .ObserveOnDispatcher()
                 .Subscribe(
@@ -183,13 +213,29 @@ namespace Stereomood
             };
             client.GetResponseLines()
                 .Select(s =>
-                {
-                    using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(s)))
-                    {
-                        Tag[] selectedTags = (Tag[])serializer.ReadObject(stream);
-                        return selectedTags;
-                    }
-                })
+                            {
+                                var stream = new MemoryStream(Encoding.UTF8.GetBytes(s));
+
+                                if (stream.Capacity > 0)
+                                {
+                                    Tag[] topTags = null;
+                                    try
+                                    {
+                                        topTags = (Tag[])serializer.ReadObject(stream);
+                                    }
+                                    catch (ArgumentNullException ex)
+                                    {
+                                        getTopTags();
+                                    }
+                                    return topTags;
+                                }
+                                else
+                                {
+                                    getTopTags();
+                                }
+                                return null;
+
+                            })
                 .ObserveOnDispatcher()
                 .Subscribe(
                     t =>

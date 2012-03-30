@@ -14,17 +14,24 @@
     shell:SystemTray.IsVisible="True">
 
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="242*" />
-            <ColumnDefinition Width="238*" />
-        </Grid.ColumnDefinitions>
-        <TextBlock x:Name="ApplicationTitle" Text="Tune Your Mood" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="40"  FontWeight="Medium" Grid.ColumnSpan="2" Margin="10,0,0,0" />
-        <StackPanel Name="songPanel" Width="Auto" Height="Auto">
-            
-        </StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70" />
+            <RowDefinition Height="698" />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" x:Name="ApplicationTitle" Text="Tune Your Mood" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="40"  FontWeight="Medium" Grid.ColumnSpan="2" Margin="10,0,0,0" />
+        <Grid Name="songPanel" Width="Auto" Height="Auto" Grid.Row="1">
+            <MediaElement Name="mediaPlayer" ></MediaElement>
+            <ProgressBar x:Name="mainBar" Value="{Binding ElementName=Main,Path=Progress}" Margin="44,460,44,215"></ProgressBar>
+            <TextBlock TextAlignment="Center" Height="69" HorizontalAlignment="Left" Margin="0,0,0,630" Name="songTextBox" Text="TextBlock" VerticalAlignment="Center" Width="480" FontWeight="Bold" FontSize="32" />
+            <Image Height="264" HorizontalAlignment="Center" Margin="89,155,97,279" Name="artImage" Stretch="Fill" VerticalAlignment="Center" Width="295" />
+            <TextBlock Height="75" HorizontalAlignment="Center" Margin="0,74,0,0" Name="authorTextBox" Text="TextBlock" VerticalAlignment="Top" Width="480" FontWeight="Normal" FontSize="30" Foreground="LightGray" TextAlignment="Center"/>
+            <Image ManipulationCompleted="PreviousButton_OnManipulationCompleted"  Name="previousButton" Source="Images/appbar.transport.rew.rest.png" Height="57" HorizontalAlignment="Left" Margin="88,517,0,0" Stretch="Fill" VerticalAlignment="Top" Width="64" />
+            <Image ManipulationCompleted="PlayButton_OnManipulationCompleted" Name="playButton" Source="Images/appbar.transport.play.rest.png" Height="57" HorizontalAlignment="Left" Margin="207,517,0,0" Stretch="Fill" VerticalAlignment="Top" Width="64" />
+            <Image ManipulationCompleted="NextButton_OnManipulationCompleted" Name="nextButton" Source="Images/appbar.transport.ff.rest.png" Height="57" HorizontalAlignment="Left" Margin="320,517,0,0" Stretch="Fill" VerticalAlignment="Top" Width="64" />
+        </Grid>
     </Grid>
-    
-    
+
+
     <!--Пример кода, иллюстрирующий использование ApplicationBar-->
     <!--<phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">

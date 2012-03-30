@@ -1,3 +1,5 @@
 <Modules>
   <Module PersistentId="33CF9C7B-F20B-4FD4-91FD-822ADAD65819" ModuleId="Stereomood" />
+  <Module PersistentId="1FC78099-D833-48F8-A610-E85FB231C8A9" ModuleId="StereomoodPlaybackAgent" />
+  <Module PersistentId="9857A974-A36F-465D-8462-50B413EED2F7" ModuleId="StereomoodStreamAgent" />
 </Modules>

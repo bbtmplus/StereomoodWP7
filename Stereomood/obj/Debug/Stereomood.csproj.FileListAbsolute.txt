@@ -41,3 +41,6 @@ C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\obj\
 C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\Bin\Debug\PhonePerformance.dll
 C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\Bin\Debug\PhonePerformance.xml
 C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\obj\Debug\SongDetailsPage.g.cs
+C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\Bin\Debug\Microsoft.Web.Media.SmoothStreaming.dll
+C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\Bin\Debug\StereomoodPlaybackAgent.dll
+C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\Bin\Debug\StereomoodPlaybackAgent.pdb

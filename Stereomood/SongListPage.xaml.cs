@@ -7,20 +7,22 @@ using System.Windows.Navigation;
 using DeepForest.Phone.Assets.Tools;
 using Microsoft.Phone.Controls;
 using Stereomood.Json;
+using Song = StereomoodPlaybackAgent.Song;
+
 
 namespace Stereomood
 {
     public partial class SongListPage : PhoneApplicationPage
     {
-        private List<Song> songs;
-        public Tag selectedTag { get; set; }
+        public List<Song> songs;
+        public Tag currentTag { get; set; }
         public SearchResult searchResult { get; set; }
         private OauthCommunication oauthCommunication;
+        private CurrentItemCollections itemCollections;
 
         public SongListPage()
         {
             InitializeComponent();
-
 
             Loaded += PageLoaded;
         }
@@ -28,6 +30,7 @@ namespace Stereomood
         private void PageLoaded(object sender, RoutedEventArgs e)
         {
             oauthCommunication = OauthCommunication.getInstance();
+            itemCollections = CurrentItemCollections.Instance();
 
             if (NetworkInterface.GetIsNetworkAvailable())
             {
@@ -35,6 +38,10 @@ namespace Stereomood
                 {
                     songs = searchResult.songs;
                     songList.ItemsSource = songs;
+                    if (!itemCollections.getSongsForTagDictionary().ContainsKey(currentTag.value))
+                    {
+                        itemCollections.getSongsForTagDictionary().Add(currentTag.value, songs);
+                    }
                 }
                 else
                 {
@@ -54,10 +61,11 @@ namespace Stereomood
                 ListBoxItem selectedItem = itemContainerGenerator.ContainerFromIndex(2) as ListBoxItem;
                 if (selectedItem != null)
                 {
-                    Song data = selectedItem.DataContext as Song;
-                    if (data != null)
+                    Song song = selectedItem.DataContext as Song;
+                    if (song != null)
                     {
-                        Uri songDetailsUri = new Uri("SongDetailsPage.xaml", UriKind.Relative);
+                        CurrentItemCollections.Instance().currentSong = song;
+                        Uri songDetailsUri = new Uri("/SongDetailsPage.xaml", UriKind.Relative);
                         NavigationService.Navigate(songDetailsUri);
                     }
                 }
@@ -66,10 +74,10 @@ namespace Stereomood
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            SongListPage songListPage = (e.Content as SongListPage);
-            if (songListPage != null)
-                songListPage.searchResult = searchResult;
-            base.OnNavigatedFrom(e);
+            SongDetailsPage songDetailsPage = (e.Content as SongDetailsPage);
+            if (songDetailsPage != null)
+                // songDetailsPage.searchResult = searchResult;
+                base.OnNavigatedFrom(e);
         }
     }
 }

@@ -1,0 +1,4 @@
+C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\StereomoodPlaybackAgent\Bin\Debug\StereomoodPlaybackAgent.dll
+C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\StereomoodPlaybackAgent\Bin\Debug\StereomoodPlaybackAgent.pdb
+C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\StereomoodPlaybackAgent\obj\Debug\StereomoodPlaybackAgent.dll
+C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\StereomoodPlaybackAgent\obj\Debug\StereomoodPlaybackAgent.pdb

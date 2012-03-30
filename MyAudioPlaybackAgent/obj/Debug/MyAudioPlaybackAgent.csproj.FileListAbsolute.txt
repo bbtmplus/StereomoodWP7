@@ -1,0 +1,4 @@
+C:\Users\Lonkly\Desktop\WP7\sdkBackgroundAudioPlayerCS\MyAudioPlaybackAgent\Bin\Debug\MyAudioPlaybackAgent.dll
+C:\Users\Lonkly\Desktop\WP7\sdkBackgroundAudioPlayerCS\MyAudioPlaybackAgent\Bin\Debug\MyAudioPlaybackAgent.pdb
+C:\Users\Lonkly\Desktop\WP7\sdkBackgroundAudioPlayerCS\MyAudioPlaybackAgent\obj\Debug\MyAudioPlaybackAgent.dll
+C:\Users\Lonkly\Desktop\WP7\sdkBackgroundAudioPlayerCS\MyAudioPlaybackAgent\obj\Debug\MyAudioPlaybackAgent.pdb

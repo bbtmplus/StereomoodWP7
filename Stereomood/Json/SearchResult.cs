@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using StereomoodPlaybackAgent;
+
 
 namespace Stereomood.Json
 {

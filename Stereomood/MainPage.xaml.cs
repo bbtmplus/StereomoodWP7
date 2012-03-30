@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
@@ -9,6 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using DeepForest.Phone.Assets.Tools;
+using Microsoft.Phone.BackgroundAudio;
 using Microsoft.Phone.Controls;
 using Stereomood.Json;
 using NetworkInterface = System.Net.NetworkInformation.NetworkInterface;
@@ -20,10 +22,8 @@ namespace Stereomood
         private OauthCommunication oauthCommunication;
         private Dictionary<string, string> parameters;
 
-        private List<Tag> topTags;
-        private List<Tag> selectedTags;
-
         private SearchResult searchResult;
+        private Tag currentTag;
 
         private bool uiBlocked;
         private bool isUserLoggedIn;
@@ -92,7 +92,10 @@ namespace Stereomood
         {
             SongListPage songListPage = (e.Content as SongListPage);
             if (songListPage != null)
+            {
                 songListPage.searchResult = searchResult;
+                songListPage.currentTag = currentTag;
+            }
             base.OnNavigatedFrom(e);
         }
 
@@ -104,20 +107,32 @@ namespace Stereomood
             {
                 case Constants.METHOD_SELECTED_TAGS:
                     {
-                        selectedTags = new List<Tag>();
-                        selectedTags.AddRange(tags);
-                        selectedTagsList.ItemsSource = selectedTags;
-                        progressOverlay.Visibility = Visibility.Collapsed;
-                        uiBlocked = false;
+                        if (tags != null)
+                        {
+                            CurrentItemCollections.Instance().selectedTags = new List<Tag>(tags);
+                            selectedTagsList.ItemsSource = CurrentItemCollections.Instance().selectedTags;
+                            progressOverlay.Visibility = Visibility.Collapsed;
+                            uiBlocked = false;
+                        }
+                        else
+                        {
+                            oauthCommunication.getSelectedTags();
+                        }
                     }
                     break;
                 case Constants.METHOD_TOP_TAGS:
                     {
-                        topTags = new List<Tag>();
-                        topTags.AddRange(tags);
-                        topTagsList.ItemsSource = topTags;
-                        progressOverlay.Visibility = Visibility.Collapsed;
-                        uiBlocked = false;
+                        if (tags != null)
+                        {
+                            CurrentItemCollections.Instance().topTags = new List<Tag>(tags);
+                            topTagsList.ItemsSource = CurrentItemCollections.Instance().topTags;
+                            progressOverlay.Visibility = Visibility.Collapsed;
+                            uiBlocked = false;
+                        }
+                        else
+                        {
+                            oauthCommunication.getTopTags();
+                        }
                     }
                     break;
             }
@@ -141,8 +156,26 @@ namespace Stereomood
                     {
                         Deployment.Current.Dispatcher.BeginInvoke(() =>
                                                                       {
-                                                                          oauthCommunication.getTopTags();
-                                                                          oauthCommunication.getSelectedTags();
+                                                                          if (CurrentItemCollections.Instance().topTags == null)
+                                                                          {
+                                                                              oauthCommunication.getTopTags();
+                                                                          }
+                                                                          else
+                                                                          {
+                                                                              topTagsList.ItemsSource = CurrentItemCollections.Instance().topTags;
+                                                                              progressOverlay.Visibility = Visibility.Collapsed;
+                                                                              uiBlocked = false;
+                                                                          }
+                                                                          if (CurrentItemCollections.Instance().selectedTags == null)
+                                                                          {
+                                                                              oauthCommunication.getSelectedTags();
+                                                                          }
+                                                                          else
+                                                                          {
+                                                                              selectedTagsList.ItemsSource = CurrentItemCollections.Instance().selectedTags;
+                                                                              progressOverlay.Visibility = Visibility.Collapsed;
+                                                                              uiBlocked = false;
+                                                                          }
                                                                       }
                             );
                         break;
@@ -153,6 +186,10 @@ namespace Stereomood
                         if (searchResult.total > 0)
                         {
                             Uri songListUri = new Uri("/SongListPage.xaml", UriKind.Relative);
+                            if (returnedParams.ContainsKey("VALUE"))
+                            {
+                                currentTag = new Tag { type = returnedParams["TYPE"], value = returnedParams["VALUE"] };
+                            }
                             NavigationService.Navigate(songListUri);
                         }
                         else
@@ -261,82 +298,63 @@ namespace Stereomood
         {
             if (stringNotEmpty(textToSearch))
             {
-                Deployment.Current.Dispatcher.BeginInvoke(() => oauthCommunication.searchSong(Constants.TYPE_SITE, textToSearch));
-                shellProgress.IsVisible = true;
+                Deployment.Current.Dispatcher.BeginInvoke(() => oauthCommunication.searchSongs(Constants.TYPE_SITE, textToSearch));
             }
         }
 
         private void topTagSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var itemContainerGenerator = this.topTagsList.ItemContainerGenerator;
-            if (itemContainerGenerator != null)
+            var listBox = sender as ListBox;
+            if (listBox != null)
             {
-                ListBoxItem selectedItem = itemContainerGenerator.ContainerFromIndex(2) as ListBoxItem;
-                if (selectedItem != null)
+                Tag tag = ((Tag)listBox.SelectedItems[0]);
+                if (tag != null)
                 {
-                    Tag data = selectedItem.DataContext as Tag;
-                    if (data != null)
-                    {
-                        Deployment.Current.Dispatcher.BeginInvoke(() =>
-                                                                  oauthCommunication.searchSong(
-                                                                      data.type,
-                                                                      data.value));
-                        shellProgress.IsVisible = true;
-                    }
+                    Deployment.Current.Dispatcher.BeginInvoke(() => oauthCommunication.searchSongs(tag));
+                    CurrentItemCollections.Instance().currentMood = tag;
                 }
-
             }
         }
 
         private void selectedTagsSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var itemContainerGenerator = this.selectedTagsList.ItemContainerGenerator;
-            if (itemContainerGenerator != null)
-            {
-                ListBoxItem selectedItem = itemContainerGenerator.ContainerFromIndex(2) as ListBoxItem;
-                if (selectedItem != null)
-                {
-                    Tag data = selectedItem.DataContext as Tag;
-                    if (data != null)
-                    {
-                        Deployment.Current.Dispatcher.BeginInvoke(() =>
-                                                                  oauthCommunication.searchSong(data.type, data.value));
-                        shellProgress.IsVisible = true;
-                    }
-                }
 
+            var listBox = sender as ListBox;
+            if (listBox != null)
+            {
+                Tag tag = ((Tag)listBox.SelectedItems[0]);
+                if (tag != null)
+                {
+                    Deployment.Current.Dispatcher.BeginInvoke(() => oauthCommunication.searchSongs(tag));
+                    CurrentItemCollections.Instance().currentMood = tag;
+                }
             }
 
         }
 
         private void favoritesSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var itemContainerGenerator = this.selectedTagsList.ItemContainerGenerator;
-            if (itemContainerGenerator != null)
+            var listBox = sender as ListBox;
+            if (listBox != null)
             {
-                ListBoxItem selectedItem = itemContainerGenerator.ContainerFromIndex(2) as ListBoxItem;
-                if (selectedItem != null)
+                Tag tag = ((Tag)listBox.SelectedItems[0]);
+                if (tag != null)
                 {
-                    Tag data = selectedItem.DataContext as Tag;
-                    if (data != null)
-                    {
-                        Deployment.Current.Dispatcher.BeginInvoke(
-                            () => oauthCommunication.searchSong(data.type,
-                                                                data.value));
-                        shellProgress.IsVisible = true;
-                    }
+                    Deployment.Current.Dispatcher.BeginInvoke(() => oauthCommunication.searchSongs(tag));
+                    CurrentItemCollections.Instance().currentMood = tag;
                 }
             }
         }
 
         protected override void OnBackKeyPress(CancelEventArgs e)
         {
-            base.OnBackKeyPress(e);
+
             if (!isSearchBarVisible)
             {
                 toggleSearchBar();
+                e.Cancel = true;
             }
-            e.Cancel = true;
+            base.OnBackKeyPress(e);
         }
 
         #endregion
@@ -369,8 +387,8 @@ namespace Stereomood
 
         private void MoveIn(UIElement source, Storyboard sb, bool moveIn)
         {
-            int startValue = moveIn == true ? -170 : 0;
-            int endValue = moveIn == true ? 0 : -170;
+            int startValue = moveIn == true ? -200 : 0;
+            int endValue = moveIn == true ? 0 : -200;
             DoubleAnimationUsingKeyFrames animationFirstY = new DoubleAnimationUsingKeyFrames();
             source.RenderTransform = new CompositeTransform();
             Storyboard.SetTargetProperty(animationFirstY, new PropertyPath(CompositeTransform.TranslateYProperty));
