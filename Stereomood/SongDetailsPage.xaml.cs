@@ -1,46 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Windows;
-using System.Windows.Controls;
+using System.IO.IsolatedStorage;
+using System.Net.NetworkInformation;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using DeepForest.Phone.Assets.Tools;
 using Microsoft.Phone.BackgroundAudio;
-using Microsoft.Phone.Controls;
-using Stereomood.Json;
 using StereomoodPlaybackAgent;
 using Song = StereomoodPlaybackAgent.Song;
 
-namespace Stereomood
+namespace TuneYourMood
 {
-    public partial class SongDetailsPage : PhoneApplicationPage
+    public partial class SongDetailsPage
     {
         private readonly BitmapImage playImage;
         private readonly BitmapImage pauseImage;
 
         private CurrentItemCollections itemCollections;
-        private Song currentSong;
-        private readonly Tag currentTag;
-        public double Duration { get; set; }
-        private readonly Dictionary<string, List<Song>> playList;
-        readonly DependencyProperty property = DependencyProperty.Register("Progress", typeof(double), typeof(PhoneApplicationPage), new PropertyMetadata(0.0));
-        private Song[] songs;
 
-        public double Progress
-        {
-            get
-            {
-                return (double)GetValue(property);
-            }
-            set
-            {
-                SetValue(property, value);
-            }
-        }
-
+        private List<Song> songs;
 
         public SongDetailsPage()
         {
@@ -48,14 +27,10 @@ namespace Stereomood
 
             itemCollections = CurrentItemCollections.Instance();
 
-            playList = CurrentItemCollections.Instance().getSongsForTagDictionary();
-            currentSong = CurrentItemCollections.Instance().currentSong;
-            currentTag = CurrentItemCollections.Instance().currentMood;
 
-            pauseImage = new BitmapImage(new Uri("Images/appbar.transport.pause.rest.png", UriKind.Relative));
-            playImage = new BitmapImage(new Uri("Images/appbar.transport.play.rest.png", UriKind.Relative));
+            pauseImage = new BitmapImage(new Uri("Images/pause.png", UriKind.Relative));
+            playImage = new BitmapImage(new Uri("Images/play.png", UriKind.Relative));
             BackgroundAudioPlayer.Instance.Track = null;
-
 
             BackgroundAudioPlayer.Instance.PlayStateChanged += Instance_PlayStateChanged;
 
@@ -70,12 +45,14 @@ namespace Stereomood
                     break;
 
                 case PlayState.Paused:
+                    playButton.Source = playImage;
+                    break;
                 case PlayState.Stopped:
                     playButton.Source = playImage;
                     break;
             }
 
-            if (null != BackgroundAudioPlayer.Instance.Track)
+            if (BackgroundAudioPlayer.Instance.Track != null)
             {
                 songTextBox.Text = BackgroundAudioPlayer.Instance.Track.Title;
                 authorTextBox.Text = BackgroundAudioPlayer.Instance.Track.Artist;
@@ -85,19 +62,34 @@ namespace Stereomood
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            songs = playList[CurrentItemCollections.Instance().currentMood.value].ToArray();
-            StorageUtility.AddOrUpdateValue("tracklist", songs);
-            BackgroundAudioPlayer.Instance.Play();
-            if (PlayState.Playing == BackgroundAudioPlayer.Instance.PlayerState)
+            if (NetworkInterface.GetIsNetworkAvailable())
             {
-                playButton.Source = pauseImage;
-                songTextBox.Text = BackgroundAudioPlayer.Instance.Track.Title;
-                authorTextBox.Text = BackgroundAudioPlayer.Instance.Track.Artist;
-                artImage.Source = new BitmapImage(BackgroundAudioPlayer.Instance.Track.AlbumArt);
+                var value = CurrentItemCollections.Instance().currentMood.value;
+                if (value != null)
+                    songs = CurrentItemCollections.Instance().getSongsForTagDictionary()[value];
+                StorageUtility.writeListToFile(IsolatedStorageFile.GetUserStoreForApplication(), "SongList.txt", songs);
+                int ctn = CurrentItemCollections.Instance().currentTrackNumber;
+                BackgroundAudioPlayer.Instance.Track =
+                    CurrentItemCollections.Instance().convertSongToAudioTrack(songs[ctn]);
+
+                BackgroundAudioPlayer.Instance.Play();
+                if (PlayState.Playing == BackgroundAudioPlayer.Instance.PlayerState)
+                {
+                    playButton.Source = pauseImage;
+                    songTextBox.Text = BackgroundAudioPlayer.Instance.Track.Title;
+                    authorTextBox.Text = BackgroundAudioPlayer.Instance.Track.Artist;
+                    artImage.Source = new BitmapImage(BackgroundAudioPlayer.Instance.Track.AlbumArt);
+                }
+                else
+                {
+                    playButton.Source = playImage;
+                }
             }
             else
             {
-                playButton.Source = playImage;
+                NotificationTool.Show("Offline",
+                                     "Sorry, the network is not available at the moment",
+                                     new NotificationAction("Okay :(", () => { throw new Exception("ExitApp"); }));
             }
         }
 

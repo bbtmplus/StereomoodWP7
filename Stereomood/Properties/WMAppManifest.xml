@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2009/deployment" AppPlatformVersion="7.1">
-  <App xmlns="" ProductID="{95b80270-c565-4e89-858e-efc10e0766e7}" Title="Stereomood" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="Stereomood author" Description="Sample description" Publisher="Stereomood">
+  <App xmlns="" ProductID="{95b80270-c565-4e89-858e-efc10e0766e7}" Title="Tune Your Mood" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="Knights Who Code" Description="Sample description" Publisher="Knights Who Code">
     <IconPath IsRelative="true" IsResource="false">ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_GAMERSERVICES" />
@@ -29,7 +29,7 @@
         <TemplateType5>
           <BackgroundImageURI IsRelative="true" IsResource="false">Background.png</BackgroundImageURI>
           <Count>0</Count>
-          <Title>Stereomood</Title>
+          <Title>Tune Your Mood</Title>
         </TemplateType5>
       </PrimaryToken>
     </Tokens>

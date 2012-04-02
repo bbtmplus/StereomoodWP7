@@ -1,4 +1,4 @@
-﻿namespace Stereomood
+﻿namespace TuneYourMood
 {
     public class Constants
     {

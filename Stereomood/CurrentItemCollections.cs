@@ -1,13 +1,14 @@
 ﻿
-using System;
 using System.Collections.Generic;
+using System.IO.IsolatedStorage;
 using System.Linq;
 using Microsoft.Phone.BackgroundAudio;
-using Stereomood.Json;
+using TuneYourMood.Json;
+using StereomoodPlaybackAgent;
 using Song = StereomoodPlaybackAgent.Song;
 
 
-namespace Stereomood
+namespace TuneYourMood
 {
 
     public class CurrentItemCollections
@@ -18,13 +19,14 @@ namespace Stereomood
         public Song currentSong;
         public int currentTrackNumber;
 
-        private Dictionary<string, List<AudioTrack>> tracksForTagDictionary;
         private Dictionary<string, List<Song>> songsForTagDictionary;
         public List<AudioTrack> audioTracks;
         public List<Song> searchResult;
         public List<Tag> selectedTags;
         public List<Tag> topTags;
         public List<Tag> favorites;
+
+        private IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication();
 
         public Dictionary<string, List<Song>> getSongsForTagDictionary()
         {
@@ -52,6 +54,24 @@ namespace Stereomood
                 song.artist,
                 song.album,
                 song.image_url)).ToList();
+        }
+
+        internal void SaveApplicationState()
+        {
+            StorageUtility.writeObjectToFile(isf, "currentMood.txt", currentMood);
+            StorageUtility.writeObjectToFile(isf, "currentSong.txt", currentSong);
+            StorageUtility.writeListToFile(isf, "selectedTags.txt", selectedTags);
+            StorageUtility.writeListToFile(isf, "topTags.txt", topTags);
+            StorageUtility.writeObjectToFile(isf, "songsForTagDictionary.txt", songsForTagDictionary);
+        }
+
+        internal void LoadApplicationState()
+        {
+            currentMood = StorageUtility.readObjectFromFile<Tag>(isf, "currentMood.txt");
+            currentSong = StorageUtility.readObjectFromFile<Song>(isf, "currentSong.txt");
+            selectedTags = StorageUtility.readListFromFile<Tag>(isf, "selectedTags.txt");
+            topTags = StorageUtility.readListFromFile<Tag>(isf, "topTags.txt");
+            songsForTagDictionary = StorageUtility.readObjectFromFile<Dictionary<string, List<Song>>>(isf, "songsForTagDictionary.txt");
         }
     }
 }

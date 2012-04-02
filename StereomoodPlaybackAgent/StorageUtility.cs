@@ -1,86 +1,117 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.IO.IsolatedStorage;
-
+using System.Runtime.Serialization.Json;
 
 namespace StereomoodPlaybackAgent
 {
     public class StorageUtility
     {
-        private static readonly IsolatedStorageSettings _isolatedStore;
-
-        static StorageUtility()
+        public static void writeStringToFile(IsolatedStorageFile isoStore, string fileName, String s)
         {
-            _isolatedStore = IsolatedStorageSettings.ApplicationSettings;
-        }
-
-        public static bool AddOrUpdateValue(string key, object value)
-        {
-            bool valueChanged = false;
-
             try
             {
-                if (_isolatedStore.Contains(key))
-                {
-                    if (_isolatedStore[key] != value)
-                    {
-                        if (_isolatedStore.Remove(key))
-                        {
-                            _isolatedStore.Add(key, value);
-                            valueChanged = true;
-                        }
-                    }
-                }
-                else
-                {
-                    _isolatedStore.Add(key, value);
-                    valueChanged = true;
-                }
+                StreamWriter writer = new StreamWriter(new IsolatedStorageFileStream(fileName, FileMode.Create, isoStore));
+                writer.WriteLine(s);
+                writer.Close();
             }
-            catch (Exception)
+            catch (IsolatedStorageException ex)
             {
-                //to be implemented 
-            }
 
-            if (valueChanged)
+            }
+        }
+
+        public static void writeObjectToFile<T>(IsolatedStorageFile isoStore, string filePath, T item)
+        {
+            try
             {
-                Save();
+                var serializer = new DataContractJsonSerializer(typeof(T));
+                IsolatedStorageFileStream isfs = new IsolatedStorageFileStream(filePath, FileMode.Create,
+                                                                               isoStore);
+                serializer.WriteObject(isfs, item);
+                isfs.Close();
             }
-
-            return valueChanged;
-        }
-
-        public static T GetValueOrDefault<T>(string key)
-        {
-
-
-            T tmpval;
-            _isolatedStore.TryGetValue(key, out tmpval);
-
-
-            return tmpval;
-        }
-
-        public static T PickValueOrDefault<T>(string key)
-        {
-            T value = GetValueOrDefault<T>(key);
-            return value;
-        }
-
-        public static bool RemoveItem(string key)
-        {
-            if (_isolatedStore.Contains(key))
+            catch (IsolatedStorageException ex)
             {
-                if (_isolatedStore.Remove(key))
-                    Save();
+
+            }
+        }
+
+        public static void writeListToFile<T>(IsolatedStorageFile isoStore, string filePath, List<T> list)
+        {
+            try
+            {
+                ListWrapper<T> listWrapper = new ListWrapper<T> { Elements = list };
+                var serializer = new DataContractJsonSerializer(typeof(ListWrapper<T>));
+                IsolatedStorageFileStream isfs = new IsolatedStorageFileStream(filePath, FileMode.Create,
+                                                                               isoStore);
+                serializer.WriteObject(isfs, listWrapper);
+                isfs.Close();
+            }
+            catch (IsolatedStorageException ex)
+            {
+
+            }
+        }
+
+        public static T readObjectFromFile<T>(IsolatedStorageFile isoStore, string filePath)
+        {
+            var item = default(T);
+            try
+            {
+                IsolatedStorageFileStream isfs = new IsolatedStorageFileStream(filePath, FileMode.Open,
+                                                                               isoStore);
+                var serializer = new DataContractJsonSerializer(typeof(T));
+
+                item = (T)serializer.ReadObject(isfs);
+                isfs.Close();
+            }
+            catch (IsolatedStorageException ex)
+            {
+
             }
 
-            return false;
+            return item;
         }
 
-        private static void Save()
+        public static List<T> readListFromFile<T>(IsolatedStorageFile isoStore, string filePath)
         {
-            _isolatedStore.Save();
+            ListWrapper<T> listWrapper = null;
+            try
+            {
+                IsolatedStorageFileStream isfs = new IsolatedStorageFileStream(filePath, FileMode.Open,
+                                                                               isoStore);
+                var serializer = new DataContractJsonSerializer(typeof(ListWrapper<T>));
+
+                listWrapper = serializer.ReadObject(isfs) as ListWrapper<T>;
+                isfs.Close();
+            }
+            catch (IsolatedStorageException ex)
+            {
+
+            }
+            return (listWrapper != null) ? listWrapper.Elements : null;
         }
+
+        public static String readStringFromFile(IsolatedStorageFile isoStore, string fileName)
+        {
+            String sb = "0";
+            try
+            {
+                StreamReader reader =
+                    new StreamReader(new IsolatedStorageFileStream(fileName, FileMode.Open, isoStore));
+                sb = reader.ReadLine();
+
+                reader.Close();
+            }
+            catch (IsolatedStorageException ex)
+            {
+
+            }
+            return sb != null ? sb.ToString(CultureInfo.InvariantCulture) : null;
+        }
+
     }
 }

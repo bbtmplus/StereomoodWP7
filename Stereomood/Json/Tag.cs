@@ -1,7 +1,8 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Stereomood.Json
+namespace TuneYourMood.Json
 {
+    [KnownType(typeof(JsonObject))]
     public class Tag : JsonObject
     {
         [DataMember(Name = "value")]

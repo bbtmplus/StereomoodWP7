@@ -2,9 +2,9 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace Stereomood
+namespace TuneYourMood
 {
-    public partial class Searchbar : UserControl
+    public partial class Searchbar
     {
         #region Delegates
 
@@ -31,10 +31,7 @@ namespace Stereomood
             InitializeComponent();
 
             KeyUp += TextControl_KeyUp;
-            searchBox.ItemsSource = itemList;
         }
-
-        public List<string> itemList { get; set; }
 
         private void image1_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {

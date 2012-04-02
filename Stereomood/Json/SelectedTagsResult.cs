@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace Stereomood.Json
+namespace TuneYourMood.Json
 {
+    [KnownType(typeof(JsonObject))]
     public class SelectedTagsResult : JsonObject
     {
         [DataMember(Name = "tags")]

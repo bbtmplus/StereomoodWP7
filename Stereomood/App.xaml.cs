@@ -1,19 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
+﻿using System.Windows;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 
-namespace Stereomood
+namespace TuneYourMood
 {
     public partial class App : Application
     {
@@ -69,13 +59,14 @@ namespace Stereomood
         // Этот код не будет выполняться при первом запуске приложения
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
+            CurrentItemCollections.Instance().LoadApplicationState();
         }
 
         // Код для выполнения при деактивации приложения (отправляется в фоновый режим)
         // Этот код не будет выполняться при закрытии приложения
         private void Application_Deactivated(object sender, DeactivatedEventArgs e)
         {
-            // Убедитесь, что здесь сохраняется необходимое состояние приложения.
+            CurrentItemCollections.Instance().SaveApplicationState();
         }
 
         // Код для выполнения при закрытии приложения (например, при нажатии пользователем кнопки "Назад")
@@ -115,15 +106,15 @@ namespace Stereomood
             if (phoneApplicationInitialized)
                 return;
 
-            // Создайте кадр, но не задавайте для него значение RootVisual; это позволит
-            // экрану-заставке оставаться активным, пока приложение не будет готово для визуализации.
-            RootFrame = new PhoneApplicationFrame();
+            // Create the frame but don't set it as RootVisual yet; this allows the splash
+            // screen to remain active until the application is ready to render.
+            RootFrame = new TransitionFrame();
             RootFrame.Navigated += CompleteInitializePhoneApplication;
 
-            // Обработка сбоев навигации
+            // Handle navigation failures
             RootFrame.NavigationFailed += RootFrame_NavigationFailed;
 
-            // Убедитесь, что инициализация не выполняется повторно
+            // Ensure we don't initialize again
             phoneApplicationInitialized = true;
         }
 

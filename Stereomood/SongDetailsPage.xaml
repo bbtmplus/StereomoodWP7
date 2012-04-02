@@ -1,17 +1,40 @@
 ﻿<phone:PhoneApplicationPage 
-    x:Class="Stereomood.SongDetailsPage"
+    x:Class="TuneYourMood.SongDetailsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True">
+
+    <toolkit:TransitionService.NavigationInTransition>
+        <toolkit:NavigationInTransition>
+            <toolkit:NavigationInTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardIn" />
+            </toolkit:NavigationInTransition.Backward>
+            <toolkit:NavigationInTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardIn" />
+            </toolkit:NavigationInTransition.Forward>
+        </toolkit:NavigationInTransition>
+    </toolkit:TransitionService.NavigationInTransition>
+
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardOut" />
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardOut" />
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
 
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
@@ -21,13 +44,12 @@
         <TextBlock Grid.Row="0" x:Name="ApplicationTitle" Text="Tune Your Mood" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="40"  FontWeight="Medium" Grid.ColumnSpan="2" Margin="10,0,0,0" />
         <Grid Name="songPanel" Width="Auto" Height="Auto" Grid.Row="1">
             <MediaElement Name="mediaPlayer" ></MediaElement>
-            <ProgressBar x:Name="mainBar" Value="{Binding ElementName=Main,Path=Progress}" Margin="44,460,44,215"></ProgressBar>
-            <TextBlock TextAlignment="Center" Height="69" HorizontalAlignment="Left" Margin="0,0,0,630" Name="songTextBox" Text="TextBlock" VerticalAlignment="Center" Width="480" FontWeight="Bold" FontSize="32" />
+            <TextBlock TextAlignment="Center" Height="69" HorizontalAlignment="Left" Margin="0,0,0,630" Name="songTextBox" Text="" VerticalAlignment="Center" Width="480" FontWeight="Bold" FontSize="32" />
             <Image Height="264" HorizontalAlignment="Center" Margin="89,155,97,279" Name="artImage" Stretch="Fill" VerticalAlignment="Center" Width="295" />
-            <TextBlock Height="75" HorizontalAlignment="Center" Margin="0,74,0,0" Name="authorTextBox" Text="TextBlock" VerticalAlignment="Top" Width="480" FontWeight="Normal" FontSize="30" Foreground="LightGray" TextAlignment="Center"/>
-            <Image ManipulationCompleted="PreviousButton_OnManipulationCompleted"  Name="previousButton" Source="Images/appbar.transport.rew.rest.png" Height="57" HorizontalAlignment="Left" Margin="88,517,0,0" Stretch="Fill" VerticalAlignment="Top" Width="64" />
-            <Image ManipulationCompleted="PlayButton_OnManipulationCompleted" Name="playButton" Source="Images/appbar.transport.play.rest.png" Height="57" HorizontalAlignment="Left" Margin="207,517,0,0" Stretch="Fill" VerticalAlignment="Top" Width="64" />
-            <Image ManipulationCompleted="NextButton_OnManipulationCompleted" Name="nextButton" Source="Images/appbar.transport.ff.rest.png" Height="57" HorizontalAlignment="Left" Margin="320,517,0,0" Stretch="Fill" VerticalAlignment="Top" Width="64" />
+            <TextBlock Height="75" HorizontalAlignment="Center" Margin="0,74,0,0" Name="authorTextBox" Text="" VerticalAlignment="Top" Width="480" FontWeight="Normal" FontSize="30" Foreground="LightGray" TextAlignment="Center"/>
+            <Image ManipulationCompleted="PreviousButton_OnManipulationCompleted"  Name="previousButton" Source="Images/previous.png" Height="57" HorizontalAlignment="Left" Margin="88,517,0,0" Stretch="Fill" VerticalAlignment="Top" Width="64" />
+            <Image ManipulationCompleted="PlayButton_OnManipulationCompleted" Name="playButton" Source="Images/play.png" Height="57" HorizontalAlignment="Left" Margin="207,517,0,0" Stretch="Fill" VerticalAlignment="Top" Width="64" />
+            <Image ManipulationCompleted="NextButton_OnManipulationCompleted" Name="nextButton" Source="Images/next.png" Height="57" HorizontalAlignment="Left" Margin="320,517,0,0" Stretch="Fill" VerticalAlignment="Top" Width="64" />
         </Grid>
     </Grid>
 

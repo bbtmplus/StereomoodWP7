@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Stereomood.Json
+namespace TuneYourMood.Json
 {
     [DataContract]
     public class JsonObject

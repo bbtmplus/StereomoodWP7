@@ -6,13 +6,13 @@ using System.Resources;
 // Управление общими сведениями о сборке осуществляется с помощью следующего 
 // набора атрибутов. Измените значения этих атрибутов для изменения
 // сведений о сборке.
-[assembly: AssemblyTitle("Stereomood")]
+[assembly: AssemblyTitle("TuneYourMood")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Stereomood")]
-[assembly: AssemblyCopyright("Copyright ©  2012")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCompany("Knights Who Code")]
+[assembly: AssemblyProduct("TuneYourMood")]
+[assembly: AssemblyCopyright("Copyright Knights Who Code © 2012")]
+[assembly: AssemblyTrademark("Knights Who Code")]
 [assembly: AssemblyCulture("")]
 
 // Если для ComVisible установить значение false, типы в этой сборке не будут поддерживаться 
@@ -34,4 +34,4 @@ using System.Resources;
 // с помощью символа '*', как показано ниже:
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: NeutralResourcesLanguageAttribute("ru-RU")]
+[assembly: NeutralResourcesLanguageAttribute("en")]

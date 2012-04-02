@@ -5,8 +5,9 @@ using System.Runtime.Serialization;
 using StereomoodPlaybackAgent;
 
 
-namespace Stereomood.Json
+namespace TuneYourMood.Json
 {
+    [KnownType(typeof(JsonObject))]
     public class SearchResult : JsonObject
     {
         [DataMember(Name = "total")]
