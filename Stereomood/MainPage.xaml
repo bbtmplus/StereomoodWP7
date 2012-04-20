@@ -8,40 +8,20 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
-    xmlns:Controls="clr-namespace:Coding4Fun.Phone.Controls;assembly=Coding4Fun.Phone.Controls" mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768" 
+    xmlns:Controls="clr-namespace:Coding4Fun.Phone.Controls;assembly=Coding4Fun.Phone.Controls"
+    xmlns:telerikPrimitives="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Primitives"
+    xmlns:Controls1="clr-namespace:Phone7.Fx.Controls;assembly=Phone7.Fx" mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768" 
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="True">
 
-    <toolkit:TransitionService.NavigationInTransition>
-        <toolkit:NavigationInTransition>
-            <toolkit:NavigationInTransition.Backward>
-                <toolkit:TurnstileTransition Mode="BackwardIn" />
-            </toolkit:NavigationInTransition.Backward>
-            <toolkit:NavigationInTransition.Forward>
-                <toolkit:TurnstileTransition Mode="ForwardIn" />
-            </toolkit:NavigationInTransition.Forward>
-        </toolkit:NavigationInTransition>
-    </toolkit:TransitionService.NavigationInTransition>
+    <telerikPrimitives:RadTransitionControl.Transition>
+        <telerikPrimitives:RadTileTransition/>
+    </telerikPrimitives:RadTransitionControl.Transition>
 
-    <toolkit:TransitionService.NavigationOutTransition>
-        <toolkit:NavigationOutTransition>
-            <toolkit:NavigationOutTransition.Backward>
-                <toolkit:TurnstileTransition Mode="BackwardOut" />
-            </toolkit:NavigationOutTransition.Backward>
-            <toolkit:NavigationOutTransition.Forward>
-                <toolkit:TurnstileTransition Mode="ForwardOut" />
-            </toolkit:NavigationOutTransition.Forward>
-        </toolkit:NavigationOutTransition>
-    </toolkit:TransitionService.NavigationOutTransition>
-
-    <shell:SystemTray.ProgressIndicator>
-        <shell:ProgressIndicator x:Name="shellProgress" IsIndeterminate="True" IsVisible="False" Text="Loading..." />
-    </shell:SystemTray.ProgressIndicator>
-
-    <Grid x:Name="LayoutRoot" Background="Transparent" Height="800">
+    <Grid x:Name="LayoutRoot" Background="Transparent" Height="800" >
 
         <Grid.Resources>
             <Style x:Name="customStyle" TargetType="Controls:ProgressOverlay">
@@ -62,7 +42,7 @@
                                     </Storyboard>
                                     <Storyboard x:Name="fadeIn">
 
-                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="contentControl">
+                                        <DoubleAnimationUsingKeyFrames Duration="5"  Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="contentControl">
                                             <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
                                             <EasingDoubleKeyFrame KeyTime="0:0:1" Value="360"/>
                                         </DoubleAnimationUsingKeyFrames>
@@ -114,7 +94,7 @@
 
             <controls:PanoramaItem Header="activity..?">
 
-                <ListBox Margin="0,0,-12,0"  Name="topTagsList" SelectionChanged="topTagSelectionChanged" SelectionMode="Single">
+                <ListBox Margin="0,0,0,10" Name="topTagsList" SelectionChanged="topTagSelectionChanged" SelectionMode="Single">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Margin="10,2,10,10" Width="432" Height="Auto">
@@ -129,7 +109,7 @@
 
             <controls:PanoramaItem Header="feeling like..?">
 
-                <ListBox Margin="0,0,0,0"  Name="selectedTagsList" SelectionChanged="selectedTagsSelectionChanged" SelectionMode="Single">
+                <ListBox Margin="0,0,0,10"  Name="selectedTagsList" SelectionChanged="selectedTagsSelectionChanged" SelectionMode="Single">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Margin="10,2,10,10" Width="432" Height="Auto">
@@ -140,38 +120,42 @@
                 </ListBox>
             </controls:PanoramaItem>
 
-            <!--controls:PanoramaItem Header="favorites">
-                <ListBox Margin="0,0,-12,0"  Name="favoritesList" SelectionChanged="favoritesSelectionChanged" SelectionMode="Single">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Margin="0,0,0,0" Width="432" Height="78">
-                                <TextBlock  Text="{Binding Path=value}" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </controls:PanoramaItem-->
+            <controls:PanoramaItem Header="enjoy..!">
+
+                <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+                    <HyperlinkButton Height="47" HorizontalAlignment="Left" Name="textBlock1"
+                       Content="Created by: Knights Who Code" VerticalAlignment="Top" Width="344" Margin="12,12,0,0" />
+                    <TextBlock Height="30" HorizontalAlignment="Left" Margin="12,81,0,0" Name="textBlock3" Text="Version: 0.94"
+                 VerticalAlignment="Top" Width="332" />
+                    <TextBlock TextWrapping="Wrap" Height="126" HorizontalAlignment="Left" Margin="12,136,0,0" Name="textBlock4"
+                 Text="Thank you for reading this. We hope this application helps you stay tuned. We're updating it weekly, many great features awaiting! Please send your ideas to " FontSize="20" 
+                 VerticalAlignment="Top" Width="444" />
+                    <TextBlock ManipulationCompleted="sendEmailEvent" Name="emailUrlButton" Height="30"
+                 HorizontalAlignment="Left" Margin="184,216,0,0" Text="lonkly@knightswhocode.com" VerticalAlignment="Top" Width="272"
+                 Foreground="#FF0028FF" />
+                    <TextBlock Foreground="#FF0028FF" Height="57" HorizontalAlignment="Left" Margin="195,0,0,300" Name="textBlock2" Text="." VerticalAlignment="Bottom" Width="149" FontSize="22" />
+                    <TextBlock Height="60" HorizontalAlignment="Left" Margin="12,300,0,0" Name="textBlock5" Text="Background images taken from Flickr. All rights reserved ©  " TextWrapping="Wrap" VerticalAlignment="Top" Width="444" FontSize="22"/>
+                    <Button Content="Rate us!" Height="72" HorizontalAlignment="Left" Margin="138,400,0,0" Name="button1" VerticalAlignment="Top" Width="160" Click="rateUs" />
+                    <TextBlock Foreground="#FF0028FF" Height="30" HorizontalAlignment="Left" Margin="195,330,0,0" Name="textBlock6" Text="Rina B" VerticalAlignment="Top" Width="234" ManipulationCompleted="goToRina"  />
+                </Grid>
+            </controls:PanoramaItem>
+
         </controls:Panorama>
 
         <phone:WebBrowser HorizontalAlignment="Left" Margin="40,283,0,0" Name="webBrowser1" VerticalAlignment="Top" Height="0" Width="0" />
+        <telerikPrimitives:RadBusyIndicator Background="Black" 
+                                            Opacity="0.6"
+                                            Foreground="White"
+                                            x:Name="customProgressOverlay" 
+                                            AnimationStyle="AnimationStyle1"/>
 
-        <Controls:ProgressOverlay Name="customProgressOverlay" Style="{StaticResource customStyle}">
-            <Controls:ProgressOverlay.Content>
-                <StackPanel>
-                    <Image Source="Images/logo.png" Height="80" Width="80"/>
-                </StackPanel>
-            </Controls:ProgressOverlay.Content>
-        </Controls:ProgressOverlay>
+        <Controls1:BindableApplicationBar IsVisible="True" BarOpacity="0.6">
+
+            <Controls1:BindableApplicationBarIconButton  IconUri="/Images/appbar.transport.play.rest.png" x:Name="goToPlayerButton" Text="Player" Click="goToPlayerClicked" IsEnabled="False"  />
+            <Controls1:BindableApplicationBarIconButton IconUri="/Images/appbar.feature.search.rest.png"  Text="Search" Click="barItemSearchClicked" />
+            <Controls1:BindableApplicationBarIconButton IconUri="/Images/appbar.feature.settings.rest.png" Text="Settings" Click="settingsClicked" />
+        </Controls1:BindableApplicationBar>
     </Grid>
 
-    <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" Opacity="0.7">
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.feature.search.rest.png" Text="Search" Click="barItemSearchClicked" />
-            <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Text="Settings"/>
-                <shell:ApplicationBarMenuItem Text="About the App"/>
-            </shell:ApplicationBar.MenuItems>
-        </shell:ApplicationBar>
-    </phone:PhoneApplicationPage.ApplicationBar>
 
 </phone:PhoneApplicationPage>

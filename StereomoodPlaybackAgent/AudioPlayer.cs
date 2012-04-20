@@ -77,13 +77,9 @@ namespace StereomoodPlaybackAgent
 
                 if (_playList.Count > 0)
                 {
-                    if (player.Track != _playList[currentTrackNumber])
+                    if (!(player.Track != null && player.Track.Title == _playList[currentTrackNumber].Title) && player.PlayerState == PlayState.Playing)
                     {
                         player.Track = _playList[currentTrackNumber];
-                    }
-                    else if (player.PlayerState != PlayState.Playing)
-                    {
-                        player.Play();
                     }
                 }
                 else
@@ -104,7 +100,8 @@ namespace StereomoodPlaybackAgent
         private void loadPlaylist()
         {
             _playList.Clear();
-            Song[] tracklist = StorageUtility.readListFromFile<Song>(isoStore, "SongList.txt").ToArray();
+            //  Song[] tracklist = StorageUtility.readListFromFile<Song>(isoStore, "SongList.txt").ToArray();
+            Song[] tracklist = StorageUtility.readSongArrayFromFile(isoStore);
             if (tracklist.Length > 0)
             {
                 foreach (var song in tracklist)
@@ -179,7 +176,16 @@ namespace StereomoodPlaybackAgent
                     break;
 
                 case UserAction.Pause:
-                    player.Pause();
+                    try
+                    {
+                        if (player.CanPause)
+                        {
+                            player.Pause();
+                        }
+                    }catch(UnauthorizedAccessException ex)
+                    {
+                        // what the fuck??
+                    }
                     break;
 
                 case UserAction.SkipPrevious:

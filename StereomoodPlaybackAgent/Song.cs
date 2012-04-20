@@ -7,28 +7,46 @@ namespace StereomoodPlaybackAgent
     [DataContract]
     public class Song
     {
-        [DataMember(Name = "id")]
+        [DataMember(Name = "identifier")]
         public string id { get; set; }
 
         [DataMember(Name = "title")]
         public string title { get; set; }
 
-        [DataMember(Name = "artist")]
+        [DataMember(Name = "creator")]
         public string artist { get; set; }
 
         [DataMember(Name = "album")]
         public string album { get; set; }
 
-        [DataMember(Name = "url")]
-        public Uri url { get; set; }
+        [DataMember(Name = "image")]
+        public Uri _image_url;
 
-        [DataMember(Name = "image_url")]
-        public Uri image_url { get; set; }
+        public Uri image_url
+        {
+            get
+            {
+                return _image_url.ToString().Equals("http://www.stereomood.com/gui/img/default_album_player.gif")
+                        ? new Uri("http://dl.dropbox.com/u/7947878/default_album_player.jpg")
+                        : _image_url;
+            }
+            set
+            {
+                if (value == null) throw new ArgumentNullException("value");
+                this.image_url = value;
+            }
+        }
 
-        [DataMember(Name = "audio_url")]
+        [DataMember(Name = "location")]
         public Uri audio_url { get; set; }
 
-        [DataMember(Name = "post_url")]
-        public Uri post_url { get; set; }
+        [DataMember(Name = "trackNum")]
+        public int trackNumber { get; set; }
+
+        [DataMember(Name = "code")]
+        public string code { get; set; }
+
+        [DataMember(Name = "owner")]
+        public string owner { get; set; }
     }
 }

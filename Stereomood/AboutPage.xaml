@@ -36,16 +36,9 @@
         </toolkit:NavigationOutTransition>
     </toolkit:TransitionService.NavigationOutTransition>
 
-    <Grid x:Name="LayoutRoot" Background="Transparent">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="242*" />
-            <ColumnDefinition Width="238*" />
-        </Grid.ColumnDefinitions>
-        <TextBlock x:Name="ApplicationTitle" Text="Tune Your Mood" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="40"  FontWeight="Medium" Grid.ColumnSpan="2" Margin="10,0,0,0" />
-        <TextBlock Height="45" HorizontalAlignment="Right" Margin="0,60,0,0" Padding="0,0,15,0" FontSize="38" Name="tagTitle" Text="About" VerticalAlignment="Top" Grid.ColumnSpan="2" TextAlignment="Right" Width="480" FontWeight="Normal" />
 
 
-    </Grid>
+   
 
     <!--Sample code showing usage of ApplicationBar-->
     <!--<phone:PhoneApplicationPage.ApplicationBar>

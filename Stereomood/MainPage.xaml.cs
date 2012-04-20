@@ -4,11 +4,16 @@ using System.ComponentModel;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using DeepForest.Phone.Assets.Tools;
 using Microsoft.Phone.Controls;
+using Microsoft.Phone.Tasks;
+using StereomoodPlaybackAgent;
+using Telerik.Windows.Controls;
 using TuneYourMood.Json;
 using NetworkInterface = System.Net.NetworkInformation.NetworkInterface;
 
@@ -16,9 +21,8 @@ namespace TuneYourMood
 {
     public partial class MainPage : PhoneApplicationPage
     {
-        private OauthCommunication oauthCommunication;
-        private Dictionary<string, string> parameters;
-
+        private RestApiCommunication restCommunication;
+        private EmailComposeTask emailComposeTask;
         private SearchResult searchResult;
 
         private bool uiBlocked;
@@ -27,6 +31,7 @@ namespace TuneYourMood
         public static ImageBrush backgroundBrush { get; set; }
 
         private readonly Searchbar searchbar = new Searchbar();
+        private Dictionary<string, string> parameters;
 
 
         public MainPage()
@@ -42,17 +47,19 @@ namespace TuneYourMood
         private void InitializeElements()
         {
             searchbar.searchPressed += searchbar_searchPressed;
+            this.SetValue(RadTileAnimation.ContainerToAnimateProperty, this.selectedTagsList);
+            this.SetValue(RadTileAnimation.ContainerToAnimateProperty, this.topTagsList);
         }
 
         private void loadAppBackground()
         {
-            // BitmapImage bitmapImage = new BitmapImage(new Uri(Constants.BACKGROUND_URL));
-            //  backgroundBrush = new ImageBrush
-            //  {
-            //     Opacity = 0.8d,
-            //      ImageSource = bitmapImage
-            //  };
-            // panorama.Background = backgroundBrush;
+            Dictionary<string, BitmapImage> backgroundBrushes = CurrentItemCollections.Instance().backgroundBrushes;
+            backgroundBrush = new ImageBrush
+            {
+                Opacity = 0.8d,
+                ImageSource = backgroundBrushes[CurrentItemCollections.Instance().currentBackgroundKey]
+            };
+            panorama.Background = backgroundBrush;
         }
 
         private void loadTags()
@@ -61,22 +68,28 @@ namespace TuneYourMood
                                {
                                    if (CurrentItemCollections.Instance().topTags == null)
                                    {
-                                       oauthCommunication.getTopTags();
+                                       restCommunication.getTopTags();
                                    }
                                    else
                                    {
+                                       CurrentItemCollections.Instance().topTags.Add(new Tag());
                                        topTagsList.ItemsSource = CurrentItemCollections.Instance().topTags;
-                                       customProgressOverlay.Hide();
+                                       customProgressOverlay.IsRunning = false;
+
+                                       customProgressOverlay.Visibility = Visibility.Collapsed;
+
                                        uiBlocked = false;
                                    }
                                    if (CurrentItemCollections.Instance().selectedTags == null)
                                    {
-                                       oauthCommunication.getSelectedTags();
+                                       restCommunication.getSelectedTags();
                                    }
                                    else
                                    {
+                                       CurrentItemCollections.Instance().selectedTags.Add(new Tag());
                                        selectedTagsList.ItemsSource = CurrentItemCollections.Instance().selectedTags;
-                                       customProgressOverlay.Hide();
+                                       customProgressOverlay.IsRunning = false;
+                                       customProgressOverlay.Visibility = Visibility.Collapsed;
                                        uiBlocked = false;
                                    }
                                }
@@ -90,19 +103,29 @@ namespace TuneYourMood
                 searchbar.Visibility = Visibility.Collapsed;
                 isSearchBarVisible = false;
 
-                oauthCommunication = OauthCommunication.getInstance();
-                oauthCommunication.loadFinished += loadFinished;
-                OauthCommunication.ArrayEvent<Tag>.getArrayEventInstance().loadFinishedWithArray +=
-                    loadFinishedWithArray;
+                //  oauthCommunication = OauthCommunication.getInstance();
+                restCommunication = RestApiCommunication.getInstance();
+
+                //  oauthCommunication.loadFinished += loadFinished;
+                // OauthCommunication.ArrayEvent<Tag>.getArrayEventInstance().loadFinishedWithArray += loadFinishedWithArray;
+                RestApiCommunication.ArrayEvent<Tag>.getArrayEventInstance().loadFinishedWithArray += loadFinishedWithArray;
+                RestApiCommunication.LoadEvent<Song>.getArrayEventInstance().loadFinished += loadFinished;
 
                 InitializeElements();
 
-                if (!oauthCommunication.isConnected())
+                // if (!restCommunication.isConnected())
+                //  {
+                // loadAppBackground();
+                //   oauthCommunication.getRequestToken();
+                loadAppBackground();
+                customProgressOverlay.IsRunning = true;
+                customProgressOverlay.Visibility = Visibility.Visible;
+                loadTags();
+                //  }
+
+                if (CurrentItemCollections.Instance().currentMood != null && CurrentItemCollections.Instance().audioTracks != null)
                 {
-                    loadAppBackground();
-                    oauthCommunication.getRequestToken();
-                    customProgressOverlay.Visibility = Visibility.Visible;
-                    customProgressOverlay.Show();
+                    goToPlayerButton.IsEnabled = true;
                 }
             }
             else
@@ -117,6 +140,8 @@ namespace TuneYourMood
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
+            selectedTagsList.SelectedIndex = -1;
+            topTagsList.SelectedIndex = -1;
             SongListPage songListPage = (e.Content as SongListPage);
             if (songListPage != null)
             {
@@ -130,8 +155,9 @@ namespace TuneYourMood
 
         private void loadFinishedWithArray(int METHOD, Tag[] tags)
         {
-            customProgressOverlay.Hide();
-            shellProgress.IsVisible = false;
+            customProgressOverlay.IsRunning = false;
+            customProgressOverlay.Visibility = Visibility.Collapsed;
+
             switch (METHOD)
             {
                 case Constants.METHOD_SELECTED_TAGS:
@@ -140,12 +166,13 @@ namespace TuneYourMood
                         {
                             CurrentItemCollections.Instance().selectedTags = new List<Tag>(tags);
                             selectedTagsList.ItemsSource = CurrentItemCollections.Instance().selectedTags;
-                            customProgressOverlay.Hide();
+                            customProgressOverlay.IsRunning = false;
+                            customProgressOverlay.Visibility = Visibility.Collapsed;
                             uiBlocked = false;
                         }
                         else
                         {
-                            oauthCommunication.getSelectedTags();
+                            restCommunication.getSelectedTags();
                         }
                     }
                     break;
@@ -155,12 +182,13 @@ namespace TuneYourMood
                         {
                             CurrentItemCollections.Instance().topTags = new List<Tag>(tags);
                             topTagsList.ItemsSource = CurrentItemCollections.Instance().topTags;
-                            customProgressOverlay.Hide();
+                            customProgressOverlay.IsRunning = false;
+                            customProgressOverlay.Visibility = Visibility.Collapsed;
                             uiBlocked = false;
                         }
                         else
                         {
-                            oauthCommunication.getTopTags();
+                            restCommunication.getTopTags();
                         }
                     }
                     break;
@@ -168,35 +196,46 @@ namespace TuneYourMood
 
         }
 
-        private void loadFinished(int METHOD, Dictionary<string, string> returnedParams, JsonObject jsonObject)
+        private void loadFinished(int METHOD, Song[] songs, Dictionary<string, string> returnedParams)
         {
 
-            shellProgress.IsVisible = false;
             switch (METHOD)
             {
-                case Constants.METHOD_AUTHORIZATION:
-                    {
-                        parameters = returnedParams;
-                        webBrowser1.LoadCompleted += webbrowser_LoginPageLoaded;
-                        webBrowser1.IsScriptEnabled = true;
-                        webBrowser1.Navigate(new Uri(parameters["URL"]));
-                        break;
-                    }
-                case Constants.METHOD_ACCESS_TOKEN:
+                /*
+            case Constants.METHOD_AUTHORIZATION:
+                {
+                    parameters = returnedParams;
+                    webBrowser1.LoadCompleted += webbrowser_LoginPageLoaded;
+                    webBrowser1.IsScriptEnabled = true;
+                    webBrowser1.Navigate(new Uri(parameters["URL"]));
+                    break;
+                }
+            case Constants.METHOD_ACCESS_TOKEN:
+                {
+                        
+                    break;
+                }*/
+
+                case Constants.METHOD_QUITAPP:
                     {
                         loadTags();
                         break;
                     }
                 case Constants.METHOD_SEARCH:
                     {
-                        customProgressOverlay.Hide();
-                        searchResult = ((SearchResult)jsonObject);
-                        if (searchResult.total > 0)
+                        customProgressOverlay.IsRunning = false;
+                        customProgressOverlay.Visibility = Visibility.Collapsed;
+                        if (songs != null && songs.Length > 0)
                         {
                             Uri songListUri = new Uri("/SongListPage.xaml", UriKind.Relative);
                             if (returnedParams.ContainsKey("VALUE"))
                             {
-                                CurrentItemCollections.Instance().currentMood = new Tag { type = returnedParams["TYPE"], value = returnedParams["VALUE"] };
+                                searchResult = new SearchResult { trackList = songs, tracksTotal = songs.Length };
+                                CurrentItemCollections.Instance().currentMood = new Tag
+                                                                                    {
+                                                                                        type = returnedParams["TYPE"],
+                                                                                        value = returnedParams["VALUE"]
+                                                                                    };
                             }
                             NavigationService.Navigate(songListUri);
                         }
@@ -205,7 +244,6 @@ namespace TuneYourMood
                             NotificationTool.Show("Sorry",
                                                   "Couldn't find anything. Could you be more prescice?",
                                                   new NotificationAction("Okay :(", () => { }));
-
                         }
 
                         break;
@@ -309,21 +347,23 @@ namespace TuneYourMood
         {
             if (stringNotEmpty(textToSearch))
             {
-                customProgressOverlay.Show();
-                Deployment.Current.Dispatcher.BeginInvoke(() => oauthCommunication.searchSongs(Constants.TYPE_SITE, textToSearch));
+                customProgressOverlay.IsRunning = true;
+                customProgressOverlay.Visibility = Visibility.Visible;
+                Deployment.Current.Dispatcher.BeginInvoke(() => restCommunication.searchSongs(Constants.TYPE_SITE, textToSearch));
             }
         }
 
         private void topTagSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            customProgressOverlay.Show();
+            customProgressOverlay.IsRunning = true;
+            customProgressOverlay.Visibility = Visibility.Visible;
             var listBox = sender as ListBox;
             if (listBox != null)
             {
-                Tag tag = ((Tag)listBox.SelectedItems[0]);
+                Tag tag = (Tag)listBox.SelectedItem;
                 if (tag != null)
                 {
-                    Deployment.Current.Dispatcher.BeginInvoke(() => oauthCommunication.searchSongs(tag));
+                    Deployment.Current.Dispatcher.BeginInvoke(() => restCommunication.searchSongs(tag));
                     CurrentItemCollections.Instance().currentMood = tag;
                 }
             }
@@ -331,14 +371,15 @@ namespace TuneYourMood
 
         private void selectedTagsSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            customProgressOverlay.Show();
+            customProgressOverlay.IsRunning = true;
+            customProgressOverlay.Visibility = Visibility.Visible;
             var listBox = sender as ListBox;
             if (listBox != null)
             {
-                Tag tag = ((Tag)listBox.SelectedItems[0]);
+                Tag tag = (Tag)listBox.SelectedItem;
                 if (tag != null)
                 {
-                    Deployment.Current.Dispatcher.BeginInvoke(() => oauthCommunication.searchSongs(tag));
+                    Deployment.Current.Dispatcher.BeginInvoke(() => restCommunication.searchSongs(tag));
                     CurrentItemCollections.Instance().currentMood = tag;
                 }
             }
@@ -425,6 +466,42 @@ namespace TuneYourMood
 
         #endregion
 
+        private void settingsClicked(object sender, EventArgs e)
+        {
+            Uri uri = new Uri("/SettingsPage.xaml", UriKind.Relative);
+            NavigationService.Navigate(uri);
+        }
 
+        private void aboutClicked(object sender, EventArgs e)
+        {
+            Uri uri = new Uri("/AboutPage.xaml", UriKind.Relative);
+            NavigationService.Navigate(uri);
+        }
+
+
+        private void sendEmailEvent(object sender, ManipulationCompletedEventArgs manipulationCompletedEventArgs)
+        {
+            emailComposeTask = new EmailComposeTask { To = "lonkly@knightswhocode.com", Subject = "Tune Your Mood" };
+
+            emailComposeTask.Show();
+        }
+
+        private void goToRina(object sender, ManipulationCompletedEventArgs e)
+        {
+            WebBrowserTask task = new WebBrowserTask { Uri = new Uri("http://www.flickr.com/photos/45837840@N07/", UriKind.Absolute) };
+            task.Show();
+        }
+
+        private void rateUs(object sender, System.Windows.RoutedEventArgs e)
+        {
+            MarketplaceReviewTask marketplaceReviewTask = new MarketplaceReviewTask();
+            marketplaceReviewTask.Show();
+        }
+
+        private void goToPlayerClicked(object sender, EventArgs e)
+        {
+            Uri playerUri = new Uri("/SongDetailsPage.xaml", UriKind.Relative);
+            NavigationService.Navigate(playerUri);
+        }
     }
 }

@@ -7,6 +7,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:Controls="clr-namespace:Phone7.Fx.Controls;assembly=Phone7.Fx"
+    xmlns:telerikPrimitives="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Primitives"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -14,27 +16,9 @@
     mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True">
 
-    <toolkit:TransitionService.NavigationInTransition>
-        <toolkit:NavigationInTransition>
-            <toolkit:NavigationInTransition.Backward>
-                <toolkit:TurnstileTransition Mode="BackwardIn" />
-            </toolkit:NavigationInTransition.Backward>
-            <toolkit:NavigationInTransition.Forward>
-                <toolkit:TurnstileTransition Mode="ForwardIn" />
-            </toolkit:NavigationInTransition.Forward>
-        </toolkit:NavigationInTransition>
-    </toolkit:TransitionService.NavigationInTransition>
-
-    <toolkit:TransitionService.NavigationOutTransition>
-        <toolkit:NavigationOutTransition>
-            <toolkit:NavigationOutTransition.Backward>
-                <toolkit:TurnstileTransition Mode="BackwardOut" />
-            </toolkit:NavigationOutTransition.Backward>
-            <toolkit:NavigationOutTransition.Forward>
-                <toolkit:TurnstileTransition Mode="ForwardOut" />
-            </toolkit:NavigationOutTransition.Forward>
-        </toolkit:NavigationOutTransition>
-    </toolkit:TransitionService.NavigationOutTransition>
+    <telerikPrimitives:RadTransitionControl.Transition>
+        <telerikPrimitives:RadContinuumAndSlideTransition/>
+    </telerikPrimitives:RadTransitionControl.Transition>
 
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
@@ -44,26 +28,18 @@
         <TextBlock Grid.Row="0" x:Name="ApplicationTitle" Text="Tune Your Mood" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="40"  FontWeight="Medium" Grid.ColumnSpan="2" Margin="10,0,0,0" />
         <Grid Name="songPanel" Width="Auto" Height="Auto" Grid.Row="1">
             <MediaElement Name="mediaPlayer" ></MediaElement>
-            <TextBlock TextAlignment="Center" Height="69" HorizontalAlignment="Left" Margin="0,0,0,630" Name="songTextBox" Text="" VerticalAlignment="Center" Width="480" FontWeight="Bold" FontSize="32" />
-            <Image Height="264" HorizontalAlignment="Center" Margin="89,155,97,279" Name="artImage" Stretch="Fill" VerticalAlignment="Center" Width="295" />
-            <TextBlock Height="75" HorizontalAlignment="Center" Margin="0,74,0,0" Name="authorTextBox" Text="" VerticalAlignment="Top" Width="480" FontWeight="Normal" FontSize="30" Foreground="LightGray" TextAlignment="Center"/>
-            <Image ManipulationCompleted="PreviousButton_OnManipulationCompleted"  Name="previousButton" Source="Images/previous.png" Height="57" HorizontalAlignment="Left" Margin="88,517,0,0" Stretch="Fill" VerticalAlignment="Top" Width="64" />
-            <Image ManipulationCompleted="PlayButton_OnManipulationCompleted" Name="playButton" Source="Images/play.png" Height="57" HorizontalAlignment="Left" Margin="207,517,0,0" Stretch="Fill" VerticalAlignment="Top" Width="64" />
-            <Image ManipulationCompleted="NextButton_OnManipulationCompleted" Name="nextButton" Source="Images/next.png" Height="57" HorizontalAlignment="Left" Margin="320,517,0,0" Stretch="Fill" VerticalAlignment="Top" Width="64" />
+            <TextBlock TextAlignment="Center" Height="69" HorizontalAlignment="Left" Margin="0,36,0,594" Name="songTextBox" Text="" VerticalAlignment="Center" Width="480" FontWeight="Bold" FontSize="32" />
+            <Image Height="204" HorizontalAlignment="Center" Margin="131,314,119,180" Name="artImage" Stretch="Fill" VerticalAlignment="Center" Width="230" />
+            <TextBlock Height="75" HorizontalAlignment="Center" Margin="0,131,0,0" Name="authorTextBox" Text="" VerticalAlignment="Top" Width="480" FontWeight="Normal" FontSize="30" Foreground="LightGray" TextAlignment="Center"/>
+
         </Grid>
+        <Controls:BindableApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <Controls:BindableApplicationBarIconButton IconUri="/Images/appbar.transport.rew.rest.png" x:Name="prevButton" Text="Prev" Click="previousClicked"  />
+            <Controls:BindableApplicationBarIconButton IconUri="/Images/appbar.transport.pause.rest.png" x:Name="playButton" Text="Play/Pause" Click="playClicked" />
+            <Controls:BindableApplicationBarIconButton IconUri="/Images/appbar.transport.ff.rest.png" x:Name="nextButton" Text="Next" Click="nextClicked" />
+
+        </Controls:BindableApplicationBar>
     </Grid>
 
-
-    <!--Пример кода, иллюстрирующий использование ApplicationBar-->
-    <!--<phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="Кнопка 1"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="Кнопка 2"/>
-            <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Text="Элемент меню 1"/>
-                <shell:ApplicationBarMenuItem Text="Элемент меню 2"/>
-            </shell:ApplicationBar.MenuItems>
-        </shell:ApplicationBar>
-    </phone:PhoneApplicationPage.ApplicationBar>-->
 
 </phone:PhoneApplicationPage>

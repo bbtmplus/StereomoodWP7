@@ -15,5 +15,5 @@ C:\Users\Lonkly\Documents\Visual Studio 2010\Projects\Stereomood\StereomoodPlayb
 C:\Users\Lonkly\Documents\Visual Studio 2010\Projects\Stereomood\StereomoodPlaybackAgent\Bin\Debug\ko\System.Windows.Interactivity.resources.dll
 C:\Users\Lonkly\Documents\Visual Studio 2010\Projects\Stereomood\StereomoodPlaybackAgent\Bin\Debug\zh-Hans\System.Windows.Interactivity.resources.dll
 C:\Users\Lonkly\Documents\Visual Studio 2010\Projects\Stereomood\StereomoodPlaybackAgent\Bin\Debug\zh-Hant\System.Windows.Interactivity.resources.dll
-C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\StereomoodPlaybackAgent\Bin\Debug\Polenter.SharpSerializer.Silverlight.dll
 C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\StereomoodPlaybackAgent\Bin\Debug\Polenter.SharpSerializer.Silverlight.xml
+C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\StereomoodPlaybackAgent\obj\Debug\StereomoodPlaybackAgent.csprojResolveAssemblyReference.cache

@@ -5,9 +5,12 @@ using System.IO.IsolatedStorage;
 using System.Net.NetworkInformation;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using DeepForest.Phone.Assets.Tools;
 using Microsoft.Phone.Controls;
+using Telerik.Windows.Controls;
 using TuneYourMood.Json;
 using StereomoodPlaybackAgent;
 using Song = StereomoodPlaybackAgent.Song;
@@ -17,7 +20,7 @@ namespace TuneYourMood
 {
     public partial class SongListPage : PhoneApplicationPage
     {
-        public List<Song> songs;
+        public Song[] songs;
         public Tag currentTag { get; set; }
         public SearchResult searchResult { get; set; }
         private CurrentItemCollections itemCollections;
@@ -28,10 +31,24 @@ namespace TuneYourMood
             Loaded += PageLoaded;
         }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            Dictionary<string, BitmapImage> backgroundBrushes = CurrentItemCollections.Instance().backgroundBrushes;
+            ImageBrush backgroundBrush = new ImageBrush
+            {
+                Opacity = 0.8d,
+                ImageSource = backgroundBrushes[CurrentItemCollections.Instance().currentBackgroundKey]
+            };
+            LayoutRoot.Background = backgroundBrush;
+            
+            base.OnNavigatedTo(e);
+        }
+
         private void PageLoaded(object sender, RoutedEventArgs e)
         {
             itemCollections = CurrentItemCollections.Instance();
             currentTag = itemCollections.currentMood;
+            this.SetValue(RadTileAnimation.ContainerToAnimateProperty, this.songList);
             if (currentTag != null)
             {
                 if (currentTag.type.ToLower().Equals(Constants.TYPE_MOOD))
@@ -45,9 +62,9 @@ namespace TuneYourMood
             }
             if (NetworkInterface.GetIsNetworkAvailable())
             {
-                if (searchResult != null && searchResult.total > 0)
+                if (searchResult != null && searchResult.tracksTotal > 0)
                 {
-                    songs = searchResult.songs;
+                    songs = searchResult.trackList;
                     songList.ItemsSource = songs;
                     if (currentTag != null && !itemCollections.getSongsForTagDictionary().ContainsKey(currentTag.value))
                     {
@@ -78,7 +95,7 @@ namespace TuneYourMood
                 Song song = ((Song)listBox.SelectedItem);
                 if (song != null)
                 {
-                    int ctn = itemCollections.currentTrackNumber = songs.IndexOf(song);
+                    int ctn = itemCollections.currentTrackNumber = song.trackNumber;
                     StorageUtility.writeStringToFile(IsolatedStorageFile.GetUserStoreForApplication(),
                         "CurrentTrackNumber.txt",
                         ctn.ToString(CultureInfo.InvariantCulture));

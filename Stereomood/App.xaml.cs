@@ -2,6 +2,7 @@
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using Telerik.Windows.Controls;
 
 namespace TuneYourMood
 {
@@ -53,6 +54,7 @@ namespace TuneYourMood
         // Этот код не будет выполняться при повторной активации приложения
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
+            CurrentItemCollections.Instance().LoadApplicationState();
         }
 
         // Код для выполнения при активации приложения (переводится в основной режим)
@@ -73,6 +75,7 @@ namespace TuneYourMood
         // Этот код не будет выполняться при деактивации приложения
         private void Application_Closing(object sender, ClosingEventArgs e)
         {
+            CurrentItemCollections.Instance().SaveApplicationState();
         }
 
         // Код для выполнения в случае ошибки навигации
@@ -108,7 +111,7 @@ namespace TuneYourMood
 
             // Create the frame but don't set it as RootVisual yet; this allows the splash
             // screen to remain active until the application is ready to render.
-            RootFrame = new TransitionFrame();
+            RootFrame = new RadPhoneApplicationFrame();
             RootFrame.Navigated += CompleteInitializePhoneApplication;
 
             // Handle navigation failures

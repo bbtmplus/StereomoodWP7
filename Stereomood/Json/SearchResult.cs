@@ -10,10 +10,16 @@ namespace TuneYourMood.Json
     [KnownType(typeof(JsonObject))]
     public class SearchResult : JsonObject
     {
-        [DataMember(Name = "total")]
-        public int total { get; set; }
+        [DataMember(Name = "title")]
+        public string title { get; set; }
 
-        [DataMember(Name = "songs")]
-        public List<Song> songs { get; set; }
+        [DataMember(Name = "tracksTotal")]
+        public int tracksTotal { get; set; }
+
+        [DataMember(Name = "creator")]
+        public string creator { get; set; }
+
+        [DataMember(Name = "trackList")]
+        public Song[] trackList { get; set; }
     }
 }
