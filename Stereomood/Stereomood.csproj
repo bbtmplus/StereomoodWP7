@@ -47,13 +47,36 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugTrial|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\DebugTrial\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;SILVERLIGHT;WINDOWS_PHONE;TRIAL</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>Bin\Debug\TuneYourMood.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Coding4Fun.Phone.Controls, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Downloads\ProgressOverlayDemo\ProgressOverlayDemo\ProgressOverlayDemo\dll\Coding4Fun.Phone.Controls.dll</HintPath>
+    <Reference Include="BugSense">
+      <HintPath>..\..\..\..\..\Downloads\BugSense-WP7-v0.9.9\BugSense\Silverlight\BugSense.dll</HintPath>
+    </Reference>
+    <Reference Include="Coding4Fun.Phone.Controls">
+      <HintPath>..\packages\Coding4Fun.Phone.Controls.1.5.6\lib\sl4-windowsphone71\Coding4Fun.Phone.Controls.dll</HintPath>
     </Reference>
     <Reference Include="DeepForest.Phone.Assets">
       <HintPath>..\..\2Gis\2Gis\Bin\Debug\DeepForest.Phone.Assets.dll</HintPath>
+    </Reference>
+    <Reference Include="FlurryWP7SDK">
+      <HintPath>..\..\..\..\..\Downloads\Flurry WindowsPhone SDK v2.0.3\FlurryWP7SDK.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Controls, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
@@ -61,11 +84,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Downloads\ProgressOverlayDemo\ProgressOverlayDemo\ProgressOverlayDemo\dll\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Phone.Interop" />
     <Reference Include="Microsoft.Phone.Reactive" />
-    <Reference Include="Phone7.Fx, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="PhonePerformance">
-      <HintPath>..\..\..\..\..\Desktop\WP7\PhonePerformance\PhonePerformance.dll</HintPath>
+    <Reference Include="Phone7.Fx">
+      <HintPath>..\..\..\..\..\Desktop\WP7\Phone7.Fx\Phone7.Fx.dll</HintPath>
+    </Reference>
+    <Reference Include="Polenter.SharpSerializer.Silverlight">
+      <HintPath>..\..\..\..\..\Desktop\WP7\sharp_serializer_dll\sharpSerializerDll\Polenter.SharpSerializer.Silverlight.dll</HintPath>
     </Reference>
     <Reference Include="ReactiveOAuth.WP7">
       <HintPath>..\..\..\..\..\Desktop\WP7\ReactiveOAuth_0.4.0.0\Binary\ReactiveOAuth.WP7.dll</HintPath>
@@ -80,16 +104,9 @@
     <Reference Include="system" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />
-    <Reference Include="System.Windows.Interactivity, Version=3.8.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="mscorlib.extensions" />
-    <Reference Include="Telerik.Windows.Behaviors, Version=2012.1.321.2040, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL" />
-    <Reference Include="Telerik.Windows.Controls.Chart, Version=2012.1.321.2040, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL" />
-    <Reference Include="Telerik.Windows.Controls.Data, Version=2012.1.321.2040, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL" />
-    <Reference Include="Telerik.Windows.Controls.DataVisualization, Version=2012.1.321.2040, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL" />
     <Reference Include="Telerik.Windows.Controls.Input, Version=2012.1.321.2040, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL" />
     <Reference Include="Telerik.Windows.Controls.Primitives, Version=2012.1.321.2040, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL" />
     <Reference Include="Telerik.Windows.Core, Version=2012.1.321.2040, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL" />
-    <Reference Include="Telerik.Windows.Data, Version=2012.1.321.2040, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AboutPage.xaml.cs">
@@ -98,11 +115,15 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BuyNowControl.xaml.cs">
+      <DependentUpon>BuyNowControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Constants.cs" />
     <Compile Include="CurrentItemCollections.cs" />
     <Compile Include="Json\SelectedTagsResult.cs" />
     <Compile Include="Json\Tag.cs" />
     <Compile Include="RestApiCommunication.cs" />
+    <Compile Include="ReviewBugger.cs" />
     <Compile Include="Searchbar.xaml.cs">
       <DependentUpon>Searchbar.xaml</DependentUpon>
     </Compile>
@@ -132,6 +153,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="BuyNowControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Searchbar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -154,6 +179,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml" />
   </ItemGroup>
@@ -172,8 +198,9 @@
     <Content Include="Images\Backgrounds\bg6.jpg" />
     <Content Include="Images\Backgrounds\bg7.jpg" />
     <Content Include="Images\Backgrounds\bg8.jpg" />
+    <Resource Include="Splash.png" />
     <Resource Include="Images\search_button.png" />
-    <Resource Include="SplashScreenImage.png" />
+    <Content Include="SplashScreenImage.jpg" />
     <Resource Include="ApplicationIcon.png" />
     <Content Include="Background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

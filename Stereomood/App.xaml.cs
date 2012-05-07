@@ -1,5 +1,9 @@
-﻿using System.Windows;
+﻿using System;
+using System.IO.IsolatedStorage;
+using System.Windows;
+using System.Windows.Controls.Primitives;
 using System.Windows.Navigation;
+using BugSense;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Telerik.Windows.Controls;
@@ -8,53 +12,102 @@ namespace TuneYourMood
 {
     public partial class App : Application
     {
-        /// <summary>
-        /// Обеспечивает быстрый доступ к корневому кадру приложения телефона.
-        /// </summary>
-        /// <returns>Корневой кадр приложения телефона.</returns>
+
+        public const string ApiKeyValue = "Q2B2WXIGLCWYG7HS8CAH";
         public PhoneApplicationFrame RootFrame { get; private set; }
 
-        /// <summary>
-        /// Конструктор объекта приложения.
-        /// </summary>
         public App()
         {
-            // Глобальный обработчик неперехваченных исключений. 
             UnhandledException += Application_UnhandledException;
 
-            // Стандартная инициализация Silverlight
             InitializeComponent();
 
-            // Инициализация телефона
             InitializePhoneApplication();
 
-            // Отображение сведений о профиле графики во время отладки.
-            if (System.Diagnostics.Debugger.IsAttached)
-            {
-                // Отображение текущих счетчиков частоты смены кадров.
-                // Application.Current.Host.Settings.EnableFrameRateCounter = true;
-
-                // Отображение областей приложения, перерисовываемых в каждом кадре.
-                //Application.Current.Host.Settings.EnableRedrawRegions = true;
-
-                // Включение режима визуализации анализа нерабочего кода 
-                // для отображения областей страницы, переданных в GPU, с цветным наложением.
-                //Application.Current.Host.Settings.EnableCacheVisualization = true;
-
-                // Отключите обнаружение простоя приложения, установив для свойства UserIdleDetectionMode
-                // объекта PhoneApplicationService приложения значение Disabled.
-                // Внимание! Используйте только в режиме отладки. Приложение, в котором отключено обнаружение бездействия пользователя, будет продолжать работать
-                // и потреблять энергию батареи, когда телефон не будет использоваться.
-                // PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
-            }
-
+            BugSenseHandler.Instance.Init(this, "7d1e25c4");
+            BugSenseHandler.Instance.UnhandledException += OnUnhandledException;
         }
 
-        // Код для выполнения при запуске приложения (например, из меню "Пуск")
-        // Этот код не будет выполняться при повторной активации приложения
+        private void OnUnhandledException(object sender, BugSenseUnhandledExceptionEventArgs e)
+        {
+            try
+            {
+                //Some code to execute
+            }
+            catch (Exception ex)
+            {
+                BugSenseHandler.HandleError(ex);
+            }
+        }
+
+        public static bool IsTrial
+        { get; private set; }
+
+        private static readonly TimeSpan TrialPeriodLength = TimeSpan.FromDays(Constants.TRIAL_PERIOD);
+        private const string FirstLauchDateKey = "FirstLaunchDate";
+
+        private void DetermineIsTrail()
+        {
+#if TRIAL
+            IsTrial = true;
+#else
+            var license = new Microsoft.Phone.Marketplace.LicenseInformation();
+            IsTrial = license.IsTrial();
+#endif
+        }
+
+        private void CheckTrialPeriodExpired()
+        {
+            IsolatedStorageSettings settings = IsolatedStorageSettings.ApplicationSettings;
+            DateTime firstLauchDate;
+            if (settings.TryGetValue<DateTime>(FirstLauchDateKey, out firstLauchDate))
+            {
+                TimeSpan timeSinceFirstLauch = DateTime.UtcNow.Subtract(firstLauchDate);
+                if (timeSinceFirstLauch > TrialPeriodLength)
+                {
+                    this.RootFrame.Navigated += new NavigatedEventHandler(RootFrame_Navigated);
+                }
+            }
+            else
+            {
+                // if a value cannot be found for the first launch date
+                // save the current date and time 
+                settings.Add(FirstLauchDateKey, DateTime.UtcNow);
+                settings.Save();
+            }
+        }
+
+        void RootFrame_Navigated(object sender, NavigationEventArgs e)
+        {
+            this.RootFrame.Navigated -= new NavigatedEventHandler(RootFrame_Navigated);
+
+            Popup popup = new Popup();
+            BuyNowControl content = new BuyNowControl(popup) { Width = Current.Host.Content.ActualWidth };
+            popup.Child = content;
+            // popup.VerticalOffset = 300;
+            popup.IsOpen = true;
+        }
+
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
             CurrentItemCollections.Instance().LoadApplicationState();
+            DetermineIsTrail();
+            ReviewBugger.CheckNumOfRuns();
+            FlurryWP7SDK.Api.StartSession(ApiKeyValue);
+        }
+
+        private void CheckTrialState()
+        {
+            // refresh the value of the IsTrial property 
+            this.DetermineIsTrail();
+
+            if (!IsTrial)
+            {
+                // do not execute further if app is full version
+                return;
+            }
+
+            this.CheckTrialPeriodExpired();
         }
 
         // Код для выполнения при активации приложения (переводится в основной режим)
@@ -62,6 +115,7 @@ namespace TuneYourMood
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
             CurrentItemCollections.Instance().LoadApplicationState();
+            this.CheckTrialState();
         }
 
         // Код для выполнения при деактивации приложения (отправляется в фоновый режим)

@@ -64,7 +64,7 @@
                                             <PlaneProjection/>
                                         </ContentControl.Projection>
                                     </ContentControl>
-                                    <Controls:PerformanceProgressBar 
+                                    <toolkit:PerformanceProgressBar 
                                 x:Name="progressBar" Foreground="White"
                                 
 			                    HorizontalAlignment="Stretch"
@@ -147,7 +147,7 @@
                                             Opacity="0.6"
                                             Foreground="White"
                                             x:Name="customProgressOverlay" 
-                                            AnimationStyle="AnimationStyle1"/>
+                                            AnimationStyle="AnimationStyle5"/>
 
         <Controls1:BindableApplicationBar IsVisible="True" BarOpacity="0.6">
 

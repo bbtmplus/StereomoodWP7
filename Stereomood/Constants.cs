@@ -4,7 +4,7 @@ namespace TuneYourMood
 {
     public class Constants
     {
-
+        public static double TRIAL_PERIOD = 3.0;
 
         public const string CONSUMER_KEY = "5e1051156f4e8f3b8a0f6438cfbc0dc904f46cbb5";
         public const string CONSUMER_SECRET = "e78745fd6af765b320b21e351982b5d5";

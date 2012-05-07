@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -31,8 +32,7 @@ namespace TuneYourMood
         public static ImageBrush backgroundBrush { get; set; }
 
         private readonly Searchbar searchbar = new Searchbar();
-        private Dictionary<string, string> parameters;
-
+        private readonly Dictionary<string, string> parameters = new Dictionary<string, string>();
 
         public MainPage()
         {
@@ -72,8 +72,9 @@ namespace TuneYourMood
                                    }
                                    else
                                    {
-                                       CurrentItemCollections.Instance().topTags.Add(new Tag());
-                                       topTagsList.ItemsSource = CurrentItemCollections.Instance().topTags;
+                                       List<Tag> refinedList = CurrentItemCollections.Instance().topTags.Where(
+                                           tag => tag != null && tag.value != null && !tag.value.Equals("")).ToList();
+                                       topTagsList.ItemsSource = refinedList;
                                        customProgressOverlay.IsRunning = false;
 
                                        customProgressOverlay.Visibility = Visibility.Collapsed;
@@ -86,8 +87,9 @@ namespace TuneYourMood
                                    }
                                    else
                                    {
-                                       CurrentItemCollections.Instance().selectedTags.Add(new Tag());
-                                       selectedTagsList.ItemsSource = CurrentItemCollections.Instance().selectedTags;
+                                       List<Tag> refinedList = CurrentItemCollections.Instance().selectedTags.Where(
+                                           tag => tag != null && tag.value != null && !tag.value.Equals("")).ToList();
+                                       selectedTagsList.ItemsSource = refinedList;
                                        customProgressOverlay.IsRunning = false;
                                        customProgressOverlay.Visibility = Visibility.Collapsed;
                                        uiBlocked = false;
@@ -135,7 +137,9 @@ namespace TuneYourMood
                                       new NotificationAction("Okay :(", () => { throw new Exception("ExitApp"); }));
             }
 
+
             base.OnNavigatedTo(e);
+           
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -155,6 +159,10 @@ namespace TuneYourMood
 
         private void loadFinishedWithArray(int METHOD, Tag[] tags)
         {
+            if (ReviewBugger.IsTimeForReview())
+            {
+                ReviewBugger.PromptUser();
+            }
             customProgressOverlay.IsRunning = false;
             customProgressOverlay.Visibility = Visibility.Collapsed;
 

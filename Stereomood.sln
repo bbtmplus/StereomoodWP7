@@ -8,17 +8,23 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		DebugTrial|Any CPU = DebugTrial|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{33CF9C7B-F20B-4FD4-91FD-822ADAD65819}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{33CF9C7B-F20B-4FD4-91FD-822ADAD65819}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{33CF9C7B-F20B-4FD4-91FD-822ADAD65819}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{33CF9C7B-F20B-4FD4-91FD-822ADAD65819}.DebugTrial|Any CPU.ActiveCfg = DebugTrial|Any CPU
+		{33CF9C7B-F20B-4FD4-91FD-822ADAD65819}.DebugTrial|Any CPU.Build.0 = DebugTrial|Any CPU
+		{33CF9C7B-F20B-4FD4-91FD-822ADAD65819}.DebugTrial|Any CPU.Deploy.0 = DebugTrial|Any CPU
 		{33CF9C7B-F20B-4FD4-91FD-822ADAD65819}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{33CF9C7B-F20B-4FD4-91FD-822ADAD65819}.Release|Any CPU.Build.0 = Release|Any CPU
 		{33CF9C7B-F20B-4FD4-91FD-822ADAD65819}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{1FC78099-D833-48F8-A610-E85FB231C8A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1FC78099-D833-48F8-A610-E85FB231C8A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FC78099-D833-48F8-A610-E85FB231C8A9}.DebugTrial|Any CPU.ActiveCfg = DebugTrial|Any CPU
+		{1FC78099-D833-48F8-A610-E85FB231C8A9}.DebugTrial|Any CPU.Build.0 = DebugTrial|Any CPU
 		{1FC78099-D833-48F8-A610-E85FB231C8A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1FC78099-D833-48F8-A610-E85FB231C8A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
