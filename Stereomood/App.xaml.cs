@@ -3,7 +3,6 @@ using System.IO.IsolatedStorage;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Navigation;
-using BugSense;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Telerik.Windows.Controls;
@@ -13,7 +12,7 @@ namespace TuneYourMood
     public partial class App : Application
     {
 
-        public const string ApiKeyValue = "Q2B2WXIGLCWYG7HS8CAH";
+        
         public PhoneApplicationFrame RootFrame { get; private set; }
 
         public App()
@@ -24,20 +23,6 @@ namespace TuneYourMood
 
             InitializePhoneApplication();
 
-            BugSenseHandler.Instance.Init(this, "7d1e25c4");
-            BugSenseHandler.Instance.UnhandledException += OnUnhandledException;
-        }
-
-        private void OnUnhandledException(object sender, BugSenseUnhandledExceptionEventArgs e)
-        {
-            try
-            {
-                //Some code to execute
-            }
-            catch (Exception ex)
-            {
-                BugSenseHandler.HandleError(ex);
-            }
         }
 
         public static bool IsTrial
@@ -92,8 +77,7 @@ namespace TuneYourMood
         {
             CurrentItemCollections.Instance().LoadApplicationState();
             DetermineIsTrail();
-            ReviewBugger.CheckNumOfRuns();
-            FlurryWP7SDK.Api.StartSession(ApiKeyValue);
+            
         }
 
         private void CheckTrialState()

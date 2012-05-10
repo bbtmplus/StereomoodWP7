@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using BugSense;
 using DeepForest.Phone.Assets.Tools;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Tasks;
@@ -33,6 +34,7 @@ namespace TuneYourMood
 
         private readonly Searchbar searchbar = new Searchbar();
         private readonly Dictionary<string, string> parameters = new Dictionary<string, string>();
+        public const string ApiKeyValue = "Q2B2WXIGLCWYG7HS8CAH";
 
         public MainPage()
         {
@@ -42,13 +44,38 @@ namespace TuneYourMood
             LayoutRoot.Children.Add(searchbar);
 
             uiBlocked = true;
+
+            Loaded += MainPage_Loaded;
         }
+
+        private void MainPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            ReviewBugger.CheckNumOfRuns();
+            FlurryWP7SDK.Api.StartSession(ApiKeyValue);
+            BugSenseHandler.Instance.Init(App.Current, "7d1e25c4");
+            BugSenseHandler.Instance.UnhandledException += OnUnhandledException;
+        }
+
+        private void OnUnhandledException(object sender, BugSenseUnhandledExceptionEventArgs e)
+        {
+            try
+            {
+                //Some code to execute
+            }
+            catch (Exception ex)
+            {
+                BugSenseHandler.Instance.LogError(ex, null, null);
+            }
+        }
+
 
         private void InitializeElements()
         {
             searchbar.searchPressed += searchbar_searchPressed;
             this.SetValue(RadTileAnimation.ContainerToAnimateProperty, this.selectedTagsList);
             this.SetValue(RadTileAnimation.ContainerToAnimateProperty, this.topTagsList);
+
+
         }
 
         private void loadAppBackground()
@@ -139,7 +166,7 @@ namespace TuneYourMood
 
 
             base.OnNavigatedTo(e);
-           
+
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)

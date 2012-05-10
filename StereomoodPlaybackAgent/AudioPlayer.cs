@@ -4,7 +4,6 @@ using System.Globalization;
 using System.IO.IsolatedStorage;
 using System.Net.NetworkInformation;
 using System.Windows;
-using DeepForest.Phone.Assets.Tools;
 using Microsoft.Phone.BackgroundAudio;
 
 
@@ -91,9 +90,6 @@ namespace StereomoodPlaybackAgent
 
             else
             {
-                NotificationTool.Show("Offline",
-                                    "Sorry, the network is not available at the moment",
-                                    new NotificationAction("Okay :(", () => { throw new Exception("ExitApp"); }));
             }
         }
 
