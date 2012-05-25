@@ -123,20 +123,20 @@
             <controls:PanoramaItem Header="enjoy..!">
 
                 <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-                    <HyperlinkButton Height="47" HorizontalAlignment="Left" Name="textBlock1"
+                    <HyperlinkButton Height="47" HorizontalAlignment="Left" Name="textBlock1" Click="kwcClicked"
                        Content="Created by: Knights Who Code" VerticalAlignment="Top" Width="344" Margin="12,12,0,0" />
-                    <TextBlock Height="30" HorizontalAlignment="Left" Margin="12,81,0,0" Name="textBlock3" Text="Version: 0.94"
+                    <TextBlock Height="30" HorizontalAlignment="Left" Margin="12,81,0,0" Name="textBlock3" Text="Version: 1.0"
                  VerticalAlignment="Top" Width="332" />
-                    <TextBlock TextWrapping="Wrap" Height="126" HorizontalAlignment="Left" Margin="12,136,0,0" Name="textBlock4"
-                 Text="Thank you for reading this. We hope this application helps you stay tuned. We're updating it weekly, many great features awaiting! Please send your ideas to " FontSize="20" 
-                 VerticalAlignment="Top" Width="444" />
+                    <TextBlock TextWrapping="Wrap" Height="140" HorizontalAlignment="Left" Margin="12,136,0,0" Name="textBlock4"
+                 Text="Thank you for purchasing TuneYourMood. We hope it helps you stay tuned. We're updating tags weekly, and many great features awaiting! Please send your ideas to" FontSize="20" 
+                 VerticalAlignment="Top" Width="380" />
                     <TextBlock ManipulationCompleted="sendEmailEvent" Name="emailUrlButton" Height="30"
-                 HorizontalAlignment="Left" Margin="184,216,0,0" Text="lonkly@knightswhocode.com" VerticalAlignment="Top" Width="272"
+                 HorizontalAlignment="Left" Margin="38,240,0,0" Text="support address" VerticalAlignment="Top" Width="272"
                  Foreground="#FF0028FF" />
-                    <TextBlock Foreground="#FF0028FF" Height="57" HorizontalAlignment="Left" Margin="195,0,0,300" Name="textBlock2" Text="." VerticalAlignment="Bottom" Width="149" FontSize="22" />
-                    <TextBlock Height="60" HorizontalAlignment="Left" Margin="12,300,0,0" Name="textBlock5" Text="Background images taken from Flickr. All rights reserved ©  " TextWrapping="Wrap" VerticalAlignment="Top" Width="444" FontSize="22"/>
-                    <Button Content="Rate us!" Height="72" HorizontalAlignment="Left" Margin="138,400,0,0" Name="button1" VerticalAlignment="Top" Width="160" Click="rateUs" />
-                    <TextBlock Foreground="#FF0028FF" Height="30" HorizontalAlignment="Left" Margin="195,330,0,0" Name="textBlock6" Text="Rina B" VerticalAlignment="Top" Width="234" ManipulationCompleted="goToRina"  />
+                    <TextBlock Height="60" HorizontalAlignment="Left" Margin="12,300,0,0" Name="textBlock5" Text="Background images taken from Flickr. All rights reserved ©  " TextWrapping="Wrap" VerticalAlignment="Top" Width="380" FontSize="22"/>
+                    <Button Content="Rate us!" Height="72" HorizontalAlignment="Left" Margin="16,412,0,0" Name="button1" VerticalAlignment="Top" Width="160" Click="rateUs" />
+                    <TextBlock Foreground="#FF0028FF" Height="30" HorizontalAlignment="Left" Margin="223,330,0,0" Name="textBlock6" Text="Rina B" VerticalAlignment="Top" Width="148" ManipulationCompleted="goToRina"  />
+                    <Button Content="Terms of use" Height="72" HorizontalAlignment="Left" Margin="188,412,0,0" Name="button2" VerticalAlignment="Top" Width="200" Click="termsClicked" />
                 </Grid>
             </controls:PanoramaItem>
 
@@ -147,7 +147,7 @@
                                             Opacity="0.6"
                                             Foreground="White"
                                             x:Name="customProgressOverlay" 
-                                            AnimationStyle="AnimationStyle5"/>
+                                            AnimationStyle="AnimationStyle8"/>
 
         <Controls1:BindableApplicationBar IsVisible="True" BarOpacity="0.6">
 

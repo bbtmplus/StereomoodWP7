@@ -161,7 +161,7 @@ namespace TuneYourMood
             {
                 NotificationTool.Show("Offline",
                                       "Sorry, the network is not available at the moment",
-                                      new NotificationAction("Okay :(", () => { throw new Exception("ExitApp"); }));
+                                      new NotificationAction("Okay :(", () => {}));
             }
 
 
@@ -236,21 +236,6 @@ namespace TuneYourMood
 
             switch (METHOD)
             {
-                /*
-            case Constants.METHOD_AUTHORIZATION:
-                {
-                    parameters = returnedParams;
-                    webBrowser1.LoadCompleted += webbrowser_LoginPageLoaded;
-                    webBrowser1.IsScriptEnabled = true;
-                    webBrowser1.Navigate(new Uri(parameters["URL"]));
-                    break;
-                }
-            case Constants.METHOD_ACCESS_TOKEN:
-                {
-                        
-                    break;
-                }*/
-
                 case Constants.METHOD_QUITAPP:
                     {
                         loadTags();
@@ -420,22 +405,7 @@ namespace TuneYourMood
             }
 
         }
-        /* TODO: To be implemented
-        private void favoritesSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            customProgressOverlay.Show();
-            var listBox = sender as ListBox;
-            if (listBox != null)
-            {
-                Tag tag = ((Tag)listBox.SelectedItems[0]);
-                if (tag != null)
-                {
-                    Deployment.Current.Dispatcher.BeginInvoke(() => oauthCommunication.searchSongs(tag));
-                    CurrentItemCollections.Instance().currentMood = tag;
-                }
-            }
-        }
-        */
+
         protected override void OnBackKeyPress(CancelEventArgs e)
         {
 
@@ -514,17 +484,22 @@ namespace TuneYourMood
         }
 
 
-        private void sendEmailEvent(object sender, ManipulationCompletedEventArgs manipulationCompletedEventArgs)
+        private void sendEmailEvent(object sender, ManipulationCompletedEventArgs e)
         {
-            emailComposeTask = new EmailComposeTask { To = "lonkly@knightswhocode.com", Subject = "Tune Your Mood" };
-
-            emailComposeTask.Show();
+            if (!e.IsInertial)
+            {
+                emailComposeTask = new EmailComposeTask { To = "lonkly@knightswhocode.com", Subject = "Tune Your Mood" };
+                emailComposeTask.Show();
+            }
         }
 
         private void goToRina(object sender, ManipulationCompletedEventArgs e)
         {
-            WebBrowserTask task = new WebBrowserTask { Uri = new Uri("http://www.flickr.com/photos/45837840@N07/", UriKind.Absolute) };
-            task.Show();
+            if (!e.IsInertial)
+            {
+                WebBrowserTask task = new WebBrowserTask { Uri = new Uri("http://www.flickr.com/photos/45837840@N07/", UriKind.Absolute) };
+                task.Show();
+            }
         }
 
         private void rateUs(object sender, System.Windows.RoutedEventArgs e)
@@ -536,6 +511,18 @@ namespace TuneYourMood
         private void goToPlayerClicked(object sender, EventArgs e)
         {
             Uri playerUri = new Uri("/SongDetailsPage.xaml", UriKind.Relative);
+            NavigationService.Navigate(playerUri);
+        }
+
+        private void kwcClicked(object sender, RoutedEventArgs e)
+        {
+            WebBrowserTask task = new WebBrowserTask { Uri = new Uri("http://knightswhocode.com/", UriKind.Absolute) };
+            task.Show();
+        }
+
+        private void termsClicked(object sender, RoutedEventArgs e)
+        {
+            Uri playerUri = new Uri("/TermsPage.xaml", UriKind.Relative);
             NavigationService.Navigate(playerUri);
         }
     }

@@ -7,7 +7,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using DeepForest.Phone.Assets.Tools;
 using Microsoft.Phone.BackgroundAudio;
+using Microsoft.Phone.Tasks;
 using StereomoodPlaybackAgent;
+using TuneYourMood.Json;
 using Song = StereomoodPlaybackAgent.Song;
 
 namespace TuneYourMood
@@ -29,12 +31,38 @@ namespace TuneYourMood
 
             itemCollections = CurrentItemCollections.Instance();
 
+            Tag currentTag = CurrentItemCollections.Instance().currentMood;
+
+            if (currentTag != null)
+            {
+                if (currentTag.type.ToLower().Equals(Constants.TYPE_MOOD))
+                {
+                    tagTitle.Text = "I'm feeling " + currentTag.value;
+                }
+                else if (currentTag.type.ToLower().Equals(Constants.TYPE_ACTIVITY))
+                {
+                    tagTitle.Text = "hey! go on, " + currentTag.value;
+                }
+            }
 
             pauseImage = new BitmapImage(new Uri("/Images/appbar.transport.pause.rest.png", UriKind.Relative));
             playImage = new BitmapImage(new Uri("/Images/appbar.transport.play.rest.png", UriKind.Relative));
             BackgroundAudioPlayer.Instance.Track = null;
 
             BackgroundAudioPlayer.Instance.PlayStateChanged += Instance_PlayStateChanged;
+            loadAppBackground();
+
+        }
+
+        private void loadAppBackground()
+        {
+            Dictionary<string, BitmapImage> backgroundBrushes = CurrentItemCollections.Instance().backgroundBrushes;
+            var backgroundBrush = new ImageBrush
+                                         {
+                                             Opacity = 0.8d,
+                                             ImageSource = backgroundBrushes[CurrentItemCollections.Instance().currentBackgroundKey]
+                                         };
+            LayoutRoot.Background = backgroundBrush;
         }
 
         private void Instance_PlayStateChanged(object sender, EventArgs e)
@@ -57,18 +85,16 @@ namespace TuneYourMood
             {
                 songTextBox.Text = BackgroundAudioPlayer.Instance.Track.Title;
                 authorTextBox.Text = BackgroundAudioPlayer.Instance.Track.Artist;
-                artImage.Source = new BitmapImage(BackgroundAudioPlayer.Instance.Track.AlbumArt);
+                artImageBrush.ImageSource = new BitmapImage(BackgroundAudioPlayer.Instance.Track.AlbumArt);
             }
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-          
+
 
             if (NetworkInterface.GetIsNetworkAvailable())
             {
-
-
                 var value = itemCollections.currentMood.value;
                 if (value != null)
                     itemCollections.getSongsForTagDictionary().TryGetValue(value, out songs);
@@ -84,7 +110,7 @@ namespace TuneYourMood
                     playButton.IconUri = pauseImage.UriSource;
                     songTextBox.Text = BackgroundAudioPlayer.Instance.Track.Title;
                     authorTextBox.Text = BackgroundAudioPlayer.Instance.Track.Artist;
-                    artImage.Source = new BitmapImage(BackgroundAudioPlayer.Instance.Track.AlbumArt);
+                    artImageBrush.ImageSource = new BitmapImage(BackgroundAudioPlayer.Instance.Track.AlbumArt);
                 }
                 else
                 {
@@ -127,5 +153,28 @@ namespace TuneYourMood
 
         #endregion
 
+        private void shareClicked(object sender, EventArgs e)
+        {
+            string shareString = "";
+            Tag currentTag = CurrentItemCollections.Instance().currentMood;
+
+            if (currentTag.type.ToLower().Equals(Constants.TYPE_MOOD))
+            {
+                shareString = "I am listening to " + BackgroundAudioPlayer.Instance.Track.Title + " and feeling " + currentTag.value;
+            }
+            else if (currentTag.type.ToLower().Equals(Constants.TYPE_ACTIVITY))
+            {
+                shareString = "Hey, go on " + currentTag.value + "! I'm listening to " + BackgroundAudioPlayer.Instance.Track.Title + "";
+            }
+            ShareLinkTask shareLinkTask = new ShareLinkTask
+                                              {
+                                                  Title = "Enjoying Tune Your Mood for WP7",
+                                                  LinkUri = BackgroundAudioPlayer.Instance.Track.Source,
+                                                  Message = shareString
+                                              };
+
+
+            shareLinkTask.Show();
+        }
     }
 }

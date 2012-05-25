@@ -87,10 +87,6 @@ namespace StereomoodPlaybackAgent
                 }
                 player.Play();
             }
-
-            else
-            {
-            }
         }
 
         private void loadPlaylist()

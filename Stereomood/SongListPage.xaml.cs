@@ -83,7 +83,7 @@ namespace TuneYourMood
             {
                 NotificationTool.Show("Offline",
                                      "Sorry, the network is not available at the moment",
-                                     new NotificationAction("Okay :(", () => { throw new Exception("ExitApp"); }));
+                                     new NotificationAction("Okay :(", () => { }));
             }
         }
 

@@ -27,17 +27,26 @@
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" x:Name="ApplicationTitle" Text="Tune Your Mood" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="40"  FontWeight="Medium" Grid.ColumnSpan="2" Margin="10,0,0,0" />
         <Grid Name="songPanel" Width="Auto" Height="Auto" Grid.Row="1">
-            <MediaElement Name="mediaPlayer" ></MediaElement>
-            <TextBlock TextAlignment="Center" Height="69" HorizontalAlignment="Left" Margin="0,36,0,594" Name="songTextBox" Text="" VerticalAlignment="Center" Width="480" FontWeight="Bold" FontSize="32" />
-            <Image Height="204" HorizontalAlignment="Center" Margin="131,314,119,180" Name="artImage" Stretch="Fill" VerticalAlignment="Center" Width="230" />
-            <TextBlock Height="75" HorizontalAlignment="Center" Margin="0,131,0,0" Name="authorTextBox" Text="" VerticalAlignment="Top" Width="480" FontWeight="Normal" FontSize="30" Foreground="LightGray" TextAlignment="Center"/>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="356*" />
+                <RowDefinition Height="342*" />
+            </Grid.RowDefinitions>
+            <MediaElement Name="mediaPlayer" Grid.RowSpan="2"></MediaElement>
+            <TextBlock TextAlignment="Left" Height="69" HorizontalAlignment="Left" Margin="6,108,0,164" Name="songTextBox" VerticalAlignment="Center" Width="474" FontWeight="Bold" FontSize="32" Grid.Row="1" Text="Music Made"/>
 
+            <Border BorderBrush="White" HorizontalAlignment="Center" VerticalAlignment="Center" Height="200" Width="200" BorderThickness="3" Margin="0,260,280,238" Grid.RowSpan="2">
+                <Border.Background>
+                    <ImageBrush x:Name="artImageBrush" ImageSource="Background200.png"/>
+                </Border.Background>
+            </Border>
+            <TextBlock Height="61" HorizontalAlignment="Center" Margin="6,184,0,0" Name="authorTextBox" Text="Your Day!" VerticalAlignment="Top" Width="474" FontWeight="Normal" FontSize="30" Foreground="White" TextAlignment="Left" Grid.Row="1" />
+            <TextBlock FontSize="34" FontWeight="Bold" Height="45" HorizontalAlignment="Right" Name="tagTitle" Padding="0,0,15,0" Text="" TextAlignment="Right" VerticalAlignment="Top" Width="480" />
         </Grid>
-        <Controls:BindableApplicationBar IsVisible="True" IsMenuEnabled="True">
+        <Controls:BindableApplicationBar BarOpacity="0.6" IsVisible="True" IsMenuEnabled="True">
             <Controls:BindableApplicationBarIconButton IconUri="/Images/appbar.transport.rew.rest.png" x:Name="prevButton" Text="Prev" Click="previousClicked"  />
             <Controls:BindableApplicationBarIconButton IconUri="/Images/appbar.transport.pause.rest.png" x:Name="playButton" Text="Play/Pause" Click="playClicked" />
             <Controls:BindableApplicationBarIconButton IconUri="/Images/appbar.transport.ff.rest.png" x:Name="nextButton" Text="Next" Click="nextClicked" />
-
+            <Controls:BindableApplicationBarMenuItem Text="Share song!" Click="shareClicked"/>
         </Controls:BindableApplicationBar>
     </Grid>
 

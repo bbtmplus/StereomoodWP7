@@ -18,14 +18,14 @@ namespace TuneYourMood
     {
         private static CurrentItemCollections instance;
 
-        public string currentBackgroundKey = "Daylight";
+        public string currentBackgroundKey = "Reflection";
         public Dictionary<string, BitmapImage> backgroundBrushes = new Dictionary<string, BitmapImage> { {"Dawn",new BitmapImage(new Uri("/Images/Backgrounds/bg1.jpg",UriKind.Relative))},
                                                                      {"Daylight",new BitmapImage(new Uri("/Images/Backgrounds/bg2.jpg",UriKind.Relative))},
                                                                      { "Blue Sky", new BitmapImage(new Uri("/Images/Backgrounds/bg3.jpg",UriKind.Relative))},
                                                                      {"The Web",new BitmapImage(new Uri("/Images/Backgrounds/bg4.jpg",UriKind.Relative))},
                                                                      {"Reflection",new BitmapImage(new Uri("/Images/Backgrounds/bg5.jpg",UriKind.Relative))},
                                                                      {"Evening",new BitmapImage(new Uri("/Images/Backgrounds/bg6.jpg",UriKind.Relative))},
-                                                                     {"Clowdy Sea",new BitmapImage(new Uri("/Images/Backgrounds/bg7.jpg",UriKind.Relative))},
+                                                                     {"Clowdy Evening",new BitmapImage(new Uri("/Images/Backgrounds/bg7.jpg",UriKind.Relative))},
                                                                      { "Dusk&Clowds",new BitmapImage(new Uri("/Images/Backgrounds/bg8.jpg",UriKind.Relative))},
                                                                      { "Flower",new BitmapImage(new Uri("/Images/Backgrounds/bg9.jpg",UriKind.Relative))}};
 

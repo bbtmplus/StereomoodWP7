@@ -20,16 +20,16 @@
     <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:packages.config" caret="0" fromTop="0" />
     <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:App.xaml" caret="0" fromTop="0" />
     <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:Searchbar.xaml" caret="624" fromTop="5" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:Constants.cs" caret="232" fromTop="8" />
+    <File id="1FC78099-D833-48F8-A610-E85FB231C8A9/f:AudioPlayer.cs" caret="3048" fromTop="4" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:App.xaml.cs" caret="3341" fromTop="11" />
     <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongListPage.xaml" caret="1274" fromTop="20" />
     <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongDetailsPage.xaml" caret="1" fromTop="0" />
     <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:BuyNowControl.xaml" caret="772" fromTop="16" />
     <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml" caret="10273" fromTop="17" />
     <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SettingsPage.xaml" caret="616" fromTop="1" />
     <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:ReviewBugger.cs" caret="3054" fromTop="12" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:Constants.cs" caret="232" fromTop="8" />
-    <File id="1FC78099-D833-48F8-A610-E85FB231C8A9/f:AudioPlayer.cs" caret="3048" fromTop="4" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:App.xaml.cs" caret="3341" fromTop="11" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="1540" fromTop="12" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="1786" fromTop="19" />
   </RecentFiles>
   <RecentEdits>
     <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:App.xaml.cs" caret="3364" fromTop="23" />

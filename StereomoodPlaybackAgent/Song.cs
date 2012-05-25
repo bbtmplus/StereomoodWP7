@@ -27,7 +27,7 @@ namespace StereomoodPlaybackAgent
             get
             {
                 return _image_url.ToString().Equals("http://www.stereomood.com/gui/img/default_album_player.gif")
-                        ? new Uri("http://dl.dropbox.com/u/7947878/default_album_player.jpg")
+                        ? new Uri("http://dl.dropbox.com/u/7947878/album_placeholder.png")
                         : _image_url;
             }
             set
