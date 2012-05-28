@@ -24,7 +24,9 @@ namespace TuneYourMood
         public const int METHOD_SEARCH = 3;
         public const int METHOD_SELECTED_TAGS = 4;
         public const int METHOD_TOP_TAGS = 5;
+        public const int METHOD_RESET = 5;
         public const int METHOD_QUITAPP = 6669;
+
 
         public const string TYPE_MOOD = "mood";
         public const string TYPE_ACTIVITY = "activity";

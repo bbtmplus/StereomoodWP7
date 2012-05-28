@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
+using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -23,136 +25,56 @@ namespace TuneYourMood
 {
     public partial class MainPage : PhoneApplicationPage
     {
-        private RestApiCommunication restCommunication;
+        private readonly RestApiCommunication restCommunication = RestApiCommunication.getInstance();
         private EmailComposeTask emailComposeTask;
         private SearchResult searchResult;
 
         private bool uiBlocked;
-        private bool isUserLoggedIn;
         private bool isSearchBarVisible;
         public static ImageBrush backgroundBrush { get; set; }
 
+        private readonly CurrentItemCollections itemCollections = CurrentItemCollections.Instance();
+
         private readonly Searchbar searchbar = new Searchbar();
         private readonly Dictionary<string, string> parameters = new Dictionary<string, string>();
-        public const string ApiKeyValue = "Q2B2WXIGLCWYG7HS8CAH";
 
         public MainPage()
         {
-            InitializeComponent();
-            InitializeElements();
-
-            LayoutRoot.Children.Add(searchbar);
-
-            uiBlocked = true;
-
             Loaded += MainPage_Loaded;
+            InitializeComponent();
+
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
+                                                          {
+                                                              searchbar.searchPressed += searchbar_searchPressed;
+                                                              LayoutRoot.Children.Add(searchbar);
+
+                                                              this.SetValue(RadTileAnimation.ContainerToAnimateProperty,
+                                                                            this.selectedTagsList);
+                                                              this.SetValue(RadTileAnimation.ContainerToAnimateProperty,
+                                                                            this.topTagsList);
+
+                                                              uiBlocked = true;
+                                                          });
         }
 
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-            ReviewBugger.CheckNumOfRuns();
-            FlurryWP7SDK.Api.StartSession(ApiKeyValue);
-            BugSenseHandler.Instance.Init(App.Current, "7d1e25c4");
-            BugSenseHandler.Instance.UnhandledException += OnUnhandledException;
-        }
+            Deployment.Current.Dispatcher.BeginInvoke(ReviewBugger.CheckNumOfRuns);
 
-        private void OnUnhandledException(object sender, BugSenseUnhandledExceptionEventArgs e)
-        {
-            try
-            {
-                //Some code to execute
-            }
-            catch (Exception ex)
-            {
-                BugSenseHandler.Instance.LogError(ex, null, null);
-            }
-        }
-
-
-        private void InitializeElements()
-        {
-            searchbar.searchPressed += searchbar_searchPressed;
-            this.SetValue(RadTileAnimation.ContainerToAnimateProperty, this.selectedTagsList);
-            this.SetValue(RadTileAnimation.ContainerToAnimateProperty, this.topTagsList);
-
-
-        }
-
-        private void loadAppBackground()
-        {
-            Dictionary<string, BitmapImage> backgroundBrushes = CurrentItemCollections.Instance().backgroundBrushes;
-            backgroundBrush = new ImageBrush
-            {
-                Opacity = 0.8d,
-                ImageSource = backgroundBrushes[CurrentItemCollections.Instance().currentBackgroundKey]
-            };
-            panorama.Background = backgroundBrush;
-        }
-
-        private void loadTags()
-        {
-            Deployment.Current.Dispatcher.BeginInvoke(() =>
-                               {
-                                   if (CurrentItemCollections.Instance().topTags == null)
-                                   {
-                                       restCommunication.getTopTags();
-                                   }
-                                   else
-                                   {
-                                       List<Tag> refinedList = CurrentItemCollections.Instance().topTags.Where(
-                                           tag => tag != null && tag.value != null && !tag.value.Equals("")).ToList();
-                                       topTagsList.ItemsSource = refinedList;
-                                       customProgressOverlay.IsRunning = false;
-
-                                       customProgressOverlay.Visibility = Visibility.Collapsed;
-
-                                       uiBlocked = false;
-                                   }
-                                   if (CurrentItemCollections.Instance().selectedTags == null)
-                                   {
-                                       restCommunication.getSelectedTags();
-                                   }
-                                   else
-                                   {
-                                       List<Tag> refinedList = CurrentItemCollections.Instance().selectedTags.Where(
-                                           tag => tag != null && tag.value != null && !tag.value.Equals("")).ToList();
-                                       selectedTagsList.ItemsSource = refinedList;
-                                       customProgressOverlay.IsRunning = false;
-                                       customProgressOverlay.Visibility = Visibility.Collapsed;
-                                       uiBlocked = false;
-                                   }
-                               }
-                           );
-        }
-
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
             if (NetworkInterface.GetIsNetworkAvailable())
             {
                 searchbar.Visibility = Visibility.Collapsed;
                 isSearchBarVisible = false;
 
-                //  oauthCommunication = OauthCommunication.getInstance();
-                restCommunication = RestApiCommunication.getInstance();
-
-                //  oauthCommunication.loadFinished += loadFinished;
-                // OauthCommunication.ArrayEvent<Tag>.getArrayEventInstance().loadFinishedWithArray += loadFinishedWithArray;
                 RestApiCommunication.ArrayEvent<Tag>.getArrayEventInstance().loadFinishedWithArray += loadFinishedWithArray;
                 RestApiCommunication.LoadEvent<Song>.getArrayEventInstance().loadFinished += loadFinished;
 
-                InitializeElements();
-
-                // if (!restCommunication.isConnected())
-                //  {
-                // loadAppBackground();
-                //   oauthCommunication.getRequestToken();
                 loadAppBackground();
-                customProgressOverlay.IsRunning = true;
-                customProgressOverlay.Visibility = Visibility.Visible;
-                loadTags();
-                //  }
 
-                if (CurrentItemCollections.Instance().currentMood != null && CurrentItemCollections.Instance().audioTracks != null)
+                blockUI();
+                loadTags();
+
+                if (itemCollections.currentMood != null && itemCollections.audioTracks != null)
                 {
                     goToPlayerButton.IsEnabled = true;
                 }
@@ -161,37 +83,90 @@ namespace TuneYourMood
             {
                 NotificationTool.Show("Offline",
                                       "Sorry, the network is not available at the moment",
-                                      new NotificationAction("Okay :(", () => {}));
+                                      new NotificationAction("Okay :(", () => { throw new Exception("ExitApp"); }));
             }
-
-
-            base.OnNavigatedTo(e);
-
         }
 
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        private void loadAppBackground()
         {
-            selectedTagsList.SelectedIndex = -1;
-            topTagsList.SelectedIndex = -1;
-            SongListPage songListPage = (e.Content as SongListPage);
-            if (songListPage != null)
-            {
-                songListPage.searchResult = searchResult;
-                songListPage.currentTag = CurrentItemCollections.Instance().currentMood;
-            }
-            base.OnNavigatedFrom(e);
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
+                                                          {
+                                                              Dictionary<string, BitmapImage> backgroundBrushes =
+                                                                  itemCollections.backgroundBrushes;
+                                                              backgroundBrush = new ImageBrush
+                                                                                    {
+                                                                                        Opacity = 0.8d,
+                                                                                        ImageSource =
+                                                                                            backgroundBrushes[
+                                                                                                itemCollections.
+                                                                                                    currentBackgroundKey
+                                                                                            ]
+                                                                                    };
+                                                              panorama.Background = backgroundBrush;
+                                                          });
+        }
+
+        private void unblockUI()
+        {
+            customProgressOverlay.IsRunning = false;
+            customProgressOverlay.Visibility = Visibility.Collapsed;
+            uiBlocked = false;
+        }
+
+        private void blockUI()
+        {
+            customProgressOverlay.IsRunning = true;
+            customProgressOverlay.Visibility = Visibility.Visible;
+        }
+
+        private void loadTags()
+        {
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
+                               {
+                                   if (itemCollections.topTags == null)
+                                   {
+                                       restCommunication.getTopTags();
+                                   }
+                                   else
+                                   {
+                                       List<Tag> refinedList = itemCollections.topTags.Where(
+                                           tag => tag != null && tag.value != null && !tag.value.Equals("")).ToList();
+                                       topTagsList.ItemsSource = refinedList;
+                                       unblockUI();
+                                   }
+                                   if (itemCollections.selectedTags == null)
+                                   {
+                                       restCommunication.getSelectedTags();
+                                   }
+                                   else
+                                   {
+                                       List<Tag> refinedList = itemCollections.selectedTags.Where(
+                                           tag => tag != null && tag.value != null && !tag.value.Equals("")).ToList();
+                                       selectedTagsList.ItemsSource = refinedList;
+                                       unblockUI();
+                                   }
+
+
+                                   if (itemCollections.favoritesDict == null)
+                                   {
+                                       itemCollections.favoritesDict = new Dictionary<string, Song>();
+                                   }
+                                   else
+                                   {
+                                       favoritesList.ItemsSource = itemCollections.favoritesDict.Values.ToList();
+
+                                       unblockUI();
+                                   }
+                                   favoritesList.ItemsSource = itemCollections.favoritesDict.Values.ToList();
+                               }
+                           );
         }
 
         #region LoadFinished
 
         private void loadFinishedWithArray(int METHOD, Tag[] tags)
         {
-            if (ReviewBugger.IsTimeForReview())
-            {
-                ReviewBugger.PromptUser();
-            }
-            customProgressOverlay.IsRunning = false;
-            customProgressOverlay.Visibility = Visibility.Collapsed;
+            unblockUI();
 
             switch (METHOD)
             {
@@ -199,11 +174,7 @@ namespace TuneYourMood
                     {
                         if (tags != null)
                         {
-                            CurrentItemCollections.Instance().selectedTags = new List<Tag>(tags);
-                            selectedTagsList.ItemsSource = CurrentItemCollections.Instance().selectedTags;
-                            customProgressOverlay.IsRunning = false;
-                            customProgressOverlay.Visibility = Visibility.Collapsed;
-                            uiBlocked = false;
+                            selectedTagsList.ItemsSource = itemCollections.selectedTags = new List<Tag>(tags);
                         }
                         else
                         {
@@ -215,11 +186,7 @@ namespace TuneYourMood
                     {
                         if (tags != null)
                         {
-                            CurrentItemCollections.Instance().topTags = new List<Tag>(tags);
-                            topTagsList.ItemsSource = CurrentItemCollections.Instance().topTags;
-                            customProgressOverlay.IsRunning = false;
-                            customProgressOverlay.Visibility = Visibility.Collapsed;
-                            uiBlocked = false;
+                            topTagsList.ItemsSource = itemCollections.topTags = new List<Tag>(tags);
                         }
                         else
                         {
@@ -233,243 +200,81 @@ namespace TuneYourMood
 
         private void loadFinished(int METHOD, Song[] songs, Dictionary<string, string> returnedParams)
         {
+            unblockUI();
 
             switch (METHOD)
             {
+                case Constants.METHOD_RESET:
+                    {
+                        break;
+                    }
                 case Constants.METHOD_QUITAPP:
                     {
-                        loadTags();
                         break;
                     }
                 case Constants.METHOD_SEARCH:
                     {
-                        customProgressOverlay.IsRunning = false;
-                        customProgressOverlay.Visibility = Visibility.Collapsed;
-                        if (songs != null && songs.Length > 0)
-                        {
-                            Uri songListUri = new Uri("/SongListPage.xaml", UriKind.Relative);
-                            if (returnedParams.ContainsKey("VALUE"))
-                            {
-                                searchResult = new SearchResult { trackList = songs, tracksTotal = songs.Length };
-                                CurrentItemCollections.Instance().currentMood = new Tag
-                                                                                    {
-                                                                                        type = returnedParams["TYPE"],
-                                                                                        value = returnedParams["VALUE"]
-                                                                                    };
-                            }
-                            NavigationService.Navigate(songListUri);
-                        }
-                        else
-                        {
-                            NotificationTool.Show("Sorry",
-                                                  "Couldn't find anything. Could you be more prescice?",
-                                                  new NotificationAction("Okay :(", () => { }));
-                        }
+                        Deployment.Current.Dispatcher.BeginInvoke(() =>
+                                                                      {
+                                                                          if (songs != null && songs.Length > 0)
+                                                                          {
+                                                                              if (returnedParams.ContainsKey("VALUE"))
+                                                                              {
+                                                                                  searchResult = new SearchResult
+                                                                                                     {
+                                                                                                         trackList =
+                                                                                                             songs,
+                                                                                                         tracksTotal =
+                                                                                                             songs.
+                                                                                                             Length
+                                                                                                     };
+                                                                                  itemCollections.currentMood = new Tag
+                                                                                                                    {
+                                                                                                                        type
+                                                                                                                            =
+                                                                                                                            returnedParams
+                                                                                                                            [
+                                                                                                                                "TYPE"
+                                                                                                                            ],
+                                                                                                                        value
+                                                                                                                            =
+                                                                                                                            returnedParams
+                                                                                                                            [
+                                                                                                                                "VALUE"
+                                                                                                                            ]
+                                                                                                                    };
+                                                                              }
 
+                                                                              if (itemCollections.currentMood != null &&
+                                                                                  !itemCollections.
+                                                                                       getSongsForTagDictionary().
+                                                                                       ContainsKey(
+                                                                                           itemCollections.currentMood.
+                                                                                               value))
+                                                                              {
+                                                                                  itemCollections.
+                                                                                      getSongsForTagDictionary().Add(
+                                                                                          itemCollections.currentMood.
+                                                                                              value, songs);
+                                                                              }
+
+                                                                          }
+
+
+                                                                          itemCollections.currentTrackNumber = Int16.Parse(StorageUtility.readObjectFromFile<string>(IsolatedStorageFile.GetUserStoreForApplication(), "CurrentTrackNumber.txt"));
+                                                                          itemCollections.currentSong = itemCollections.audioTracks[itemCollections.currentTrackNumber];
+                                                                          Uri songDetailsUri =
+                                                                              new Uri("/SongDetailsPage.xaml",
+                                                                                      UriKind.Relative);
+                                                                          NavigationService.Navigate(songDetailsUri);
+                                                                      });
                         break;
                     }
             }
         }
         #endregion
 
-        #region OauthLogin Methods
-
-        private void webbrowser_LoginPageLoaded(object sender, NavigationEventArgs e)
-        {
-            if (e.Uri.Equals(parameters["URL"]) && !isUserLoggedIn)
-            {
-                isUserLoggedIn = true;
-                webBrowser1.InvokeScript("eval", "document.getElementById('username').value='lonkly';");
-                webBrowser1.InvokeScript("eval", "document.getElementById('user_pass').value='Lonkly303';");
-
-                webBrowser1.InvokeScript("eval", "getLogin = function() { var links = document.getElementsByTagName(\"a\");for(var i = 0; i < links.length; i++) {" +
-                                                 "if (links[i].className==\"submit_login submit_action\"){" +
-                                                 "return links[i]}" +
-                                                 "}" +
-                                                 "}");
-                webBrowser1.InvokeScript("eval", "var button = getLogin(); button.click();");
-                webBrowser1.LoadCompleted -= webbrowser_LoginPageLoaded;
-                webBrowser1.LoadCompleted += webbrowser_FilledLoginCredentials;
-            }
-        }
-
-        private void webbrowser_FilledLoginCredentials(object sender, NavigationEventArgs e)
-        {
-            webBrowser1.LoadCompleted -= webbrowser_FilledLoginCredentials;
-            webBrowser1.LoadCompleted += webbrowser_FindPincode;
-            webBrowser1.InvokeScript("eval", "allowButton = function() { var links = document.getElementsByTagName(\"a\");for(var i = 0; i < links.length; i++) {" +
-                                  "if (links[i].className==\"linkSubmitReq\"){" +
-                                  "return links[i]}" +
-                                  "}" +
-                                  "}");
-            try
-            {
-                webBrowser1.InvokeScript("eval", "var button = allowButton(); button.click();");
-            }
-            catch (SystemException ex)
-            {
-                webbrowser_FindPincode(null, null);
-            }
-
-        }
-
-        private void webbrowser_FindPincode(object sender, NavigationEventArgs e)
-        {
-            string content = webBrowser1.SaveToString();
-            int indexOf = content.IndexOf("PIN:", StringComparison.OrdinalIgnoreCase);
-
-            string pinSubstring = content.Substring(indexOf);
-            int endIndex = pinSubstring.IndexOf("</h1>", StringComparison.OrdinalIgnoreCase);
-            string pinString = pinSubstring.Remove(endIndex);
-            string pin = ExtractNumbers(pinString);
-
-            OauthCommunication.getInstance().getAccessToken(pin);
-        }
-
-        #endregion
-
         #region ACTIONS
-
-        private void barItemSearchClicked(object sender, EventArgs e)
-        {
-            toggleSearchBar();
-        }
-
-        private void searchBarAnimationComplete(object sender, EventArgs e)
-        {
-            uiBlocked = false;
-        }
-
-        private void toggleSearchBar()
-        {
-            if (!uiBlocked)
-            {
-                uiBlocked = true;
-                Storyboard sbMoveIn = new Storyboard();
-                sbMoveIn.Completed += searchBarAnimationComplete;
-                if (searchbar.Visibility == Visibility.Collapsed)
-                {
-                    searchbar.Visibility = Visibility.Visible;
-                    MoveIn(searchbar, sbMoveIn, true);
-                    isSearchBarVisible = true;
-                }
-                else
-                {
-                    isSearchBarVisible = isSearchBarVisible != true;
-                    MoveIn(searchbar, sbMoveIn, isSearchBarVisible);
-
-                }
-
-            }
-        }
-
-        private void searchbar_searchPressed(string textToSearch)
-        {
-            if (stringNotEmpty(textToSearch))
-            {
-                customProgressOverlay.IsRunning = true;
-                customProgressOverlay.Visibility = Visibility.Visible;
-                Deployment.Current.Dispatcher.BeginInvoke(() => restCommunication.searchSongs(Constants.TYPE_SITE, textToSearch));
-            }
-        }
-
-        private void topTagSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            customProgressOverlay.IsRunning = true;
-            customProgressOverlay.Visibility = Visibility.Visible;
-            var listBox = sender as ListBox;
-            if (listBox != null)
-            {
-                Tag tag = (Tag)listBox.SelectedItem;
-                if (tag != null)
-                {
-                    Deployment.Current.Dispatcher.BeginInvoke(() => restCommunication.searchSongs(tag));
-                    CurrentItemCollections.Instance().currentMood = tag;
-                }
-            }
-        }
-
-        private void selectedTagsSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            customProgressOverlay.IsRunning = true;
-            customProgressOverlay.Visibility = Visibility.Visible;
-            var listBox = sender as ListBox;
-            if (listBox != null)
-            {
-                Tag tag = (Tag)listBox.SelectedItem;
-                if (tag != null)
-                {
-                    Deployment.Current.Dispatcher.BeginInvoke(() => restCommunication.searchSongs(tag));
-                    CurrentItemCollections.Instance().currentMood = tag;
-                }
-            }
-
-        }
-
-        protected override void OnBackKeyPress(CancelEventArgs e)
-        {
-
-            if (isSearchBarVisible && !uiBlocked)
-            {
-                toggleSearchBar();
-                e.Cancel = true;
-            }
-            base.OnBackKeyPress(e);
-        }
-
-        #endregion
-
-
-        #region UTILS
-
-        private void FadeInOut(DependencyObject target, Storyboard sb, bool isFadeIn)
-        {
-            Duration d = new Duration(TimeSpan.FromSeconds(1));
-            DoubleAnimation daFade = new DoubleAnimation { Duration = d };
-            if (isFadeIn)
-            {
-                daFade.From = 1.00;
-                daFade.To = 0.00;
-            }
-            else
-            {
-                daFade.From = 0.00;
-                daFade.To = 1.00;
-            }
-
-            sb.Duration = d;
-            sb.Children.Add(daFade);
-            Storyboard.SetTarget(daFade, target);
-            Storyboard.SetTargetProperty(daFade, new PropertyPath("Opacity"));
-
-            sb.Begin();
-        }
-
-        private void MoveIn(UIElement source, Storyboard sb, bool moveIn)
-        {
-            int startValue = moveIn ? -200 : 0;
-            int endValue = moveIn ? 0 : -200;
-            DoubleAnimationUsingKeyFrames animationFirstY = new DoubleAnimationUsingKeyFrames();
-            source.RenderTransform = new CompositeTransform();
-            Storyboard.SetTargetProperty(animationFirstY, new PropertyPath(CompositeTransform.TranslateYProperty));
-            Storyboard.SetTarget(animationFirstY, source.RenderTransform);
-            animationFirstY.KeyFrames.Add(new EasingDoubleKeyFrame { KeyTime = TimeSpan.Zero, Value = startValue });
-            animationFirstY.KeyFrames.Add(new EasingDoubleKeyFrame { KeyTime = TimeSpan.FromSeconds(0.2), Value = endValue });
-            sb.Children.Add(animationFirstY);
-            sb.Begin();
-        }
-
-        private string ExtractNumbers(string expr)
-        {
-            return string.Join(null, Regex.Split(expr, "[^\\d]"));
-        }
-
-        private bool stringNotEmpty(string expr)
-        {
-            return Regex.IsMatch(expr, "[^ ]");
-        }
-
-        #endregion
 
         private void settingsClicked(object sender, EventArgs e)
         {
@@ -525,5 +330,169 @@ namespace TuneYourMood
             Uri playerUri = new Uri("/TermsPage.xaml", UriKind.Relative);
             NavigationService.Navigate(playerUri);
         }
+
+        private void barItemSearchClicked(object sender, EventArgs e)
+        {
+            toggleSearchBar();
+        }
+
+        private void searchBarAnimationComplete(object sender, EventArgs e)
+        {
+            uiBlocked = false;
+        }
+
+        private void toggleSearchBar()
+        {
+            if (!uiBlocked)
+            {
+                uiBlocked = true;
+                Storyboard sbMoveIn = new Storyboard();
+                sbMoveIn.Completed += searchBarAnimationComplete;
+                if (searchbar.Visibility == Visibility.Collapsed)
+                {
+                    searchbar.Visibility = Visibility.Visible;
+                    MoveIn(searchbar, sbMoveIn, true);
+                    isSearchBarVisible = true;
+                }
+                else
+                {
+                    isSearchBarVisible = isSearchBarVisible != true;
+                    MoveIn(searchbar, sbMoveIn, isSearchBarVisible);
+                }
+            }
+        }
+
+        private void searchbar_searchPressed(string textToSearch)
+        {
+            if (stringNotEmpty(textToSearch))
+            {
+                blockUI();
+                Deployment.Current.Dispatcher.BeginInvoke(() => restCommunication.searchSongs(Constants.TYPE_SITE, textToSearch));
+            }
+        }
+
+        private void topTagSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            blockUI();
+            var listBox = sender as ListBox;
+            if (listBox != null)
+            {
+                Tag tag = (Tag)listBox.SelectedItem;
+                if (tag != null)
+                {
+                    Deployment.Current.Dispatcher.BeginInvoke(() => restCommunication.searchSongs(tag));
+                    itemCollections.currentMood = tag;
+                    itemCollections.currentTrackNumber = 0;
+                }
+            }
+
+        }
+
+        private void selectedTagsSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            blockUI();
+            var listBox = sender as ListBox;
+            if (listBox != null)
+            {
+                Tag tag = (Tag)listBox.SelectedItem;
+                if (tag != null)
+                {
+                    Deployment.Current.Dispatcher.BeginInvoke(() => restCommunication.searchSongs(tag));
+                    itemCollections.currentMood = tag;
+                    itemCollections.currentTrackNumber = 0;
+                }
+            }
+
+        }
+
+        private void favoritesSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (favoritesList.SelectedIndex != -1)
+            {
+                Song[] songs =
+                    itemCollections.favoritesDict.Values.ToArray();
+                if (songs.Length > 0)
+                {
+                    searchResult = new SearchResult
+                                       {
+                                           trackList = songs,
+                                           tracksTotal = songs.Length
+                                       };
+                    itemCollections.currentMood = new Tag
+                                                      {
+                                                          type =
+                                                              Constants.
+                                                              TYPE_ACTIVITY,
+                                                          value =
+                                                              "favorites!"
+                                                      };
+                    if (itemCollections.getSongsForTagDictionary().ContainsKey(itemCollections.currentMood.value))
+                    {
+                        itemCollections.getSongsForTagDictionary().Remove(itemCollections.currentMood.value);
+                    }
+
+                    itemCollections.getSongsForTagDictionary().Add(
+                        itemCollections.currentMood.value, songs);
+
+                    itemCollections.currentTrackNumber = favoritesList.SelectedIndex;
+                    itemCollections.currentSong =
+                        songs[favoritesList.SelectedIndex];
+                    Uri songDetailsUri = new Uri("/SongDetailsPage.xaml",
+                                                 UriKind.Relative);
+                    itemCollections.SaveApplicationState();
+                    NavigationService.Navigate(songDetailsUri);
+                }
+            }
+
+        }
+
+        protected override void OnBackKeyPress(CancelEventArgs e)
+        {
+            if (isSearchBarVisible && !uiBlocked)
+            {
+                toggleSearchBar();
+                e.Cancel = true;
+            }
+            base.OnBackKeyPress(e);
+        }
+
+        private void syncPressed(object sender, EventArgs eventArgs)
+        {
+            itemCollections.LoadApplicationState();
+            if (itemCollections.favoritesDict != null)
+            {
+                favoritesList.ItemsSource = itemCollections.favoritesDict.Values.ToList();
+            }
+        }
+
+        #endregion
+
+        private void MoveIn(UIElement source, Storyboard sb, bool moveIn)
+        {
+            int startValue = moveIn ? -200 : 0;
+            int endValue = moveIn ? 0 : -200;
+            DoubleAnimationUsingKeyFrames animationFirstY = new DoubleAnimationUsingKeyFrames();
+            source.RenderTransform = new CompositeTransform();
+            Storyboard.SetTargetProperty(animationFirstY, new PropertyPath(CompositeTransform.TranslateYProperty));
+            Storyboard.SetTarget(animationFirstY, source.RenderTransform);
+            animationFirstY.KeyFrames.Add(new EasingDoubleKeyFrame { KeyTime = TimeSpan.Zero, Value = startValue });
+            animationFirstY.KeyFrames.Add(new EasingDoubleKeyFrame { KeyTime = TimeSpan.FromSeconds(0.2), Value = endValue });
+            sb.Children.Add(animationFirstY);
+            sb.Begin();
+        }
+
+        private bool stringNotEmpty(string expr)
+        {
+            return Regex.IsMatch(expr, "[^ ]");
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            topTagsList.SelectedIndex = -1;
+            selectedTagsList.SelectedIndex = -1;
+            favoritesList.SelectedIndex = -1;
+            base.OnNavigatedFrom(e);
+        }
+
     }
 }

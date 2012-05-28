@@ -1,0 +1,5 @@
+C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\StereomoodPlaybackAgent\Bin\Release\StereomoodPlaybackAgent.dll
+C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\StereomoodPlaybackAgent\Bin\Release\StereomoodPlaybackAgent.pdb
+C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\StereomoodPlaybackAgent\obj\Release\StereomoodPlaybackAgent.csprojResolveAssemblyReference.cache
+C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\StereomoodPlaybackAgent\obj\Release\StereomoodPlaybackAgent.dll
+C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\StereomoodPlaybackAgent\obj\Release\StereomoodPlaybackAgent.pdb

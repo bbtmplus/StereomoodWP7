@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.IO.IsolatedStorage;
 using System.Net.NetworkInformation;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using DeepForest.Phone.Assets.Tools;
+using Microsoft.Devices;
 using Microsoft.Phone.BackgroundAudio;
 using Microsoft.Phone.Tasks;
 using StereomoodPlaybackAgent;
@@ -16,8 +17,8 @@ namespace TuneYourMood
 {
     public partial class SongDetailsPage
     {
-        private readonly BitmapImage playImage;
-        private readonly BitmapImage pauseImage;
+        private BitmapImage playImage;
+        private BitmapImage pauseImage;
 
         private readonly IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication();
 
@@ -27,11 +28,32 @@ namespace TuneYourMood
 
         public SongDetailsPage()
         {
-            InitializeComponent();
-
             itemCollections = CurrentItemCollections.Instance();
 
-            Tag currentTag = CurrentItemCollections.Instance().currentMood;
+            InitializeComponent();
+
+            InitializeElements();
+
+            InitializePlayer();
+        }
+
+        private void UpdateIcons()
+        {
+            if (itemCollections.favoritesDict != null && itemCollections.currentSong != null)
+            {
+                favoritesButton.IconUri = itemCollections.favoritesDict.ContainsKey(itemCollections.currentSong.audio_url.ToString()) ? new Uri("/Images/appbar.favs.remove.rest.png", UriKind.Relative) : new Uri("/Images/appbar.favs.addto.rest.png", UriKind.Relative);
+            }
+        }
+
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            UpdateIcons();
+            base.OnNavigatedTo(e);
+        }
+
+        private void InitializeElements()
+        {
+            Tag currentTag = itemCollections.currentMood;
 
             if (currentTag != null)
             {
@@ -51,18 +73,74 @@ namespace TuneYourMood
 
             BackgroundAudioPlayer.Instance.PlayStateChanged += Instance_PlayStateChanged;
             loadAppBackground();
+            UpdateIcons();
+        }
 
+        private void InitializePlayer()
+        {
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
+                                                          {
+                                                              if (NetworkInterface.GetIsNetworkAvailable())
+                                                              {
+                                                                  var value = itemCollections.currentMood.value;
+                                                                  if (value != null)
+                                                                      itemCollections.getSongsForTagDictionary().
+                                                                          TryGetValue(value, out songs);
+
+                                                                  StorageUtility.writeSongArrayToFile(storage, songs);
+
+
+                                                                  if (PlayState.Playing ==
+                                                                      BackgroundAudioPlayer.Instance.PlayerState)
+                                                                  {
+                                                                      playButton.IconUri = pauseImage.UriSource;
+                                                                      songTextBox.Text =
+                                                                          BackgroundAudioPlayer.Instance.Track.Title;
+                                                                      authorTextBox.Text =
+                                                                          BackgroundAudioPlayer.Instance.Track.Artist;
+                                                                      artImageBrush.ImageSource =
+                                                                          new BitmapImage(
+                                                                              BackgroundAudioPlayer.Instance.Track.
+                                                                                  AlbumArt);
+                                                                  }
+                                                                  else
+                                                                  {
+                                                                      BackgroundAudioPlayer.Instance.Play();
+                                                                      playButton.IconUri = playImage.UriSource;
+                                                                  }
+                                                              }
+                                                              else
+                                                              {
+                                                                  NotificationTool.Show("Offline",
+                                                                                        "Sorry, the network is not available at the moment",
+                                                                                        new NotificationAction(
+                                                                                            "Okay :(",
+                                                                                            () =>
+                                                                                            {
+                                                                                                throw new Exception(
+                                                                                                    "ExitApp");
+                                                                                            }));
+                                                              }
+                                                          });
         }
 
         private void loadAppBackground()
         {
-            Dictionary<string, BitmapImage> backgroundBrushes = CurrentItemCollections.Instance().backgroundBrushes;
-            var backgroundBrush = new ImageBrush
-                                         {
-                                             Opacity = 0.8d,
-                                             ImageSource = backgroundBrushes[CurrentItemCollections.Instance().currentBackgroundKey]
-                                         };
-            LayoutRoot.Background = backgroundBrush;
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
+                                                          {
+                                                              Dictionary<string, BitmapImage> backgroundBrushes =
+                                                                  itemCollections.backgroundBrushes;
+                                                              var backgroundBrush = new ImageBrush
+                                                                                        {
+                                                                                            Opacity = 0.8d,
+                                                                                            ImageSource =
+                                                                                                backgroundBrushes[
+                                                                                                    itemCollections.
+                                                                                                        currentBackgroundKey
+                                                                                                ]
+                                                                                        };
+                                                              LayoutRoot.Background = backgroundBrush;
+                                                          });
         }
 
         private void Instance_PlayStateChanged(object sender, EventArgs e)
@@ -70,6 +148,7 @@ namespace TuneYourMood
             switch (BackgroundAudioPlayer.Instance.PlayerState)
             {
                 case PlayState.Playing:
+                    MediaHistoryItem item = MediaHistory.Instance.NowPlaying;
                     playButton.IconUri = pauseImage.UriSource;
                     break;
 
@@ -89,48 +168,17 @@ namespace TuneYourMood
             }
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-
-
-            if (NetworkInterface.GetIsNetworkAvailable())
-            {
-                var value = itemCollections.currentMood.value;
-                if (value != null)
-                    itemCollections.getSongsForTagDictionary().TryGetValue(value, out songs);
-                //StorageUtility.writeListToFile(storage, "SongList.txt", songs);
-                StorageUtility.writeSongArrayToFile(storage, songs);
-                //int ctn = CurrentItemCollections.Instance().currentTrackNumber;
-                //  BackgroundAudioPlayer.Instance.Track =
-                //      CurrentItemCollections.Instance().convertSongToAudioTrack(songs[ctn]);
-
-                BackgroundAudioPlayer.Instance.Play();
-                if (PlayState.Playing == BackgroundAudioPlayer.Instance.PlayerState)
-                {
-                    playButton.IconUri = pauseImage.UriSource;
-                    songTextBox.Text = BackgroundAudioPlayer.Instance.Track.Title;
-                    authorTextBox.Text = BackgroundAudioPlayer.Instance.Track.Artist;
-                    artImageBrush.ImageSource = new BitmapImage(BackgroundAudioPlayer.Instance.Track.AlbumArt);
-                }
-                else
-                {
-                    playButton.IconUri = playImage.UriSource;
-                }
-            }
-            else
-            {
-                NotificationTool.Show("Offline",
-                                      "Sorry, the network is not available at the moment",
-                                      new NotificationAction("Okay :(", () => { throw new Exception("ExitApp"); }));
-            }
-        }
-
-
         #region Button Click Event Handlers
 
         private void previousClicked(object sender, EventArgs e)
         {
+            UpdateIcons();
             BackgroundAudioPlayer.Instance.SkipPrevious();
+            itemCollections.currentTrackNumber =
+                Int16.Parse(StorageUtility.readObjectFromFile<string>(IsolatedStorageFile.GetUserStoreForApplication(),
+                                                          "CurrentTrackNumber.txt"));
+            itemCollections.currentSong = itemCollections.audioTracks[itemCollections.currentTrackNumber];
+            UpdateIcons();
         }
 
         private void playClicked(object sender, EventArgs e)
@@ -147,16 +195,19 @@ namespace TuneYourMood
 
         private void nextClicked(object sender, EventArgs e)
         {
+            UpdateIcons();
             BackgroundAudioPlayer.Instance.SkipNext();
+            itemCollections.currentTrackNumber =
+                Int16.Parse(StorageUtility.readObjectFromFile<string>(IsolatedStorageFile.GetUserStoreForApplication(),
+                                                          "CurrentTrackNumber.txt"));
+            itemCollections.currentSong = itemCollections.audioTracks[itemCollections.currentTrackNumber];
+            UpdateIcons();
         }
-
-
-        #endregion
 
         private void shareClicked(object sender, EventArgs e)
         {
             string shareString = "";
-            Tag currentTag = CurrentItemCollections.Instance().currentMood;
+            Tag currentTag = itemCollections.currentMood;
 
             if (currentTag.type.ToLower().Equals(Constants.TYPE_MOOD))
             {
@@ -172,9 +223,30 @@ namespace TuneYourMood
                                                   LinkUri = BackgroundAudioPlayer.Instance.Track.Source,
                                                   Message = shareString
                                               };
-
-
             shareLinkTask.Show();
         }
+
+        private void addToFavorites(object sender, EventArgs e)
+        {
+            if (itemCollections.favoritesDict != null && itemCollections.currentSong != null)
+            {
+                if (itemCollections.favoritesDict.ContainsKey(itemCollections.currentSong.audio_url.ToString()))
+                {
+                    itemCollections.favoritesDict.Remove(itemCollections.currentSong.audio_url.ToString());
+                    itemCollections.SaveApplicationState();
+                    favoritesButton.IconUri = new Uri("/Images/appbar.favs.addto.rest.png", UriKind.Relative);
+                }
+                else
+                {
+                    itemCollections.favoritesDict.Add(itemCollections.currentSong.audio_url.ToString(), itemCollections.currentSong);
+                    StorageUtility.writeObjectToFile(IsolatedStorageFile.GetUserStoreForApplication(), "favoritesDict.txt", itemCollections.favoritesDict);
+                    favoritesButton.IconUri = new Uri("/Images/appbar.favs.remove.rest.png", UriKind.Relative);
+                    itemCollections.SaveApplicationState();
+
+                }
+            }
+        }
+
+        #endregion
     }
 }

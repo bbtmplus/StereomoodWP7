@@ -12,7 +12,6 @@ using DeepForest.Phone.Assets.Tools;
 using Microsoft.Phone.Controls;
 using Telerik.Windows.Controls;
 using TuneYourMood.Json;
-using StereomoodPlaybackAgent;
 using Song = StereomoodPlaybackAgent.Song;
 
 
@@ -40,7 +39,7 @@ namespace TuneYourMood
                 ImageSource = backgroundBrushes[CurrentItemCollections.Instance().currentBackgroundKey]
             };
             LayoutRoot.Background = backgroundBrush;
-            
+
             base.OnNavigatedTo(e);
         }
 
@@ -75,8 +74,7 @@ namespace TuneYourMood
                 {
                     NotificationTool.Show("Sorry",
                                           "Couldn't load songs. Please try once again.",
-                                          new NotificationAction("Okay", () => { }));
-                    NavigationService.GoBack();
+                                          new NotificationAction("Okay", () => { throw new Exception(); }));
                 }
             }
             else
@@ -95,14 +93,7 @@ namespace TuneYourMood
                 Song song = ((Song)listBox.SelectedItem);
                 if (song != null)
                 {
-                    int ctn = itemCollections.currentTrackNumber = song.trackNumber;
-                    StorageUtility.writeStringToFile(IsolatedStorageFile.GetUserStoreForApplication(),
-                        "CurrentTrackNumber.txt",
-                        ctn.ToString(CultureInfo.InvariantCulture));
 
-                    itemCollections.currentSong = song;
-                    Uri songDetailsUri = new Uri("/SongDetailsPage.xaml", UriKind.Relative);
-                    NavigationService.Navigate(songDetailsUri);
                 }
             }
 

@@ -79,18 +79,12 @@
             </Style>
         </Grid.Resources>
 
-        <Image x:Name="background"  ></Image>
-
         <controls:Panorama Title="tune your mood" Name="panorama" FontSize="20">
             <controls:Panorama.TitleTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}" FontSize="115" Margin="0,20,20,0" FontWeight="Bold" />
                 </DataTemplate>
             </controls:Panorama.TitleTemplate>
-
-            <controls:Panorama.Background>
-                <ImageBrush x:Name="panoramaBG"/>
-            </controls:Panorama.Background>
 
             <controls:PanoramaItem Header="activity..?">
 
@@ -118,6 +112,40 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
+
+            </controls:PanoramaItem>
+
+            <controls:PanoramaItem Header="my favorites!">
+                <Grid>
+                   
+
+                    <ListBox Margin="0,0,0,10" Name="favoritesList" SelectionChanged="favoritesSelectionChanged" SelectionMode="Single">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,0,0,10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"  />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock Text="{Binding Path=title}" Grid.Row="0" Grid.Column="0" Height="Auto" Width="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  TextWrapping="Wrap" FontSize="28"  FontWeight="Bold" Margin="5 0 0 0" />
+                                    <Grid  Grid.Column="0" Grid.Row="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding Path=artist}" TextWrapping="NoWrap" Grid.Column="0" Grid.Row="1" Foreground="LightGray" FontSize="22" Width="Auto" Margin="10 0 0 0"/>
+                                        <TextBlock Text="{Binding Path=album}" TextWrapping="NoWrap" Grid.Column="1"  Grid.Row="1" Foreground="LightGray" FontSize="22" Width="Auto" Margin="10 0 0 0"/>
+                                    </Grid>
+
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
             </controls:PanoramaItem>
 
             <controls:PanoramaItem Header="enjoy..!">
@@ -151,10 +179,12 @@
 
         <Controls1:BindableApplicationBar IsVisible="True" BarOpacity="0.6">
 
-            <Controls1:BindableApplicationBarIconButton  IconUri="/Images/appbar.transport.play.rest.png" x:Name="goToPlayerButton" Text="Player" Click="goToPlayerClicked" IsEnabled="False"  />
+            <Controls1:BindableApplicationBarIconButton IconUri="/Images/appbar.transport.play.rest.png" x:Name="goToPlayerButton" Text="Player" Click="goToPlayerClicked" IsEnabled="False"  />
             <Controls1:BindableApplicationBarIconButton IconUri="/Images/appbar.feature.search.rest.png"  Text="Search" Click="barItemSearchClicked" />
             <Controls1:BindableApplicationBarIconButton IconUri="/Images/appbar.feature.settings.rest.png" Text="Settings" Click="settingsClicked" />
+            <Controls1:BindableApplicationBarIconButton IconUri="Images/appbar.sync.rest.png" Name="syncButton" Click="syncPressed" />
         </Controls1:BindableApplicationBar>
+
     </Grid>
 
 

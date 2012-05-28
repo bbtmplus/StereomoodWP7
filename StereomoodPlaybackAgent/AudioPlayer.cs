@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO.IsolatedStorage;
+using System.Linq;
 using System.Net.NetworkInformation;
 using System.Windows;
 using Microsoft.Phone.BackgroundAudio;
@@ -36,10 +37,11 @@ namespace StereomoodPlaybackAgent
                 if (++currentTrackNumber >= _playList.Count)
                 {
                     currentTrackNumber = 0;
-                }
-            StorageUtility.writeStringToFile(IsolatedStorageFile.GetUserStoreForApplication(),
+                    StorageUtility.writeStringToFile(IsolatedStorageFile.GetUserStoreForApplication(),
                 "CurrentTrackNumber.txt",
                 currentTrackNumber.ToString(CultureInfo.InvariantCulture));
+                }
+
             player.Track = _playList[currentTrackNumber];
             player.Play();
         }
@@ -54,11 +56,11 @@ namespace StereomoodPlaybackAgent
             else if (--currentTrackNumber < 0)
             {
                 currentTrackNumber = _playList.Count - 1;
-
-            }
-            StorageUtility.writeStringToFile(IsolatedStorageFile.GetUserStoreForApplication(),
+                StorageUtility.writeStringToFile(IsolatedStorageFile.GetUserStoreForApplication(),
                 "CurrentTrackNumber.txt",
                 currentTrackNumber.ToString(CultureInfo.InvariantCulture));
+            }
+
             player.Track = _playList[currentTrackNumber];
             player.Play();
         }
@@ -69,48 +71,47 @@ namespace StereomoodPlaybackAgent
         {
             if (NetworkInterface.GetIsNetworkAvailable())
             {
-                currentTrackNumber = _playList.IndexOf(player.Track) == -1
-                                         ? Convert.ToInt16(StorageUtility.readStringFromFile(isoStore,
-                                                                                             "CurrentTrackNumber.txt"))
-                                         : _playList.IndexOf(player.Track);
+                currentTrackNumber = Convert.ToInt16(StorageUtility.readStringFromFile(isoStore, "CurrentTrackNumber.txt"));
+                StorageUtility.writeStringToFile(IsolatedStorageFile.GetUserStoreForApplication(),
+                "CurrentTrackNumber.txt",
+                currentTrackNumber.ToString(CultureInfo.InvariantCulture));
 
                 if (_playList.Count > 0)
                 {
-                    if (!(player.Track != null && player.Track.Title == _playList[currentTrackNumber].Title) && player.PlayerState == PlayState.Playing)
+                    if (!(player.Track != null && player.Track.Title.Equals(_playList[currentTrackNumber].Title) && player.PlayerState == PlayState.Playing))
                     {
                         player.Track = _playList[currentTrackNumber];
+                        player.Play();
                     }
                 }
                 else
                 {
                     loadPlaylist();
                 }
-                player.Play();
+
             }
         }
 
         private void loadPlaylist()
         {
-            _playList.Clear();
-            //  Song[] tracklist = StorageUtility.readListFromFile<Song>(isoStore, "SongList.txt").ToArray();
-            Song[] tracklist = StorageUtility.readSongArrayFromFile(isoStore);
-            if (tracklist.Length > 0)
+            _playList = convertSongsToAudioTracks(StorageUtility.readSongArrayFromFile(isoStore));
+        }
+
+        public List<AudioTrack> convertSongsToAudioTracks(Song[] songs)
+        {
+            if (songs == null)
             {
-                foreach (var song in tracklist)
-                {
-                    _playList.Add(new AudioTrack(
-                                      song.audio_url,
-                                      song.title,
-                                      song.artist,
-                                      song.album,
-                                      song.image_url));
-                }
+                return null;
             }
+            return songs.Select(song => new AudioTrack(song.audio_url,
+                song.title,
+                song.artist,
+                song.album,
+                song.image_url)).ToList();
         }
 
         public AudioPlayer()
         {
-            _playList = new List<AudioTrack>();
             loadPlaylist();
         }
 
@@ -174,7 +175,8 @@ namespace StereomoodPlaybackAgent
                         {
                             player.Pause();
                         }
-                    }catch(UnauthorizedAccessException ex)
+                    }
+                    catch (UnauthorizedAccessException ex)
                     {
                         // what the fuck??
                     }

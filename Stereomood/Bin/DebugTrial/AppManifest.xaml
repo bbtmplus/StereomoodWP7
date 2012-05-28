@@ -1,0 +1,20 @@
+﻿<Deployment xmlns="http://schemas.microsoft.com/client/2007/deployment" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" EntryPointAssembly="TuneYourMood" EntryPointType="TuneYourMood.App" RuntimeVersion="4.7.50308.0">
+  <Deployment.Parts>
+    <AssemblyPart x:Name="TuneYourMood" Source="TuneYourMood.dll" />
+    <AssemblyPart x:Name="BugSense" Source="BugSense.dll" />
+    <AssemblyPart x:Name="Coding4Fun.Phone.Controls" Source="Coding4Fun.Phone.Controls.dll" />
+    <AssemblyPart x:Name="DeepForest.Phone.Assets" Source="DeepForest.Phone.Assets.dll" />
+    <AssemblyPart x:Name="FlurryWP7SDK" Source="FlurryWP7SDK.dll" />
+    <AssemblyPart x:Name="Microsoft.Phone.Controls" Source="Microsoft.Phone.Controls.dll" />
+    <AssemblyPart x:Name="Microsoft.Phone.Controls.Toolkit" Source="Microsoft.Phone.Controls.Toolkit.dll" />
+    <AssemblyPart x:Name="Phone7.Fx" Source="Phone7.Fx.dll" />
+    <AssemblyPart x:Name="Polenter.SharpSerializer.Silverlight" Source="Polenter.SharpSerializer.Silverlight.dll" />
+    <AssemblyPart x:Name="ReactiveOAuth.WP7" Source="ReactiveOAuth.WP7.dll" />
+    <AssemblyPart x:Name="RestSharp.WindowsPhone" Source="RestSharp.WindowsPhone.dll" />
+    <AssemblyPart x:Name="StereomoodPlaybackAgent" Source="StereomoodPlaybackAgent.dll" />
+    <AssemblyPart x:Name="Telerik.Windows.Controls.Input" Source="Telerik.Windows.Controls.Input.dll" />
+    <AssemblyPart x:Name="Telerik.Windows.Controls.Primitives" Source="Telerik.Windows.Controls.Primitives.dll" />
+    <AssemblyPart x:Name="Telerik.Windows.Core" Source="Telerik.Windows.Core.dll" />
+    <AssemblyPart x:Name="System.Windows.Interactivity" Source="System.Windows.Interactivity.dll" />
+  </Deployment.Parts>
+</Deployment>

@@ -198,7 +198,9 @@
     <Resource Include="Background.png" />
     <Resource Include="Background99.png" />
     <Resource Include="ApplicationIcon.png" />
+    <Content Include="Images\appbar.favs.remove.rest.png" />
     <Content Include="Images\appbar.feature.settings.rest.png" />
+    <Content Include="Images\appbar.sync.rest.png" />
     <Content Include="Images\appbar.transport.ff.rest.png" />
     <Content Include="Images\appbar.transport.pause.rest.png" />
     <Content Include="Images\appbar.transport.play.rest.png" />
@@ -218,7 +220,7 @@
     <Content Include="Background200.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Resource Include="Images\appbar.favs.addto.rest.png" />
+    <Content Include="Images\appbar.favs.addto.rest.png" />
     <Content Include="Images\appbar.feature.search.rest.png" />
   </ItemGroup>
   <ItemGroup>
