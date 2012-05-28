@@ -260,9 +260,14 @@ namespace TuneYourMood
 
                                                                           }
 
-
-                                                                          itemCollections.currentTrackNumber = Int16.Parse(StorageUtility.readObjectFromFile<string>(IsolatedStorageFile.GetUserStoreForApplication(), "CurrentTrackNumber.txt"));
-                                                                          itemCollections.currentSong = itemCollections.audioTracks[itemCollections.currentTrackNumber];
+                                                                          string numberString =
+                                                                              StorageUtility.readObjectFromFile<string>(
+                                                                                  IsolatedStorageFile.
+                                                                                      GetUserStoreForApplication(),
+                                                                                  "CurrentTrackNumber.txt");
+                                                                          if (numberString != null)
+                                                                              itemCollections.currentTrackNumber = Int16.Parse(numberString);
+                                                                          itemCollections.currentSong = songs[itemCollections.currentTrackNumber];
                                                                           Uri songDetailsUri =
                                                                               new Uri("/SongDetailsPage.xaml",
                                                                                       UriKind.Relative);

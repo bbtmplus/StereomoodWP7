@@ -16,6 +16,10 @@
     mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True">
 
+    <toolkit:GestureService.GestureListener>
+        <toolkit:GestureListener Flick="OnFlick"/>
+    </toolkit:GestureService.GestureListener>
+
     <telerikPrimitives:RadTransitionControl.Transition>
         <telerikPrimitives:RadContinuumAndSlideTransition/>
     </telerikPrimitives:RadTransitionControl.Transition>
@@ -42,6 +46,13 @@
             <TextBlock Height="61" HorizontalAlignment="Center" Margin="6,184,0,0" Name="authorTextBox" Text="Your Day!" VerticalAlignment="Top" Width="474" FontWeight="Normal" FontSize="30" Foreground="White" TextAlignment="Left" Grid.Row="1" />
             <TextBlock FontSize="34" FontWeight="Bold" Height="45" HorizontalAlignment="Right" Name="tagTitle" Padding="0,0,15,0" Text="" TextAlignment="Right" VerticalAlignment="Top" Width="480" />
         </Grid>
+
+        <telerikPrimitives:RadBusyIndicator Background="Black" Height="768"
+                                            Opacity="0.6" Width="480"
+                                            Foreground="White"
+                                            x:Name="customProgressOverlay" 
+                                            AnimationStyle="AnimationStyle8"/>
+
         <Controls:BindableApplicationBar BarOpacity="0.6" IsVisible="True" IsMenuEnabled="True">
             <Controls:BindableApplicationBarIconButton IconUri="/Images/appbar.transport.rew.rest.png" x:Name="prevButton" Text="Prev" Click="previousClicked"  />
             <Controls:BindableApplicationBarIconButton IconUri="/Images/appbar.transport.pause.rest.png" x:Name="playButton" Text="Play/Pause" Click="playClicked" />

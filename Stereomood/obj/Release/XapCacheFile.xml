@@ -1,8 +1,8 @@
-﻿<xapCache source="C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\Bin\Release\TuneYourMood.xap" wasSigned="False" certificateThumbprint="" TimeStampUrl="" lastWriteTime="5/28/2012 10:58:34 PM">
+﻿<xapCache source="C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\Bin\Release\TuneYourMood.xap" wasSigned="False" certificateThumbprint="" TimeStampUrl="" lastWriteTime="5/29/2012 1:59:35 AM">
   <file source="C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\Bin\Release\WMAppManifest.xml" archivePath="WMAppManifest.xml" lastWriteTime="5/28/2012 12:07:06 PM" />
   <file source="C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\Background.png" archivePath="Background.png" lastWriteTime="5/25/2012 7:24:53 PM" />
   <file source="C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\ApplicationIcon.png" archivePath="ApplicationIcon.png" lastWriteTime="5/25/2012 7:24:53 PM" />
-  <file source="C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\obj\Release\TuneYourMood.dll" archivePath="TuneYourMood.dll" lastWriteTime="5/28/2012 10:58:33 PM" />
+  <file source="C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\obj\Release\TuneYourMood.dll" archivePath="TuneYourMood.dll" lastWriteTime="5/29/2012 1:59:34 AM" />
   <file source="C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\Stereomood\Bin\Release\BugSense.dll" archivePath="BugSense.dll" lastWriteTime="1/17/2012 10:36:44 PM" />
   <file source="C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\packages\Coding4Fun.Phone.Controls.1.5.6\lib\sl4-windowsphone71\Coding4Fun.Phone.Controls.dll" archivePath="Coding4Fun.Phone.Controls.dll" lastWriteTime="4/27/2012 12:40:09 PM" />
   <file source="C:\Users\Lonkly\documents\visual studio 2010\Projects\2Gis\2Gis\Bin\Debug\DeepForest.Phone.Assets.dll" archivePath="DeepForest.Phone.Assets.dll" lastWriteTime="1/7/2012 11:25:49 PM" />
@@ -14,7 +14,7 @@
   <file source="C:\Users\Lonkly\Desktop\WP7\sharp_serializer_dll\sharpSerializerDll\Polenter.SharpSerializer.Silverlight.dll" archivePath="Polenter.SharpSerializer.Silverlight.dll" lastWriteTime="1/29/2012 12:43:21 PM" />
   <file source="C:\Users\Lonkly\Desktop\WP7\ReactiveOAuth_0.4.0.0\Binary\ReactiveOAuth.WP7.dll" archivePath="ReactiveOAuth.WP7.dll" lastWriteTime="6/23/2011 3:45:41 PM" />
   <file source="C:\Users\Lonkly\documents\visual studio 2010\Projects\2Gis\2Gis\Bin\Debug\RestSharp.WindowsPhone.dll" archivePath="RestSharp.WindowsPhone.dll" lastWriteTime="1/4/2012 1:17:33 AM" />
-  <file source="C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\StereomoodPlaybackAgent\Bin\Release\StereomoodPlaybackAgent.dll" archivePath="StereomoodPlaybackAgent.dll" lastWriteTime="5/28/2012 10:43:44 PM" />
+  <file source="C:\Users\Lonkly\documents\visual studio 2010\Projects\Stereomood\StereomoodPlaybackAgent\Bin\Release\StereomoodPlaybackAgent.dll" archivePath="StereomoodPlaybackAgent.dll" lastWriteTime="5/29/2012 12:59:49 AM" />
   <file source="C:\Program Files (x86)\Telerik\RadControls for Windows Phone 7 Q1 2012\Binaries\WindowsPhone\Telerik.Windows.Controls.Input.dll" archivePath="Telerik.Windows.Controls.Input.dll" lastWriteTime="3/21/2012 12:31:24 PM" />
   <file source="C:\Program Files (x86)\Telerik\RadControls for Windows Phone 7 Q1 2012\Binaries\WindowsPhone\Telerik.Windows.Controls.Primitives.dll" archivePath="Telerik.Windows.Controls.Primitives.dll" lastWriteTime="3/21/2012 12:31:10 PM" />
   <file source="C:\Program Files (x86)\Telerik\RadControls for Windows Phone 7 Q1 2012\Binaries\WindowsPhone\Telerik.Windows.Core.dll" archivePath="Telerik.Windows.Core.dll" lastWriteTime="3/21/2012 12:31:02 PM" />

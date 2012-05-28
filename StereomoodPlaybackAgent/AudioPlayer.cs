@@ -72,19 +72,16 @@ namespace StereomoodPlaybackAgent
             if (NetworkInterface.GetIsNetworkAvailable())
             {
                 currentTrackNumber = Convert.ToInt16(StorageUtility.readStringFromFile(isoStore, "CurrentTrackNumber.txt"));
-                StorageUtility.writeStringToFile(IsolatedStorageFile.GetUserStoreForApplication(),
-                "CurrentTrackNumber.txt",
-                currentTrackNumber.ToString(CultureInfo.InvariantCulture));
+                AudioTrack track =
+                    convertSongToAudioTrack(StorageUtility.readObjectFromFile<Song>(isoStore, "currentSong.txt"));
 
-                if (_playList.Count > 0)
+                if (track != null)
                 {
-                    if (!(player.Track != null && player.Track.Title.Equals(_playList[currentTrackNumber].Title) && player.PlayerState == PlayState.Playing))
-                    {
-                        player.Track = _playList[currentTrackNumber];
-                        player.Play();
-                    }
+                    player.Track = track;
+                    player.Play();
+
                 }
-                else
+                if (_playList.Count == 0)
                 {
                     loadPlaylist();
                 }
@@ -108,6 +105,19 @@ namespace StereomoodPlaybackAgent
                 song.artist,
                 song.album,
                 song.image_url)).ToList();
+        }
+
+        public AudioTrack convertSongToAudioTrack(Song song)
+        {
+            if (song == null)
+            {
+                return null;
+            }
+            return new AudioTrack(song.audio_url,
+                song.title,
+                song.artist,
+                song.album,
+                song.image_url);
         }
 
         public AudioPlayer()
@@ -137,7 +147,9 @@ namespace StereomoodPlaybackAgent
                     PlayNextTrack(player);
                     break;
                 case PlayState.Shutdown:
-                    // TODO: обработайте здесь состояние отключения (например, сохраните состояние)
+                    StorageUtility.writeStringToFile(IsolatedStorageFile.GetUserStoreForApplication(),
+"CurrentTrackNumber.txt",
+currentTrackNumber.ToString(CultureInfo.InvariantCulture));
                     break;
                 case PlayState.Unknown:
                     break;

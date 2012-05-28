@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO.IsolatedStorage;
 using System.Net.NetworkInformation;
+using System.Threading;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using DeepForest.Phone.Assets.Tools;
 using Microsoft.Devices;
 using Microsoft.Phone.BackgroundAudio;
+using Microsoft.Phone.Controls;
 using Microsoft.Phone.Tasks;
 using StereomoodPlaybackAgent;
 using TuneYourMood.Json;
@@ -41,7 +45,7 @@ namespace TuneYourMood
         {
             if (itemCollections.favoritesDict != null && itemCollections.currentSong != null)
             {
-                favoritesButton.IconUri = itemCollections.favoritesDict.ContainsKey(itemCollections.currentSong.audio_url.ToString()) ? new Uri("/Images/appbar.favs.remove.rest.png", UriKind.Relative) : new Uri("/Images/appbar.favs.addto.rest.png", UriKind.Relative);
+                favoritesButton.IconUri = itemCollections.favoritesDict.ContainsKey(itemCollections.audioTracks[itemCollections.currentTrackNumber].audio_url.ToString()) ? new Uri("/Images/appbar.favs.remove.rest.png", UriKind.Relative) : new Uri("/Images/appbar.favs.addto.rest.png", UriKind.Relative);
             }
         }
 
@@ -172,12 +176,16 @@ namespace TuneYourMood
 
         private void previousClicked(object sender, EventArgs e)
         {
-            UpdateIcons();
             BackgroundAudioPlayer.Instance.SkipPrevious();
-            itemCollections.currentTrackNumber =
-                Int16.Parse(StorageUtility.readObjectFromFile<string>(IsolatedStorageFile.GetUserStoreForApplication(),
-                                                          "CurrentTrackNumber.txt"));
-            itemCollections.currentSong = itemCollections.audioTracks[itemCollections.currentTrackNumber];
+            if (--itemCollections.currentTrackNumber < 0)
+            {
+                itemCollections.currentTrackNumber = itemCollections.audioTracks.Length - 1;
+                StorageUtility.writeStringToFile(IsolatedStorageFile.GetUserStoreForApplication(),
+                "CurrentTrackNumber.txt",
+                itemCollections.currentTrackNumber.ToString(CultureInfo.InvariantCulture));
+            }
+            if (itemCollections.audioTracks != null)
+                itemCollections.currentSong = itemCollections.audioTracks[itemCollections.currentTrackNumber];
             UpdateIcons();
         }
 
@@ -195,12 +203,16 @@ namespace TuneYourMood
 
         private void nextClicked(object sender, EventArgs e)
         {
-            UpdateIcons();
             BackgroundAudioPlayer.Instance.SkipNext();
-            itemCollections.currentTrackNumber =
-                Int16.Parse(StorageUtility.readObjectFromFile<string>(IsolatedStorageFile.GetUserStoreForApplication(),
-                                                          "CurrentTrackNumber.txt"));
-            itemCollections.currentSong = itemCollections.audioTracks[itemCollections.currentTrackNumber];
+            if (++itemCollections.currentTrackNumber >= itemCollections.audioTracks.Length)
+            {
+                itemCollections.currentTrackNumber = 0;
+                StorageUtility.writeStringToFile(IsolatedStorageFile.GetUserStoreForApplication(),
+            "CurrentTrackNumber.txt",
+            itemCollections.currentTrackNumber.ToString(CultureInfo.InvariantCulture));
+            }
+            if (itemCollections.audioTracks != null)
+                itemCollections.currentSong = itemCollections.audioTracks[itemCollections.currentTrackNumber];
             UpdateIcons();
         }
 
@@ -248,5 +260,23 @@ namespace TuneYourMood
         }
 
         #endregion
+
+        private void OnFlick(object sender, FlickGestureEventArgs e)
+        {
+            // User flicked towards left
+            if (e.HorizontalVelocity < 0)
+            {
+                // Load the next image 
+                previousClicked(null, null);
+            }
+
+            // User flicked towards right
+            if (e.HorizontalVelocity > 0)
+            {
+                // Load the previous image
+                nextClicked(null, null);
+            }
+
+        }
     }
 }
