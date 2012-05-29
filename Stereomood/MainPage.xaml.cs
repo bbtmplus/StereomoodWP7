@@ -12,7 +12,6 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using BugSense;
 using DeepForest.Phone.Assets.Tools;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Tasks;
@@ -36,7 +35,6 @@ namespace TuneYourMood
         private readonly CurrentItemCollections itemCollections = CurrentItemCollections.Instance();
 
         private readonly Searchbar searchbar = new Searchbar();
-        private readonly Dictionary<string, string> parameters = new Dictionary<string, string>();
 
         public MainPage()
         {
@@ -48,10 +46,10 @@ namespace TuneYourMood
                                                               searchbar.searchPressed += searchbar_searchPressed;
                                                               LayoutRoot.Children.Add(searchbar);
 
-                                                              this.SetValue(RadTileAnimation.ContainerToAnimateProperty,
-                                                                            this.selectedTagsList);
-                                                              this.SetValue(RadTileAnimation.ContainerToAnimateProperty,
-                                                                            this.topTagsList);
+                                                              SetValue(RadTileAnimation.ContainerToAnimateProperty,
+                                                                            selectedTagsList);
+                                                              SetValue(RadTileAnimation.ContainerToAnimateProperty,
+                                                                            topTagsList);
 
                                                               uiBlocked = true;
                                                           });
@@ -74,7 +72,7 @@ namespace TuneYourMood
                 blockUI();
                 loadTags();
 
-                if (itemCollections.currentMood != null && itemCollections.audioTracks != null)
+                if (itemCollections.currentMood != null && itemCollections.songs != null)
                 {
                     goToPlayerButton.IsEnabled = true;
                 }
@@ -83,7 +81,7 @@ namespace TuneYourMood
             {
                 NotificationTool.Show("Offline",
                                       "Sorry, the network is not available at the moment",
-                                      new NotificationAction("Okay :(", () => { throw new Exception("ExitApp"); }));
+                                      new NotificationAction("Okay :(", () => { }));
             }
         }
 
@@ -214,68 +212,39 @@ namespace TuneYourMood
                     }
                 case Constants.METHOD_SEARCH:
                     {
-                        Deployment.Current.Dispatcher.BeginInvoke(() =>
-                                                                      {
-                                                                          if (songs != null && songs.Length > 0)
-                                                                          {
-                                                                              if (returnedParams.ContainsKey("VALUE"))
-                                                                              {
-                                                                                  searchResult = new SearchResult
-                                                                                                     {
-                                                                                                         trackList =
-                                                                                                             songs,
-                                                                                                         tracksTotal =
-                                                                                                             songs.
-                                                                                                             Length
-                                                                                                     };
-                                                                                  itemCollections.currentMood = new Tag
-                                                                                                                    {
-                                                                                                                        type
-                                                                                                                            =
-                                                                                                                            returnedParams
-                                                                                                                            [
-                                                                                                                                "TYPE"
-                                                                                                                            ],
-                                                                                                                        value
-                                                                                                                            =
-                                                                                                                            returnedParams
-                                                                                                                            [
-                                                                                                                                "VALUE"
-                                                                                                                            ]
-                                                                                                                    };
-                                                                              }
 
-                                                                              if (itemCollections.currentMood != null &&
-                                                                                  !itemCollections.
-                                                                                       getSongsForTagDictionary().
-                                                                                       ContainsKey(
-                                                                                           itemCollections.currentMood.
-                                                                                               value))
-                                                                              {
-                                                                                  itemCollections.
-                                                                                      getSongsForTagDictionary().Add(
-                                                                                          itemCollections.currentMood.
-                                                                                              value, songs);
-                                                                              }
+                        if (songs != null && songs.Length > 0)
+                        {
+                            if (returnedParams.ContainsKey("VALUE"))
+                            {
+                                searchResult = new SearchResult
+                                                   {
+                                                       trackList = songs,
+                                                       tracksTotal = songs.Length
+                                                   };
+                                itemCollections.currentMood = new Tag
+                                                                  {
+                                                                      type = returnedParams["TYPE"],
+                                                                      value = returnedParams["VALUE"]
+                                                                  };
+                            }
 
-                                                                          }
-
-                                                                          string numberString =
-                                                                              StorageUtility.readObjectFromFile<string>(
-                                                                                  IsolatedStorageFile.
-                                                                                      GetUserStoreForApplication(),
-                                                                                  "CurrentTrackNumber.txt");
-                                                                          if (numberString != null)
-                                                                              itemCollections.currentTrackNumber = Int16.Parse(numberString);
-                                                                          itemCollections.currentSong = songs[itemCollections.currentTrackNumber];
-                                                                          Uri songDetailsUri =
-                                                                              new Uri("/SongDetailsPage.xaml",
-                                                                                      UriKind.Relative);
-                                                                          NavigationService.Navigate(songDetailsUri);
-                                                                      });
+                            if (itemCollections.currentMood != null &&
+                                !itemCollections.getSongsForTagDictionary().ContainsKey(itemCollections.currentMood.value))
+                            {
+                                itemCollections.getSongsForTagDictionary().Add(itemCollections.currentMood.value, songs);
+                            }
+                            itemCollections.songs = songs;
+                            itemCollections.SaveApplicationState();
+                            Uri songDetailsUri =
+                                new Uri("/SongDetailsPage.xaml",
+                                        UriKind.Relative);
+                            NavigationService.Navigate(songDetailsUri);
+                        }
                         break;
                     }
             }
+
         }
         #endregion
 
@@ -286,13 +255,6 @@ namespace TuneYourMood
             Uri uri = new Uri("/SettingsPage.xaml", UriKind.Relative);
             NavigationService.Navigate(uri);
         }
-
-        private void aboutClicked(object sender, EventArgs e)
-        {
-            Uri uri = new Uri("/AboutPage.xaml", UriKind.Relative);
-            NavigationService.Navigate(uri);
-        }
-
 
         private void sendEmailEvent(object sender, ManipulationCompletedEventArgs e)
         {
@@ -312,7 +274,7 @@ namespace TuneYourMood
             }
         }
 
-        private void rateUs(object sender, System.Windows.RoutedEventArgs e)
+        private void rateUs(object sender, RoutedEventArgs e)
         {
             MarketplaceReviewTask marketplaceReviewTask = new MarketplaceReviewTask();
             marketplaceReviewTask.Show();
@@ -320,6 +282,10 @@ namespace TuneYourMood
 
         private void goToPlayerClicked(object sender, EventArgs e)
         {
+            string numberString = StorageUtility.readObjectFromFile<string>(IsolatedStorageFile.GetUserStoreForApplication(), "CurrentTrackNumber.txt");
+            if (numberString != null)
+                itemCollections.currentTrackNumber = Int16.Parse(numberString);
+
             Uri playerUri = new Uri("/SongDetailsPage.xaml", UriKind.Relative);
             NavigationService.Navigate(playerUri);
         }
@@ -375,6 +341,10 @@ namespace TuneYourMood
                 Deployment.Current.Dispatcher.BeginInvoke(() => restCommunication.searchSongs(Constants.TYPE_SITE, textToSearch));
             }
         }
+
+        #endregion
+
+        #region EVENTS
 
         private void topTagSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -440,11 +410,12 @@ namespace TuneYourMood
                         itemCollections.currentMood.value, songs);
 
                     itemCollections.currentTrackNumber = favoritesList.SelectedIndex;
-                    itemCollections.currentSong =
-                        songs[favoritesList.SelectedIndex];
+                    itemCollections.SaveApplicationState();
+                    StorageUtility.writeStringToFile(IsolatedStorageFile.GetUserStoreForApplication(),
+                "CurrentTrackNumber.txt", itemCollections.currentTrackNumber.ToString(CultureInfo.InvariantCulture));
+
                     Uri songDetailsUri = new Uri("/SongDetailsPage.xaml",
                                                  UriKind.Relative);
-                    itemCollections.SaveApplicationState();
                     NavigationService.Navigate(songDetailsUri);
                 }
             }

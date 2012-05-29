@@ -29,6 +29,7 @@ namespace StereomoodPlaybackAgent
 
         private void PlayNextTrack(BackgroundAudioPlayer player)
         {
+
             if (_playList.Count == 0)
             {
                 loadPlaylist();
@@ -71,19 +72,18 @@ namespace StereomoodPlaybackAgent
         {
             if (NetworkInterface.GetIsNetworkAvailable())
             {
-                currentTrackNumber = Convert.ToInt16(StorageUtility.readStringFromFile(isoStore, "CurrentTrackNumber.txt"));
-                AudioTrack track =
-                    convertSongToAudioTrack(StorageUtility.readObjectFromFile<Song>(isoStore, "currentSong.txt"));
-
-                if (track != null)
-                {
-                    player.Track = track;
-                    player.Play();
-
-                }
+                string numberString = StorageUtility.readStringFromFile(IsolatedStorageFile.GetUserStoreForApplication(),
+                                                       "CurrentTrackNumber.txt");
+                if (numberString != null)
+                    currentTrackNumber = Int16.Parse(numberString);
                 if (_playList.Count == 0)
                 {
                     loadPlaylist();
+                }
+                else
+                {
+                    player.Track = _playList[currentTrackNumber];
+                    player.Play();
                 }
 
             }

@@ -57,7 +57,7 @@
             <Controls:BindableApplicationBarIconButton IconUri="/Images/appbar.transport.rew.rest.png" x:Name="prevButton" Text="Prev" Click="previousClicked"  />
             <Controls:BindableApplicationBarIconButton IconUri="/Images/appbar.transport.pause.rest.png" x:Name="playButton" Text="Play/Pause" Click="playClicked" />
             <Controls:BindableApplicationBarIconButton IconUri="/Images/appbar.transport.ff.rest.png" x:Name="nextButton" Text="Next" Click="nextClicked" />
-            <Controls:BindableApplicationBarIconButton IconUri="/Images/appbar.favs.addto.rest.png" x:Name="favoritesButton" Text="Add to Favorites" Click="addToFavorites" />
+            <Controls:BindableApplicationBarIconButton IconUri="/Images/appbar.favs.remove.rest.png" x:Name="favoritesButton" Text="Add to Favorites" Click="addToFavorites" />
             <Controls:BindableApplicationBarMenuItem Text="Share song!" Click="shareClicked"/>
         </Controls:BindableApplicationBar>
     </Grid>

@@ -28,11 +28,10 @@ namespace TuneYourMood
 
         public Tag favoritesTag;
         public Tag currentMood;
-        public Song currentSong;
         public int currentTrackNumber;
 
         private Dictionary<string, Song[]> songsForTagDictionary;
-        public Song[] audioTracks;
+        public Song[] songs;
         public List<Song> searchResult;
         public List<Tag> selectedTags;
         public List<Tag> topTags;
@@ -77,7 +76,6 @@ namespace TuneYourMood
 
             StorageUtility.writeObjectToFile(isf, "currentBackgroundKey.txt", currentBackgroundKey);
             StorageUtility.writeObjectToFile(isf, "currentMood.txt", currentMood);
-            StorageUtility.writeObjectToFile(isf, "currentSong.txt", currentSong);
             StorageUtility.writeListToFile(isf, "selectedTags.txt", selectedTags);
             StorageUtility.writeListToFile(isf, "topTags.txt", topTags);
             StorageUtility.writeObjectToFile(isf, "songsForTagDictionary.txt", songsForTagDictionary);
@@ -88,9 +86,8 @@ namespace TuneYourMood
         {
             string tryGetBG = StorageUtility.readObjectFromFile<string>(isf, "currentBackgroundKey.txt");
             currentBackgroundKey = tryGetBG ?? "Reflection";
-            audioTracks = StorageUtility.readSongArrayFromFile(isf);
+            songs = StorageUtility.readSongArrayFromFile(isf);
             currentMood = StorageUtility.readObjectFromFile<Tag>(isf, "currentMood.txt");
-            currentSong = StorageUtility.readObjectFromFile<Song>(isf, "currentSong.txt");
             selectedTags = StorageUtility.readListFromFile<Tag>(isf, "selectedTags.txt");
             topTags = StorageUtility.readListFromFile<Tag>(isf, "topTags.txt");
             songsForTagDictionary = StorageUtility.readObjectFromFile<Dictionary<string, Song[]>>(isf, "songsForTagDictionary.txt");

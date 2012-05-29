@@ -3,13 +3,10 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO.IsolatedStorage;
 using System.Net.NetworkInformation;
-using System.Threading;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Threading;
 using DeepForest.Phone.Assets.Tools;
-using Microsoft.Devices;
 using Microsoft.Phone.BackgroundAudio;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Tasks;
@@ -43,9 +40,17 @@ namespace TuneYourMood
 
         private void UpdateIcons()
         {
-            if (itemCollections.favoritesDict != null && itemCollections.currentSong != null)
+            if (!itemCollections.currentMood.value.ToLower().Equals("favorites!"))
             {
-                favoritesButton.IconUri = itemCollections.favoritesDict.ContainsKey(itemCollections.audioTracks[itemCollections.currentTrackNumber].audio_url.ToString()) ? new Uri("/Images/appbar.favs.remove.rest.png", UriKind.Relative) : new Uri("/Images/appbar.favs.addto.rest.png", UriKind.Relative);
+                Song currentSong = itemCollections.songs[itemCollections.currentTrackNumber];
+
+                if (itemCollections.favoritesDict != null && currentSong != null)
+                {
+                    favoritesButton.IconUri = itemCollections.favoritesDict.ContainsKey(currentSong.audio_url.ToString())
+                                                  ? new Uri("/Images/appbar.favs.remove.rest.png", UriKind.Relative)
+                                                  : new Uri("/Images/appbar.favs.addto.rest.png", UriKind.Relative);
+                }
+                favoritesButton.Visibility = Visibility.Visible;
             }
         }
 
@@ -152,7 +157,7 @@ namespace TuneYourMood
             switch (BackgroundAudioPlayer.Instance.PlayerState)
             {
                 case PlayState.Playing:
-                    MediaHistoryItem item = MediaHistory.Instance.NowPlaying;
+                    //MediaHistoryItem item = MediaHistory.Instance.NowPlaying;
                     playButton.IconUri = pauseImage.UriSource;
                     break;
 
@@ -176,16 +181,15 @@ namespace TuneYourMood
 
         private void previousClicked(object sender, EventArgs e)
         {
+            favoritesButton.Visibility = Visibility.Visible;
             BackgroundAudioPlayer.Instance.SkipPrevious();
             if (--itemCollections.currentTrackNumber < 0)
             {
-                itemCollections.currentTrackNumber = itemCollections.audioTracks.Length - 1;
+                itemCollections.currentTrackNumber = itemCollections.songs.Length - 1;
                 StorageUtility.writeStringToFile(IsolatedStorageFile.GetUserStoreForApplication(),
                 "CurrentTrackNumber.txt",
                 itemCollections.currentTrackNumber.ToString(CultureInfo.InvariantCulture));
             }
-            if (itemCollections.audioTracks != null)
-                itemCollections.currentSong = itemCollections.audioTracks[itemCollections.currentTrackNumber];
             UpdateIcons();
         }
 
@@ -203,16 +207,15 @@ namespace TuneYourMood
 
         private void nextClicked(object sender, EventArgs e)
         {
+            favoritesButton.Visibility = Visibility.Visible;
             BackgroundAudioPlayer.Instance.SkipNext();
-            if (++itemCollections.currentTrackNumber >= itemCollections.audioTracks.Length)
+            if (++itemCollections.currentTrackNumber >= itemCollections.songs.Length)
             {
                 itemCollections.currentTrackNumber = 0;
                 StorageUtility.writeStringToFile(IsolatedStorageFile.GetUserStoreForApplication(),
             "CurrentTrackNumber.txt",
             itemCollections.currentTrackNumber.ToString(CultureInfo.InvariantCulture));
             }
-            if (itemCollections.audioTracks != null)
-                itemCollections.currentSong = itemCollections.audioTracks[itemCollections.currentTrackNumber];
             UpdateIcons();
         }
 
@@ -240,21 +243,42 @@ namespace TuneYourMood
 
         private void addToFavorites(object sender, EventArgs e)
         {
-            if (itemCollections.favoritesDict != null && itemCollections.currentSong != null)
+            if (!itemCollections.currentMood.value.ToLower().Equals("favorites!"))
             {
-                if (itemCollections.favoritesDict.ContainsKey(itemCollections.currentSong.audio_url.ToString()))
+                Song currentSong = itemCollections.songs[itemCollections.currentTrackNumber];
+                if (itemCollections.favoritesDict != null && itemCollections.songs != null && currentSong != null)
                 {
-                    itemCollections.favoritesDict.Remove(itemCollections.currentSong.audio_url.ToString());
+                    if (itemCollections.favoritesDict.ContainsKey(currentSong.audio_url.ToString()))
+                    {
+                        itemCollections.favoritesDict.Remove(currentSong.audio_url.ToString());
+                        itemCollections.SaveApplicationState();
+                        favoritesButton.IconUri = new Uri("/Images/appbar.favs.addto.rest.png", UriKind.Relative);
+                    }
+                    else
+                    {
+                        itemCollections.favoritesDict.Add(currentSong.audio_url.ToString(), currentSong);
+                        StorageUtility.writeObjectToFile(IsolatedStorageFile.GetUserStoreForApplication(),
+                                                         "favoritesDict.txt", itemCollections.favoritesDict);
+                        favoritesButton.IconUri = new Uri("/Images/appbar.favs.remove.rest.png", UriKind.Relative);
+                        itemCollections.SaveApplicationState();
+
+                    }
+                }
+            }
+            else
+            {
+                Song currentSong = null;
+                itemCollections.favoritesDict.TryGetValue(
+                    itemCollections.songs[itemCollections.currentTrackNumber].audio_url.ToString(), out currentSong);
+                if (currentSong != null)
+                {
+                    itemCollections.favoritesDict.Remove(currentSong.audio_url.ToString());
                     itemCollections.SaveApplicationState();
-                    favoritesButton.IconUri = new Uri("/Images/appbar.favs.addto.rest.png", UriKind.Relative);
+                    favoritesButton.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
-                    itemCollections.favoritesDict.Add(itemCollections.currentSong.audio_url.ToString(), itemCollections.currentSong);
-                    StorageUtility.writeObjectToFile(IsolatedStorageFile.GetUserStoreForApplication(), "favoritesDict.txt", itemCollections.favoritesDict);
-                    favoritesButton.IconUri = new Uri("/Images/appbar.favs.remove.rest.png", UriKind.Relative);
-                    itemCollections.SaveApplicationState();
-
+                    favoritesButton.Visibility = Visibility.Collapsed;
                 }
             }
         }
