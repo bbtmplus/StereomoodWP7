@@ -5,53 +5,53 @@
     <File id="1FC78099-D833-48F8-A610-E85FB231C8A9/f:Song.cs" caret="1213" fromTop="13" />
     <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:Constants.cs" caret="1294" fromTop="13" />
     <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:App.xaml" caret="0" fromTop="0" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongListPage.xaml" caret="4074" fromTop="44" />
     <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:OauthCommunication.cs" caret="6159" fromTop="15" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:RestApiCommunication.cs" caret="9409" fromTop="129" />
     <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/d:Properties/f:WMAppManifest.xml" caret="1181" fromTop="17" />
     <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/d:Properties/f:AppManifest.xml" caret="155" fromTop="4" />
     <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/d:Properties/f:AssemblyInfo.cs" caret="726" fromTop="5" />
     <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:ReviewBugger.cs" caret="2196" fromTop="15" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:App.xaml.cs" caret="4217" fromTop="0" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongListPage.xaml.cs" caret="2673" fromTop="13" />
-    <File id="1FC78099-D833-48F8-A610-E85FB231C8A9/f:StorageUtility.cs" caret="838" fromTop="13" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongDetailsPage.xaml" caret="1131" fromTop="0" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:CurrentItemCollections.cs" caret="4611" fromTop="22" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="1473" fromTop="0" />
+    <File id="1FC78099-D833-48F8-A610-E85FB231C8A9/f:StorageUtility.cs" caret="2996" fromTop="0" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:RestApiCommunication.cs" caret="3983" fromTop="0" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:App.xaml.cs" caret="6068" fromTop="57" />
+    <File id="1FC78099-D833-48F8-A610-E85FB231C8A9/f:AudioPlayer.cs" caret="2542" fromTop="20" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongDetailsPage.xaml" caret="4309" fromTop="15" />
     <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml" caret="12259" fromTop="8" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:CurrentItemCollections.cs" caret="2302" fromTop="12" />
-    <File id="1FC78099-D833-48F8-A610-E85FB231C8A9/f:AudioPlayer.cs" caret="3218" fromTop="11" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongDetailsPage.xaml.cs" caret="1175" fromTop="9" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="13147" fromTop="12" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongListPage.xaml.cs" caret="1004" fromTop="5" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongListPage.xaml" caret="4122" fromTop="4" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongDetailsPage.xaml.cs" caret="11707" fromTop="16" />
   </RecentFiles>
   <RecentEdits>
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongDetailsPage.xaml" caret="3406" fromTop="6" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongDetailsPage.xaml.cs" caret="8346" fromTop="11" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongDetailsPage.xaml.cs" caret="8347" fromTop="5" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongDetailsPage.xaml.cs" caret="10918" fromTop="22" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongDetailsPage.xaml.cs" caret="9987" fromTop="11" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongDetailsPage.xaml.cs" caret="9588" fromTop="9" />
-    <File id="1FC78099-D833-48F8-A610-E85FB231C8A9/f:AudioPlayer.cs" caret="3340" fromTop="13" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:CurrentItemCollections.cs" caret="2005" fromTop="7" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:CurrentItemCollections.cs" caret="3703" fromTop="8" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:CurrentItemCollections.cs" caret="4447" fromTop="16" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongDetailsPage.xaml.cs" caret="9987" fromTop="19" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongDetailsPage.xaml.cs" caret="10918" fromTop="16" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongDetailsPage.xaml.cs" caret="12469" fromTop="10" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongDetailsPage.xaml.cs" caret="12938" fromTop="15" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongDetailsPage.xaml.cs" caret="12370" fromTop="5" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:CurrentItemCollections.cs" caret="2139" fromTop="10" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="20468" fromTop="15" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="13865" fromTop="12" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="1311" fromTop="21" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="957" fromTop="13" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="14711" fromTop="12" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="15430" fromTop="13" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongDetailsPage.xaml.cs" caret="8581" fromTop="13" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongDetailsPage.xaml.cs" caret="276" fromTop="4" />
-    <File id="1FC78099-D833-48F8-A610-E85FB231C8A9/f:AudioPlayer.cs" caret="3019" fromTop="25" />
-    <File id="1FC78099-D833-48F8-A610-E85FB231C8A9/f:AudioPlayer.cs" caret="2146" fromTop="12" />
-    <File id="1FC78099-D833-48F8-A610-E85FB231C8A9/f:AudioPlayer.cs" caret="1154" fromTop="12" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="12909" fromTop="13" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="11396" fromTop="12" />
-    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongDetailsPage.xaml.cs" caret="1392" fromTop="18" />
+    <File id="1FC78099-D833-48F8-A610-E85FB231C8A9/f:AudioPlayer.cs" caret="838" fromTop="10" />
+    <File id="1FC78099-D833-48F8-A610-E85FB231C8A9/f:AudioPlayer.cs" caret="2542" fromTop="12" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="17739" fromTop="25" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="11162" fromTop="23" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="12680" fromTop="20" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="12532" fromTop="13" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="11162" fromTop="20" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongDetailsPage.xaml.cs" caret="14107" fromTop="8" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongDetailsPage.xaml.cs" caret="14403" fromTop="16" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongDetailsPage.xaml" caret="4309" fromTop="15" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongDetailsPage.xaml.cs" caret="14731" fromTop="19" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongDetailsPage.xaml.cs" caret="14781" fromTop="20" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongDetailsPage.xaml.cs" caret="1864" fromTop="24" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongDetailsPage.xaml.cs" caret="14649" fromTop="17" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="14675" fromTop="16" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="11162" fromTop="16" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="11162" fromTop="23" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongDetailsPage.xaml.cs" caret="9780" fromTop="6" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongDetailsPage.xaml.cs" caret="10788" fromTop="16" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="423" fromTop="13" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="1945" fromTop="1" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="3475" fromTop="11" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="11162" fromTop="13" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="9797" fromTop="12" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="11093" fromTop="13" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:MainPage.xaml.cs" caret="10688" fromTop="14" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongDetailsPage.xaml.cs" caret="1222" fromTop="14" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongDetailsPage.xaml.cs" caret="11622" fromTop="14" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongListPage.xaml.cs" caret="1805" fromTop="17" />
+    <File id="33CF9C7B-F20B-4FD4-91FD-822ADAD65819/f:SongListPage.xaml.cs" caret="1974" fromTop="15" />
   </RecentEdits>
 </RecentFiles>

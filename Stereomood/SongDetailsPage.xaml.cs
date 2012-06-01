@@ -223,8 +223,11 @@ namespace TuneYourMood
         {
             string shareString = "";
             Tag currentTag = itemCollections.currentMood;
-
-            if (currentTag.type.ToLower().Equals(Constants.TYPE_MOOD))
+            if (currentTag.type.ToLower().Equals(Constants.TYPE_ACTIVITY))
+            {
+                shareString = "Hey! Listening to one of my favorites: " + BackgroundAudioPlayer.Instance.Track.Title + "";
+            }
+            else if (currentTag.type.ToLower().Equals(Constants.TYPE_MOOD))
             {
                 shareString = "I am listening to " + BackgroundAudioPlayer.Instance.Track.Title + " and feeling " + currentTag.value;
             }

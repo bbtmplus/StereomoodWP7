@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using DeepForest.Phone.Assets.Tools;
+using Microsoft.Phone.BackgroundAudio;
 using Microsoft.Phone.Controls;
 using Telerik.Windows.Controls;
 using TuneYourMood.Json;
@@ -50,14 +51,19 @@ namespace TuneYourMood
             this.SetValue(RadTileAnimation.ContainerToAnimateProperty, this.songList);
             if (currentTag != null)
             {
-                if (currentTag.type.ToLower().Equals(Constants.TYPE_MOOD))
-                {
-                    tagTitle.Text = "I'm feeling " + currentTag.value;
-                }
-                else if (currentTag.type.ToLower().Equals(Constants.TYPE_ACTIVITY))
+                if (currentTag.type.ToLower().Equals(Constants.TYPE_ACTIVITY))
                 {
                     tagTitle.Text = "hey! go on, " + currentTag.value;
                 }
+                else
+                    if (currentTag.type.ToLower().Equals(Constants.TYPE_MOOD))
+                    {
+                        tagTitle.Text = "I'm feeling " + currentTag.value;
+                    }
+                    else if (currentTag.type.ToLower().Equals(Constants.TYPE_ACTIVITY))
+                    {
+                        tagTitle.Text = "hey! go on, " + currentTag.value;
+                    }
             }
             if (NetworkInterface.GetIsNetworkAvailable())
             {
